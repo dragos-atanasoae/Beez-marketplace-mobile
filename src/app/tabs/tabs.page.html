@@ -1,19 +1,24 @@
-<ion-tabs>
+<ion-tabs #ionTabs (ionTabsDidChange)="getSelectedTab()">
 
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="tab1">
-      <ion-icon name="triangle"></ion-icon>
-      <ion-label>Tab 1</ion-label>
+  <ion-tab-bar #tabsBar slot="bottom">
+    <ion-tab-button tab="tab-orders">
+      <ion-icon [ngClass]="activeTab == 'tab-orders'? 'scale-in-center' : ''"
+        [src]="activeTab == 'tab-orders'? '../../../assets/icon/tabs_icons/ordersTabActive.svg' : '../../../assets/icon/tabs_icons/ordersTabInactive.svg'">
+      </ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button tab="tab2">
+    <ion-tab-button tab="tab-marketplace">
       <ion-icon name="ellipse"></ion-icon>
-      <ion-label>Tab 2</ion-label>
+      <!-- <ion-label>Marketplace</ion-label> -->
     </ion-tab-button>
 
-    <ion-tab-button tab="tab3">
-      <ion-icon name="square"></ion-icon>
-      <ion-label>Tab 3</ion-label>
+    <ion-tab-button class="profile_btn" tab="tab-profile">
+      <img src="./assets/icon/profile_icons/icon_vip_crown.svg" *ngIf="isVIPMember" alt="vip" class="img_vip_crown">
+      <ion-icon [ngClass]="activeTab == 'tab-profile'? 'scale-in-center' : ''" class="icon_profile"
+        [src]="activeTab == 'tab-profile'? '../../../assets/icon/tabs_icons/profileTabActive.svg' : '../../assets/icon/tabs_icons/profileTabInactive.svg'">
+      </ion-icon>
+      <ion-badge class="scale-in-center" *ngIf="notificationsCount > 0 && notificationsCount != undefined">
+      </ion-badge>
     </ion-tab-button>
   </ion-tab-bar>
 

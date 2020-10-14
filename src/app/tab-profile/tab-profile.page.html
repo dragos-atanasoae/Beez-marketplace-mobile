@@ -1,0 +1,308 @@
+<!-- Profile new Header -->
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-row id="header_buttons">
+      <ion-col size="auto" class="notification_btn" #buttonNotifications>
+        <ion-button class="wrap_notification" fill="clear" color="medium" [routerLink]="['/notifications-center']">
+          <ion-label>
+            <ion-icon src="./assets/icon/profile_icons/notification_icon.svg"></ion-icon>
+          </ion-label>
+        </ion-button>
+        <b *ngIf="notificationsCount > 0" class="notification_badge"
+          [ngClass]="{override : notificationsCount > 99, override1 : notificationsCount <= 9}"
+          [attr.data-badge]="notificationsCount"></b>
+      </ion-col>
+      <ion-col>
+
+      </ion-col>
+      <ion-col size="auto">
+        <ion-button fill="clear" color="medium" [routerLink]="['/help']">
+          <ion-label>
+            <ion-icon slot="icon-only" color="primary" name="help-circle-outline"></ion-icon>
+          </ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-button fill="clear" color="medium" [routerLink]="['/account-settings']">
+          <ion-label>
+            <ion-icon slot="icon-only" color="primary" name="settings-outline"></ion-icon>
+          </ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-row id="profile_header">
+    <ion-col size="12">
+      <img src="./assets/icon/profile_icons/icon_vip_crown.svg" *ngIf="isVIPMember" alt="vip" class="img_vip_crown">
+      <img id="profile_image" src="{{facebookProfileData?.profilePicture}}"
+        onerror="this.onerror==null;this.src='./assets/imgs/logo/LogoIcon_Beez.svg';">
+      <p id="label_username">
+        {{(facebookProfileData.firstName == null || facebookProfileData.firstName == undefined)? helloUserName : facebookProfileData?.firstName + ' ' + facebookProfileData?.lastName}}
+      </p>
+      <p id="label_email">{{userEmail}}</p>
+    </ion-col>
+  </ion-row>
+
+  <!-- Beez Pay card -->
+  <ion-row *ngIf="country == 'ro'" id="beezpay_card" class="accordion_wrap_content"
+    (click)="showDetailsBeezPay = !showDetailsBeezPay">
+    <ion-card class="wrap_button_content">
+      <p class="card_title">Beez Pay</p>
+      <ion-row>
+        <!-- Available to Beez Pay -->
+        <ion-col class="available_beezpay">
+          <p>{{'pages.profileTab.cardBeezPay.labelAvailableToBeezPay' | translate}}
+            <span
+              [ngClass]="{dark_gray: noData}">{{walletInfo?.availableBeezPay | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+          </p>
+        </ion-col>
+        <!-- Due to Beez (lockedBeezPay) -->
+        <ion-col class="due_to_beez">
+          <p>{{'pages.profileTab.cardBeezPay.labelOweToBeez' | translate}}
+            <span
+              [ngClass]="{dark_gray: noData}">{{walletInfo?.lockedBeezPay | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+          </p>
+        </ion-col>
+      </ion-row>
+      <!-- Beez Pay progress bar -->
+      <div class="progress-outer" *ngIf="availableBeezPay > 0 || lockedBeezPay > 0">
+        <div *ngIf="availableBeezPay > 3" class="progress-inner available"
+          [ngClass]="{'no-right-border-radius': availableBeezPay < 97}" [style.width]="availableBeezPay + '%'">
+          <br>
+        </div>
+        <div *ngIf="lockedBeezPay > 3" class="progress-inner due"
+          [ngClass]="{'no-left-border-radius': lockedBeezPay < 97 }" [style.width]="lockedBeezPay + '%'">
+          <br>
+        </div>
+      </div>
+      <div class="empty_progress_bar" *ngIf="noData">{{'pages.profileTab.labelNoDataAvailable' | translate}}</div>
+      <!-- Expand Beez Pay card -->
+      <ion-row class="expand_beezpay_card">
+        <ion-icon
+          [src]="!showDetailsBeezPay ? './assets/icon/profile_icons/arrow_down.svg' : './assets/icon/profile_icons/arrow_up.svg'">
+        </ion-icon>
+      </ion-row>
+      <!-- Beez Pay details -->
+      <div *ngIf="showDetailsBeezPay" class="wrap_details_beezpay">
+        <!-- Budget -->
+        <ion-row>
+          <ion-col size="8">
+            <p class="label_name_small">{{'pages.profileTab.cardBeezPay.labelBudget' | translate}}</p>
+          </ion-col>
+          <ion-col size="4">
+            <p [ngClass]="{dark_gray: noData}" class="value_small" *ngIf="walletInfo">
+              {{walletInfo.maxBeezPay | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+            </p>
+            <p class="value_small_gray" *ngIf="walletInfo == null">
+              {{0 | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+          </ion-col>
+        </ion-row>
+        <!-- Locked -->
+        <ion-row>
+          <ion-col size="8">
+            <p class="label_name_small">{{'pages.profileTab.cardBeezPay.labelLocked' | translate}}</p>
+          </ion-col>
+          <ion-col size="4">
+            <p [ngClass]="{dark_gray: noData}" class="value_small" *ngIf="walletInfo">
+              {{walletInfo.lockedBeezPay | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+            </p>
+            <p class="value_small_gray" *ngIf="walletInfo == null">
+              {{0 | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+          </ion-col>
+        </ion-row>
+        <!-- Guarantees -->
+        <!-- <ion-row>
+          <ion-col size="6">
+            <p class="label_name_small">{{'pages.profileTab.cardBeezPay.labelGuarantees' | translate}}</p>
+          </ion-col>
+          <ion-col size="6">
+            <p [ngClass]="{dark_gray: noData}" class="value_small" *ngIf="walletInfo">
+              {{walletInfo.totalGuarantees | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+            </p>
+            <p class="value_small_gray" *ngIf="walletInfo == null">
+              {{0 | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+          </ion-col>
+        </ion-row> -->
+        <!-- Shopping -->
+        <ion-row>
+          <ion-col size="8">
+            <p class="label_name_small">{{'pages.profileTab.cardBeezPay.labelShoppings' | translate}}</p>
+          </ion-col>
+          <ion-col size="4">
+            <p [ngClass]="{dark_gray: noData}" class="value_small" *ngIf="walletInfo">
+              {{walletInfo.totalBeezPay | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+            </p>
+            <p class="value_small_gray" *ngIf="walletInfo == null">
+              {{0 | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+          </ion-col>
+        </ion-row>
+        <!-- Paid -->
+        <ion-row>
+          <ion-col size="8">
+            <p class="label_name_small">{{'pages.profileTab.cardBeezPay.labelPaid' | translate}}</p>
+          </ion-col>
+          <ion-col size="4">
+            <p [ngClass]="{dark_gray: noData}" class="value_small" *ngIf="walletInfo">
+              {{walletInfo.paidBeezPay | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+            </p>
+            <p class="value_small_gray" *ngIf="walletInfo == null">
+              {{0 | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-button [ngClass]="{disabled_btn: noData}" [disabled]="noData" class="btn_view_more" fill="outline"
+          shape="round" size="small" (click)="openTransactionsListPage('payments')">
+          {{'pages.profileTab.cardBeezPay.buttonViewPayments' | translate}}
+        </ion-button>
+      </div>
+    </ion-card>
+  </ion-row>
+
+  <!-- Cashback -->
+  <ion-card button class="card_button" id="card_cashback" [style.margin-top]="country == 'uk' ? '2em' : '0'"
+    (click)="openTransactionsListPage('cashback')" #buttonCashback>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="2">
+        <ion-icon class="icon_left" src="./assets/icon/profile_icons/Icon_CashBackSavings.svg">
+        </ion-icon>
+      </ion-col>
+      <ion-col size="5">
+        <span class="label_name_large">{{'pages.profileTab.buttons.buttonCashbackSavings' | translate}}</span>
+      </ion-col>
+      <ion-col size="4">
+        <p class="value_large" *ngIf="walletInfo">
+          {{walletInfo.totalCashback | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+        </p>
+        <p class="value_large" *ngIf="walletInfo == null">
+          {{0 | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+        </p>
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon class="icon_right" src="./assets/icon/profile_icons/ArrowRight.svg"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+
+  <!-- Addresses -->
+  <ion-card button class="card_button" id="card_addresses" [disabled]="country == 'uk'" (click)="openManageAddresses()" #buttonAddresses>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="2">
+        <ion-icon class="icon_left" src="./assets/icon/profile_icons/icon_pin_addresses.svg">
+        </ion-icon>
+      </ion-col>
+      <ion-col size="5">
+        <span class="label_name_large">{{'pages.profileTab.buttons.buttonAddresses' | translate}}</span>
+      </ion-col>
+      <ion-col size="4">
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon class="icon_right" src="./assets/icon/profile_icons/ArrowRight.svg"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <!-- Credit Cards -->
+  <ion-card button class="card_button" id="card_documents" [disabled]="country !== 'ro'" (click)="openManageCreditCards()" #buttonCreditCards>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="2">
+        <ion-icon class="icon_left" src="./assets/icon/profile_icons/icon_cards.svg">
+        </ion-icon>
+      </ion-col>
+      <ion-col size="5">
+        <span class="label_name_large">{{'pages.profileTab.buttons.buttonCreditCards' | translate}}</span>
+      </ion-col>
+      <ion-col size="4">
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon class="icon_right" src="./assets/icon/profile_icons/ArrowRight.svg"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <!-- Add promo code -->
+  <ion-card button class="card_button" id="card_promo_code" (click)="alertAddPromoCode()">
+    <ion-row class="ion-align-items-center">
+      <ion-col size="2">
+        <ion-icon class="icon_left" src="./assets/icon/profile_icons/Icon_PromoCode.svg"></ion-icon>
+      </ion-col>
+      <ion-col size="9" class="label_name_large">
+        <p>{{'pages.profileTab.buttons.buttonAddPromoCode' | translate}}</p>
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon class="icon_right" src="./assets/icon/profile_icons/ArrowRight.svg"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <!-- Invite & Earn -->
+  <!-- <ion-card button class="card_button" id="card_invite" (click)="openInviteAndEarn()">
+    <ion-row class="ion-align-items-center">
+      <ion-col size="2">
+        <ion-icon class="icon_left" src="./assets/icon/profile_icons/Icon_inviteAndEarn.svg"></ion-icon>
+      </ion-col>
+      <ion-col size="5">
+        <span class="label_name_large">{{'pages.profileTab.buttons.buttonInviteAndEarn' | translate}}</span>
+      </ion-col>
+      <ion-col size="4">
+        <p class="value_large" *ngIf="walletInfo">
+          {{walletInfo?.invitationsAvailableSum + walletInfo?.invitationsPendingSum | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+        </p>
+        <p class="value_large" *ngIf="walletInfo == null">
+          {{0 | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+        </p>
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon class="icon_right" src="./assets/icon/profile_icons/ArrowRight.svg"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card> -->
+
+  <!-- VIP Members -->
+  <ion-card button class="card_button" id="card_vip" [disabled]="country !== 'ro'" (click)="openVipSubscriptionDetails()">
+    <ion-row class="ion-align-items-center">
+      <ion-col size="2">
+        <ion-icon class="icon_left"
+          [src]="isVIPMember? './assets/icon/profile_icons/icon_vip_active.svg' : './assets/icon/profile_icons/icon_vip_inactive.svg'">
+        </ion-icon>
+      </ion-col>
+      <ion-col size="4">
+        <p class="label_name_large">
+          {{'pages.profileTab.vipMember.title' | translate}}
+        </p>
+      </ion-col>
+      <ion-col size="5" class="ion-text-end">
+        <span *ngIf="isVIPMember">{{'pages.profileTab.vipMember.labelViewSubscription' | translate}}</span>
+        <span *ngIf="!isVIPMember" class="label_activate">{{'pages.profileTab.vipMember.labelActivate' | translate}}</span>
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon class="icon_right" src="./assets/icon/profile_icons/ArrowRight.svg"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <!-- Employee benefits -->
+  <ion-card button class="card_button" id="card_employee_benefits">
+    <ion-row class="ion-align-items-center">
+      <ion-col size="2">
+        <ion-icon class="icon_left" src="./assets/icon/profile_icons/Icon_employeeBenefits_Inactive.svg">
+        </ion-icon>
+      </ion-col>
+      <ion-col size="9">
+        <p class="label_name_large">{{'pages.profileTab.employeeBenefits.title' | translate}}
+          <span class="label_status">{{'pages.profileTab.employeeBenefits.labelStatusInactive' | translate}}</span>
+        </p>
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon class="icon_right" src="./assets/icon/profile_icons/ArrowRight.svg"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <!-- Pull to Refresh -->
+  <ion-refresher slot="fixed" class="custom_refresher" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="refresh" pullingText="{{'pullToRefresh.pullingText' | translate}}" refreshingSpinner="bubbles"
+      refreshingText="{{'pullToRefresh.refreshingText' | translate}}"></ion-refresher-content>
+  </ion-refresher>
+</ion-content>

@@ -3,7 +3,27 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // full path example https://ro-prod-api.use-beez.com
+  // Test URL
+
+  // country-env-api.use-beez.com
+  apiURL : '-test-api.use-beez.com/',
+
+  // apiURL: '-prod-api.use-beez.com/',
+  // apiURL : 'https://beezapitest.azurewebsites.net/'
+  // staging URL
+  // apiURL: '-apiteststaging.use-beez.com/'
+  // Live URL
+  // apiURL : '-api.use-beez.com/'
+
+  // headless cms url
+  // test
+  // headlessCmsUrl: 'https://cdn-test-headless-cms.azureedge.net/',
+  // live
+  headlessCmsUrl: 'https://cdn-prod-headless-cms.azureedge.net/',
+  // update rate in milisecond for the sweet deal fund
+  fundSweetDealUpdate: 10000
 };
 
 /*

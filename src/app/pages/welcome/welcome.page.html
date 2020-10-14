@@ -1,0 +1,36 @@
+<ion-content class="welcome_page">
+  <div id="wrap_language" (click)="changeLanguage()">
+    <p>{{language}} <ion-icon id="icon_language" [src]="'./assets/icon/flags/' + language + '.svg'"></ion-icon></p>
+  </div>
+  <ion-row id="wrap_info" class="ion-align-items-center">
+    <ion-col size="12">
+      <!-- GENERAL INFO -->
+      <img id="beez_logo" src="./assets/imgs/logo/logo_beez.svg" *ngIf="productFromExternalLink === null">
+      <div class="wrap_general_info" *ngIf="productFromExternalLink === null">
+        <p class="number_general_info">{{(generalInfo?.totalCommissions / 4.9) | currency:'EUR':'symbol-narrow':'.0-1':'ro'}} 
+          
+          <ion-spinner name="bubbles" *ngIf="generalInfo == null"></ion-spinner>
+          <!-- <img
+            src="./assets/imgs/loading.svg" class="loading_data_sum"  /> -->
+        </p>
+        <p class="general_info_title">{{'pages.welcome.labelTotalCashback' | translate}}</p>
+
+        <p class="number_general_info"> {{generalInfo?.totalUsers}} <img src="./assets/imgs/loading.svg"
+            class="loading_data_sum" *ngIf="generalInfo == null" /> </p>
+        <p class="general_info_title">{{'pages.welcome.labelUsers' | translate}}</p>
+
+        <p class="number_general_info"> {{generalInfo?.totalShops}} <img src="./assets/imgs/loading.svg"
+            class="loading_data_sum" *ngIf="generalInfo == null" /> </p>
+        <p class="general_info_title">{{'pages.welcome.labelShops' | translate}}</p>
+      </div>
+
+<ion-button id="btn_register" [routerLink]="'/register'" color="primary" fill="solid" shape="round">{{'pages.welcome.buttonRegister' | translate}}</ion-button>
+<ion-button id="btn_login" color="light" [routerLink]="'/login'">{{'pages.welcome.buttonLogin' | translate}}</ion-button>
+</ion-col>
+</ion-row>
+</ion-content>
+<ion-footer class="welcome_footer" translucent="true">
+  <ion-toolbar>
+      <p>&copy; Beez {{year | date: 'y'}} - {{'pages.welcome.labelAllRightsReserved' | translate}}</p>
+  </ion-toolbar>
+</ion-footer>

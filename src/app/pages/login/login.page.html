@@ -1,0 +1,102 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" slot="icon-only" icon="chevron-back-outline" text="" routerDirection="backward">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="login_content">
+  <img src="./assets/imgs/logo/Logo_Beez_Auth.svg" class="auth_logo">
+  <ion-card class="card_auth_form">
+    <form [formGroup]="loginForm">
+      <ion-item class="login_form_item">
+        <ion-icon icon-small name="person" class="icon_login" item-right></ion-icon>
+        <ion-input formControlName="email" type="email" color="secondary" name="email" placeholder="Email" autocomplete
+          required>
+        </ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.email">
+          <div class="error-message"
+            *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <ion-item class="login_form_item">
+        <ion-icon icon-small name="key" class="icon_login" item-right></ion-icon>
+        <ion-input formControlName="passwd" color="secondary" [type]="passwordType" clearOnEdit="false" name="password"
+          autocomplete required placeholder="{{'pages.login.labelPassword' | translate}}"
+          (keydown.enter)="selectAccountType('login')"></ion-input>
+        <ion-button fill="clear" size="small" class="passwordIcon" (click)='hideShowPassword()'>
+          <ion-icon slot="icon-only" [name]="passwordIcon"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.passwd">
+          <div class="error-message"
+            *ngIf="loginForm.get('passwd').hasError(validation.type) && (loginForm.get('passwd').dirty || loginForm.get('passwd').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <ion-row class="ion-justify-content-center">
+        <ion-button fill="clear" shape="round" expand="block" size="small" color="tertiary" class="link_resset_password"
+          (click)="openResetPasswordModal()" navigationDirection="forward">
+          {{'pages.login.buttonForgotPassword' | translate}}
+          <span class="label_reset">{{'buttons.buttonReset' | translate}}</span>
+        </ion-button>
+      </ion-row>
+    </form>
+    <ion-row class="ion-align-items-center ion-justify-content-center">
+      <!-- SELECT COUNTRY -->
+      <ion-col size="5">
+        <ion-button fill="solid" shape="round" size="medium" class="btn_select_country"
+          [ngClass]="{btn_select_laguage_active: selectedCountry == 'ro'}" (click)="selectLanguage('ro', 'ro')">
+          <ion-icon slot="start" src="./assets/icon/flags/ro.svg"></ion-icon>România
+        </ion-button>
+      </ion-col>
+      <ion-col size="7">
+        <ion-button fill="solid" shape="round" size="medium" class="btn_select_country"
+          [ngClass]="{btn_select_laguage_active: selectedCountry == 'uk'}" (click)="selectLanguage('uk', 'en')">
+          <ion-icon slot="start" src="./assets/icon/flags/en.svg"></ion-icon>United Kingdom
+        </ion-button>
+      </ion-col>
+      <!-- LOGIN BUTTON -->
+      <ion-col size="12">
+        <ion-button fill="solid" shape="round" size="medium" class="btn_login" (click)="selectAccountType('login')"
+          [disabled]="!loginForm.valid">{{'pages.login.buttonLogin' | translate}}
+        </ion-button>
+      </ion-col>
+      <p id="label_or">
+        <span>{{'pages.login.wordOrLabel' | translate}}</span>
+      </p>
+      <!-- LOGIN WITH FACEBOOK IOS -->
+      <ion-fab-button *ngIf="showAppleSignIn" class="btn_fab_facebook" (click)="selectAccountType('facebook')">
+        <ion-icon src="./assets/imgs/logo/Logo_Facebook_Blue.svg"></ion-icon>
+      </ion-fab-button>
+      <!-- LOGIN WITH APPLE IOS -->
+      <ion-fab-button *ngIf="showAppleSignIn" color="dark" (click)="selectAccountType('apple')">
+        <ion-icon name="logo-apple"></ion-icon>
+      </ion-fab-button>
+      <!-- LOGIN WITH FACEBOOK ANDROID -->
+      <ion-col size="12" *ngIf="!showAppleSignIn">
+        <ion-button fill="solid" shape="round" size="medium" class="btn_facebook_login"
+          (click)="selectAccountType('facebook')">
+          <ion-icon slot="start" src="./assets/imgs/logo/Logo_Facebook_White.svg"></ion-icon>
+          {{'pages.login.buttonLoginWithFacebook' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <ion-row>
+    <ion-button fill="clear" shape="round" expand="block" size="small" color="tertiary" class="link_switch_auth"
+      [routerLink]="'/register'">
+      {{'pages.login.labelGoToRegister' | translate}} <span>{{'pages.login.labelRegister' | translate}}</span></ion-button>
+  </ion-row>
+</ion-content>
+<ion-footer *ngIf="" class="copyright_footer">
+  <p>&copy;Beez {{currentYear}} - All rights reserved</p>
+</ion-footer>

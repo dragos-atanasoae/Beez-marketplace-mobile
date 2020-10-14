@@ -1,1 +1,225 @@
 
+
+.profile_btn {
+    position: relative;
+    ion-badge:empty {
+      position: absolute;
+      top: 2.2em;
+      --background: #E60022;
+      border: 0.08em solid #fff;
+      box-shadow: 0em 0.2em 0.4em #E600224D;
+      border-radius: 50%;
+      
+      /* Alignment */
+      line-height: 0;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      
+      padding: 0.4em;
+    }
+    
+    /* Height = width */
+    ion-badge:empty::after {
+        content: "";
+        display: block;
+        padding-bottom: 80%;
+    }
+
+    .icon_profile.scale-in-center.ios {
+      font-size: 2.5em;
+    }
+
+    .icon_profile.scale-in-center.md {
+      font-size: 2em;
+    }
+
+    .img_vip_crown {
+      position: absolute;
+    }
+  }
+
+  .ios {
+    .img_vip_crown {
+      top: 0.25em;
+      width: 1.4em;
+    }
+  }
+
+  .md {
+    ion-badge {
+      top: 3.5em!important;
+    }
+    .img_vip_crown {
+      top: 0.6em;
+      width: 1em;
+    }
+  }
+  
+  ion-label {
+    margin-top: 0.5em;
+    font-size: 0.8em;
+  }
+  ion-tab-button {
+    ion-icon {
+      transform: scale(0.8);
+    }
+  }
+
+  #fab_button_select_context {
+    border-radius: 50%;
+    box-shadow: var(--beez-box-shadow);
+    z-index: 99;
+  
+    #custom_btn_add {
+      border-radius: 50%;
+      border: 2px solid #fff;
+      --border-color: #fff;
+      --background-activated: #fff;
+      // --background-focused: #fff;
+      --background-hover: rgba(255, 255, 255, 0.123);
+      --background-activated-opacity: 1;
+      --background-focused-opacity: 1;
+      --background-hover-opacity: 1;
+      --color-activated: var(--ion-color-primary);
+      // --color-focused: var(--ion-color-primary);
+      --color-hover: #fff;
+      color: var(--ion-color-primary);
+  
+      ion-icon {
+        font-size: 2em !important;
+      }
+    }
+  
+    .fab-button-close-active {
+      --background: #ADADAD!important;
+      --color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.918) !important;
+    }
+  
+    #custom_fab_list_left {
+      width: 40vw;
+      top: -3em;
+      right: -1.5em;
+  
+      p {
+        max-width: 20vw;
+        margin-right: 0.5em;
+        font-size: 0.7em;
+        text-align: right;
+        color: var(--ion-color-tertiary);
+      }
+    }
+  
+    #custom_fab_list_right {
+      width: 40vw;
+      top: -3em;
+      left: -1.5em;
+  
+      p {
+        max-width: 20vw;
+        margin-left: 0.5em;
+        font-size: 0.7em;
+        text-align: left;
+        color: var(--ion-color-tertiary);
+      }
+    }
+  }
+  
+  #overlay_fab_buttons_active {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    z-index: 98;
+    background: #fff;
+    .wrap_content {
+      height: 100%;
+      max-width: 576px;
+      margin: auto;
+      color: var(--ion-color-secondary-tint);
+      .label_page_title {
+        margin: 0em auto 1em;
+        text-align: center;
+      }
+    }
+  
+    .centered_content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  
+    .row_option {
+      margin: 1em;
+      border-radius: var(--beez-border-radius);
+      box-shadow: var(--beez-box-shadow);
+      background: var(--ion-color-light);
+      .label_title {
+        font-weight: 600;
+        color: var(--ion-color-primary);
+      }
+      .label_content {
+        font-size: 0.9em;
+      }
+    }
+  
+    .active_option {
+      border-color: var(--ion-color-medium-tint) !important;
+    }
+  }
+  
+  .scale-in-center {
+      -webkit-animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+              animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }
+  
+  @keyframes pulse {
+      0% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+      }
+  
+      70% {
+          transform: scale(1);
+          box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+      }
+  
+      100% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+      }
+  }
+  
+  
+  
+  /**
+   * ----------------------------------------
+   * animation scale-in-center
+   * ----------------------------------------
+   */
+   @-webkit-keyframes scale-in-center {
+      0% {
+        -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        -webkit-transform: scale(0.9);
+                transform: scale(0.9);
+        opacity: 1;
+      }
+    }
+    @keyframes scale-in-center {
+      0% {
+        -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+        opacity: 1;
+      }
+    }
