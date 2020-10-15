@@ -52,7 +52,7 @@ export class TabsPage implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.translate.reloadLang(localStorage.getItem('language'));
+    // this.translate.reloadLang(localStorage.getItem('language'));
 
     if (!this.platform.is('desktop')) {
       // console.log('Platform mobile, get the device token', !this.platform.is('desktop'));

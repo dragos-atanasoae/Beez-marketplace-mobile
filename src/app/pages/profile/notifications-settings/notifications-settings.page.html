@@ -1,0 +1,134 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button color="primary" text="" slot="icon-only" icon="chevron-back-outline" routerDirection="backward"></ion-back-button>
+        </ion-buttons>
+    <ion-title>{{'pages.notificationsSettings.pageTitle' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group>
+        <ion-item-divider class="notifications_category">Email</ion-item-divider>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.criticalNotificationsLabel' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="notificationsSettings.emailCritice"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.operationalNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle [(ngModel)]="notificationsSettings.emailOperationale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.comercialNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle [(ngModel)]="notificationsSettings.emailComerciale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.feedbackNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.emailFeedback}} [(ngModel)]="notificationsSettings.emailFeedback"></ion-toggle>
+        </ion-item>
+        <ion-item-divider class="notifications_category">SMS</ion-item-divider>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.criticalNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.smsCritice}} [(ngModel)]="notificationsSettings.smsCritice"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.operationalNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.smsOperationale}} [(ngModel)]="notificationsSettings.smsOperationale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.comercialNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.smsComerciale}} [(ngModel)]="notificationsSettings.smsComerciale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.feedbackNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.smsFeedback}} [(ngModel)]="notificationsSettings.smsFeedback"></ion-toggle>
+        </ion-item>
+        <ion-item-divider class="notifications_category">{{'pages.notificationsSettings.categoryMobileLabel' | translate}}</ion-item-divider>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.criticalNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.appCritice}} [(ngModel)]="notificationsSettings.appCritice"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.operationalNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.appOperationale}} [(ngModel)]="notificationsSettings.appOperationale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.comercialNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.appComerciale}} [(ngModel)]="notificationsSettings.appComerciale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.feedbackNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.appFeedback}} [(ngModel)]="notificationsSettings.appFeedback"></ion-toggle>
+        </ion-item>
+        <ion-item-divider class="notifications_category">{{'pages.notificationsSettings.categoryDesktopLabel' | translate}}</ion-item-divider>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.criticalNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.desktopCritice}} [(ngModel)]="notificationsSettings.desktopCritice"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.operationalNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.desktopOperationale}} [(ngModel)]="notificationsSettings.desktopOperationale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.comercialNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.desktopComerciale}} [(ngModel)]="notificationsSettings.desktopComerciale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.feedbackNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.desktopFeedback}} [(ngModel)]="notificationsSettings.desktopFeedback"></ion-toggle>
+        </ion-item>
+        <ion-item-divider class="notifications_category">{{'pages.notificationsSettings.categoryWhatsappLabel' | translate}}</ion-item-divider>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.criticalNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.whatsappCritice}} [(ngModel)]="notificationsSettings.whatsappCritice"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.operationalNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.whatsappOperationale}} [(ngModel)]="notificationsSettings.whatsappOperationale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.comercialNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.whatsappComerciale}} [(ngModel)]="notificationsSettings.whatsappComerciale"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.feedbackNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.whatsappFeedback}} [(ngModel)]="notificationsSettings.whatsappFeedback"></ion-toggle>
+        </ion-item>
+        <ion-item-divider class="notifications_category">{{'pages.notificationsSettings.notificationsFacebookMessengerLabel' | translate}}</ion-item-divider>
+        <ion-item lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.comercialNotificationsLabel' | translate}} </ion-label>
+          <ion-toggle checked={{notificationsSettings.messengerComerciale}} [(ngModel)]="notificationsSettings.messengerComerciale"></ion-toggle>
+        </ion-item>
+        <ion-item-divider class="notifications_category">{{'pages.notificationsSettings.otherSettingsTitle' | translate}}</ion-item-divider>
+        <ion-item class="last_item_list" lines="none">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.usCitizenLabel' | translate}}</ion-label>
+          <ion-toggle checked={{notificationsSettings.isUsCitizen}} [(ngModel)]="notificationsSettings.isUsCitizen"></ion-toggle>
+        </ion-item>
+      </ion-item-group>
+
+      <!-- FOOD MARKETPLACE NOTIFICATIONS -->
+      <ion-item-group>
+        <!-- Notifications list for new vendors in user defined zone -->
+        <ion-item-divider class="notifications_category" *ngIf="newVendorNotificationsList.length > 0">
+          <ion-label>{{'pages.notificationsSettings.categoryFoodMarketplaceNewVendors' | translate}}</ion-label>
+        </ion-item-divider>
+        <ion-item lines="none" *ngFor="let item of newVendorNotificationsList">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.labelNewVendors' | translate}} {{item.cityName}}</ion-label>
+          <ion-toggle checked={{item.isFollowing}} [(ngModel)]="item.isFollowing" (ionChange)="updateStatusOfNewVendorNotifications(item)"></ion-toggle>
+        </ion-item>
+        <!-- Notifications for new promotions on Followed vendors -->
+        <ion-item-divider class="notifications_category" *ngIf="followedVendorsNotificationsList.length > 0">
+          <ion-label>{{'pages.notificationsSettings.categoryFoodMarketplacePromoLabel' | translate}}</ion-label>
+        </ion-item-divider>
+        <ion-item lines="none" *ngFor="let item of followedVendorsNotificationsList">
+          <ion-label class="label_checkbox">{{'pages.notificationsSettings.labelPromotions' | translate}} {{item.vendorName}}</ion-label>
+          <ion-toggle checked={{item.isFollowing}} [(ngModel)]="item.isFollowing" (ionChange)="updateNotificationsStatusForVendorPromotions(item)"></ion-toggle>
+        </ion-item>
+
+      </ion-item-group>
+      <ion-row class="row_save_settings">
+        <ion-col size="12">
+            <ion-button shape="round" size="small" expand="block" class=" btn_profile_actions btn_save btn_save_notifications" (click)="saveNotificationsSettings()">{{'pages.notificationsSettings.buttonSaveSettings' | translate}}</ion-button>
+        </ion-col>
+      </ion-row>
+</ion-content>

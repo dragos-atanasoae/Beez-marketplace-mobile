@@ -1,9 +1,73 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>payment</ion-title>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" shape="round" color="primary" (click)="closeModal()">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-title>payment-stripe</ion-title> -->
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="gray_background">
+  <!-- Payment methods(cards) list -->
+  <div id="wrap_section_title" *ngIf="showCardsList && !showAddCardForm"><p>{{'pages.stripePaymentPage.labelSelectCard' | translate}}</p></div>
+  <div id="wrap_cards_list" *ngIf="showCardsList && !showAddCardForm">
+    <app-stripe-cards-list (addNewPaymentMethodEvent)="showAddCardForm = true"
+      (selectPaymentMethodEvent)="receiveSelectedCard($event)"></app-stripe-cards-list>
+  </div>
 
+  <!-- Form Add new payment method(card) -->
+  <div *ngIf="showAddCardForm">
+    <p class="section_title">{{'pages.stripePaymentPage.labelAddNewCard' | translate}}</p>
+    <app-stripe-add-payment-method [paymentDetails]="paymentDetails" [donationDetails]="donationDetails"
+      (eventNewPaymentMethodAdded)="receiveEventPaymentMethodAdded($event)"></app-stripe-add-payment-method>
+  </div>
 </ion-content>
+
+<ion-footer *ngIf="!showAddCardForm">
+  <ion-toolbar *ngIf="selectedCard !== null">
+    <ion-row class="ion-align-items-center">
+      <ion-col *ngIf="paymentDetails.transactionType !== 'donation'">
+        <p id="label_total" [ngClass]="{'decrease_size': showAmountToPayInput}">{{'pages.stripePaymentPage.labelOrderTotal' | translate}}</p>
+      </ion-col>
+      <ion-col size="auto" *ngIf="paymentDetails.transactionType !== 'donation'">
+        <p id="label_total_amount" [ngClass]="{'decrease_size': showAmountToPayInput}" *ngIf="paymentDetails.payNow">
+          {{paymentDetails.amount | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+        <p id="label_total_amount" [ngClass]="{'decrease_size': showAmountToPayInput}" *ngIf="!paymentDetails.payNow">
+          {{amountToPay.value | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+      </ion-col>
+      <ion-col size="12" *ngIf="showAmountToPayInput">
+        <ion-row id="row_input_amount" class="ion-align-items-center">
+          <ion-col>
+            <p id="label_pay_another_amount">{{(paymentDetails.transactionType == 'donation' ? 'components.stripeAddPaymentMethod.labelEnterDonation' : 'components.stripeAddPaymentMethod.labelPayAnotherAmount') | translate}}</p>
+          </ion-col>
+          <ion-col size="4">
+            <ion-input type="number" [autofocus]="true" [formControl]="amountToPay"></ion-input>
+          </ion-col>
+          <ion-col size="auto">
+            <p id="label_currency">lei</p>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="12">
+        <!-- Button Pay / Donate -->
+        <ion-button expand="block" fill="solid" shape="round" *ngIf="paymentDetails.productType !== 'BeezVip12'"
+          [disabled]="!(amountToPay.value > 0) || amountToPay.invalid || disableButton" (click)="postStripePayment()">
+          {{(paymentDetails.productType == 'Donation' ? 'buttons.buttonDonate' : 'buttons.buttonPay') | translate}}
+        </ion-button>
+        <!-- Button buy BEEZ VIP SUBSCRIPTION -->
+        <ion-button *ngIf="paymentDetails.productType == 'BeezVip12'" expand="block" fill="solid" shape="round"
+          [disabled]="!(amountToPay.value > 0) || amountToPay.invalid || disableButton" (click)="postStripePayment()">
+          {{'buttons.buttonBuyVipSubscription' | translate}}
+        </ion-button>
+        <!-- Button switch Pay another amount / Pay total amount -->
+        <ion-button expand="block" fill="clear" shape="round"
+          *ngIf="(paymentDetails.productType !== 'Donation' && paymentDetails.productType !== 'ShopCart' && ((paymentDetails.productType == 'Voucher' || paymentDetails.productType == 'ProductObjective' || paymentDetails.productType == 'OnlineBeezPayOrder') && !paymentDetails.payNow)) && paymentDetails.transactionType !== 'upFront'"
+          (click)="toggleInput()">
+          {{(showAmountToPayInput ? 'buttons.buttonPayTotalAmount' : 'buttons.buttonPayAnotherAmount') | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

@@ -1,9 +1,84 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>vip-subscription</ion-title>
+      <ion-buttons slot="start">
+          <ion-button fill="clear" shape="round" size="small" color="primary" routerDirection="back"
+              (click)="closeModal()">
+              <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+      </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<!-- INACTIVE VIP SUBSCRIPTION -->
+<ion-content *ngIf="!isVIPMember">
+  <img src="./assets/imgs/vipSubscriptionInactive.svg" class="img_inactive_subscription" alt="vip">
+  <div id="vip_subscription_details">
+      <p class="label_title">
+          {{'pages.profileTab.vipSubscription.inactive.labelTitle' | translate}}
+      </p>
 
+      <p class="label_subscription_value">
+          {{ subscriptionCost| currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+          <sup>/{{'pages.profileTab.vipSubscription.labelYear' | translate}}</sup></p>
+
+      <div id="section_benefits">
+          <p class="section_title">
+              {{'pages.profileTab.vipSubscription.labelVipBenefits' | translate}}
+          </p>
+          <div class="horizontal_line"></div>
+
+          <div [innerHTML]="('pages.profileTab.vipSubscription.labelBenefitsList' | translate) | safeHTML"></div>
+
+          <ion-button mode="ios" fill="solid" shape="round" (click)="openPaymentModal()">
+              {{'pages.profileTab.vipSubscription.inactive.btnActivateNow' | translate}}
+          </ion-button>
+
+      </div>
+  </div>
+</ion-content>
+
+<!-- ACTIVE VIP SUBSCRIPTION -->
+<ion-content *ngIf="isVIPMember">
+  <img src="./assets/imgs/vipSubscriptionActive.svg" alt="vip">
+  <div id="vip_subscription_details">
+      <p class="label_title">
+          {{'pages.profileTab.vipSubscription.active.labelTitle' | translate}}
+      </p>
+      <p class="label_subscription_value">
+          {{subscriptionCost | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+          <sup>/{{'pages.profileTab.vipSubscription.labelYear' | translate}}</sup></p>
+
+      <p class="label_next_billing" *ngIf="expirationDate">
+          {{'pages.profileTab.vipSubscription.active.labelNextBilling' | translate}}
+          <span>{{expirationDate | convertToLocaleTime : 'DD.MM.YYYY'}}</span></p>
+
+      <div id="section_benefits">
+          <p class="section_title">
+              {{'pages.profileTab.vipSubscription.labelVipBenefits' | translate}}
+          </p>
+          <div class="horizontal_line"></div>
+
+          <div [innerHTML]="('pages.profileTab.vipSubscription.labelBenefitsList' | translate) | safeHTML"></div>
+
+          <!-- GO TO SHOPS PAGE (ACTIVE SUBSCRIPTION) -->
+          <ion-button mode="ios" fill="solid" shape="round" (click)="goToShops()">
+              {{'pages.profileTab.vipSubscription.active.btnShopNow' | translate}}
+          </ion-button>
+
+      </div>
+
+      <!-- SUBSCRIPTION ACTIONS -->
+      <div id="section_subscription_actions">
+          <p class="section_title">
+              {{'pages.profileTab.vipSubscription.active.labelActions' | translate}}
+          </p>
+          <div class="horizontal_line"></div>
+          <ion-card class="action_button" button expand="block" fill="solid" (click)="openWhatsapp()">
+              <div>
+                  <ion-icon src="./assets/icon/icon_contact_support.svg"></ion-icon>
+                  <p>{{'pages.profileTab.vipSubscription.active.btnSupport' | translate}}</p>
+              </div>
+          </ion-card>
+      </div>
+  </div>
 </ion-content>

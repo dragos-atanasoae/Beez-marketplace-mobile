@@ -1,0 +1,57 @@
+    <!-- Credit Cards List -->
+    <ion-row id="row_add_new_card" class="ion-align-items-center">
+      <ion-col>
+        <p>{{'components.stripeAddPaymentMethod.labelAddNewCard' | translate}}</p>
+      </ion-col>
+      <ion-col size="auto"><ion-button shape="round" color="medium" size="small" (click)="showAddPaymentMethodForm()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button></ion-col>
+    </ion-row>
+    <ion-row id="row_credit_cards_list">
+      <ion-col size="12" *ngIf="paymentMethods.length > 0">
+        <ion-list lines="none">
+          <ion-item-sliding class="credit_card_template" [ngClass]="(editCardId == card.id || selectedCard?.id == card.id) ? 'card_selected': ''"
+            *ngFor="let card of paymentMethods; let i = index" @animationZoomInOut>
+            <ion-item>
+              <ion-row class="ion-align-items-center" (click)="selectedCard = card; emitEventSelectPaymentMethod(card)">
+                <!-- Card Logo -->
+                <ion-col size="2">
+                  <img class="logo_card" src="./assets/icon/cards_logos/logo_card_{{card.brand}}.svg"
+                    onerror="this.onerror==null;this.src='./assets/icon/cards_logos/logo_card.svg';" alt="logo">
+                </ion-col>
+                <!-- Card Details -->
+                <ion-col class="col_card_details">
+                  <ion-input class="input_card_name" type="text" placeholder="Name of card"
+                    *ngIf="editCard && editCardId == card.id" [(ngModel)]="card.name"></ion-input>
+                  <p class="label_card_name" *ngIf="!editCard || editCardId !== card.id">
+                    {{card.name == '' ? 'Card ' + (i + 1) : card.name}}</p>
+                  <p class="label_panmask"> **** **** **** {{card.last4Digits}}</p>
+                </ion-col>
+                <!-- Card Buttons(edit & save) -->
+                <ion-col size="auto" *ngIf="selectedCard?.id == card.id">
+                  <ion-button fill="clear" shape="round" size="medium" class="btn_edit" *ngIf="editCardId !== card.id"
+                  (click)="editCardId = card.id; editCard = true;">
+                  <ion-icon slot="icon-only" src="./assets/icon/Button_edit.svg"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" shape="round" size="medium" class="btn_save" *ngIf="editCard && editCardId == card.id"
+                (click)="updatePaymentMethodName(card.id, card.name)">
+                <ion-icon slot="icon-only" name="save" color="primary"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col size="auto">
+              <ion-checkbox mode="ios" [checked]="selectedCard?.id == card.id" *ngIf="selectedCard?.id == card.id"></ion-checkbox>
+              <ion-button color="medium" size="small" fill="clear" *ngIf="selectedCard?.id !== card.id">
+                <ion-icon slot="icon-only" name="checkmark-circle"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+            </ion-item>
+            <ion-item-options side="start">
+              <ion-item-option color="danger" (click)="removeCard(card.id)">
+                <ion-icon name="trash"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
+    </ion-row>

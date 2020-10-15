@@ -1,9 +1,33 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>manage-stripe-cards</ion-title>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="primary" shape="round" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <span>{{'pages.manageCreditCards.title' | translate}}</span>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-row class="row_page_header">
+    <ion-col size="12" class="gray_background">
+      <ion-col class="credit_cards_icon">
+        <img src="./assets/icon/profile_icons/icon_cards.svg" alt="credit_cards_icon">
+      </ion-col>
+    </ion-col>
+  </ion-row>
+   <!-- Empty cards list -->
+   <ion-row *ngIf="paymentMethods.length == 0 && !showAddCardForm" id="row_empty_cards_list">
+    <ion-col>
+      <p class="empty_list_message">{{'pages.manageCreditCards.labelEmptyList' | translate}}</p>
+      <p class="empty_list_message">{{'pages.manageCreditCards.labelAddCardToContinue' | translate}}</p>
+      <ion-card button (click)="showAddCardForm = true">
+        <ion-icon src="./assets/icon/payment/credit-card.svg"></ion-icon>
+        <span class="label_add_card">{{'pages.manageCreditCards.buttonAddCard' | translate}}</span>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <app-stripe-cards-list (addNewPaymentMethodEvent)="showAddCardForm = true" *ngIf="showCardsList && !showAddCardForm"></app-stripe-cards-list>
+  <app-stripe-add-payment-method [paymentDetails]="paymentDetails" (eventNewPaymentMethodAdded)="receiveEventPaymentMethodAdded($event)" *ngIf="showAddCardForm"></app-stripe-add-payment-method>
 </ion-content>

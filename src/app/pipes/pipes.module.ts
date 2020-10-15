@@ -7,6 +7,7 @@ import { ReverseArrayPipe } from './reverse-array.pipe';
 import { SafeHTMLPipe } from './safe-html.pipe';
 import { FilterByMetacategoryPipe } from './filter-by-metacategory.pipe';
 import { ConvertToLocaleTimePipe } from './convert-to-locale-time.pipe';
+import { ConvertPathOfShopImagePipe } from './convert-path-of-shop-image.pipe';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,9 @@ import { ConvertToLocaleTimePipe } from './convert-to-locale-time.pipe';
     SafeHTMLPipe,
     ReplaceCommaPipe,
     FilterByMetacategoryPipe,
-    ConvertToLocaleTimePipe
+    ConvertToLocaleTimePipe,
+    ConvertPathOfShopImagePipe,
+
   ],
   imports: [
 
@@ -25,12 +28,13 @@ import { ConvertToLocaleTimePipe } from './convert-to-locale-time.pipe';
   exports: [
     SearchPipe,
     ConvertToLocaleTimePipe,
+    ConvertPathOfShopImagePipe,
     CorrectHttpToHttpsPipe,
     RemoveCommaPipe,
     ReverseArrayPipe,
     SafeHTMLPipe,
     ReplaceCommaPipe,
-    FilterByMetacategoryPipe
+    FilterByMetacategoryPipe,
   ]
 })
 export class PipesModule {}

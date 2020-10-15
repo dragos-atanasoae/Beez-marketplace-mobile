@@ -115,6 +115,17 @@ export class MarketplaceService {
   }
 
   /**
+   * @name getProductDetails
+   * @param itemId
+   * @param itemCategory
+   */
+  getItemDetails(itemId: any, itemCategory: any) {
+    this.prepareHeaderForRequest();
+    const url = this.prefixUrlByCountry + this.apiURL + 'api/BeezPay/ItemDetails?id=' + itemId + '&category=' + itemCategory;
+    return this.httpClient.get(url, { headers: this.headers });
+  }
+
+  /**
    * @name addProductToCart
    * @description Add an product to shopping cart
    * @param id The ID of the selected product
@@ -309,5 +320,16 @@ export class MarketplaceService {
     this.prepareHeaderForRequest();
     const url = this.prefixUrlByCountry + this.apiURL + 'api/FoodMarketplaceSearch?cityId=' + cityId + '&keyword=' + keyword;
     return this.httpClient.get(url, {headers: this.headers});
+  }
+
+  /**
+   * @name getInvoiceUrl
+   * @description Get invoice URL for the current order
+   * @param productId
+   * @param categoryName  Categories: OnlineProduct / OfflineProduct / Voucher / FlashVoucher / ShoppingOrder
+   */
+  getInvoiceUrl(productId: number, categoryName: string) {
+    const url = this.prefixUrlByCountry + this.apiURL + 'api/BeezPay/InvoiceDownloadUrl?id=' + productId + '&category=' + categoryName;
+    return this.httpClient.get(url, { headers: this.headers });
   }
 }

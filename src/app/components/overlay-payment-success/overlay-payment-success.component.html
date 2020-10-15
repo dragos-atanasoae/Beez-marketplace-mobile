@@ -1,0 +1,18 @@
+<div class="overlay_absolute_center">
+  <div class="overlay_content">
+    <ion-card @animationFlipX>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="12">
+          <ion-button id="btn_close" fill="clear" shape="round" size="small" color="medium" (click)="closeOverlay()">
+            <ion-icon slot="icon-only" name="close-circle"></ion-icon>
+          </ion-button>
+          <img src="./assets/icon/Icon_Success.svg" alt="">
+          <p>{{'components.overlayPaymentSuccess.messagePaymentSuccess' | translate}}</p>
+          <ion-button id="btn_continue" fill="solid" shape="round" size="small" (click)="closeOverlay()">
+            {{'buttons.buttonContinue' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </div>
+</div>

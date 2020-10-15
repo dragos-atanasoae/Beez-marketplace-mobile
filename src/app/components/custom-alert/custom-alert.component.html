@@ -1,0 +1,27 @@
+<div id="custom_alert">
+  <ion-row class="ion-align-items-center">
+      <ion-col size="12">
+          <ion-card id="alert_container">
+              <ion-button id="btn_close_alert" color="medium" shape="round" fill="clear" (click)="closeModal('')">
+                  <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+              </ion-button>
+              <img [src]="image" [ngClass]="{img_vip_crown: isVip}" alt="IMG" *ngIf="image">
+              <p class="label_alert_header" *ngIf="header">
+                  {{header}}
+              </p>
+              <p class="label_alert_sub_header" *ngIf="subHeader">
+                  {{subHeader}}
+              </p>
+              <p class="label_alert_message" *ngIf="message">
+                  {{message}}
+              </p>
+              <ion-button id="btn_cancel" [ngClass]="{w_50: btnOk == null}" *ngIf="btnCancel" (click)="closeModal('')" color="secondary" fill="outline" shape="round" @bounceIn>
+                  {{btnCancel}}
+              </ion-button>
+              <ion-button id="btn_ok" [ngClass]="{w_50: (btnCancel == null && !isVip), btn_vip: isVip}" *ngIf="btnOk" (click)="closeModal('success')" fill="solid" shape="round" @bounceIn>
+                  {{btnOk}}
+              </ion-button>
+          </ion-card>
+      </ion-col>
+  </ion-row>
+</div>

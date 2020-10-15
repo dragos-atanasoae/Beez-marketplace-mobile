@@ -1,0 +1,150 @@
+ion-toolbar {
+    .logo_beez {
+      float: right;
+      height: 1.7em;
+      width: auto;
+    }
+    .label_back {
+      padding: 0em;
+      text-align: start;
+      font-size: 1.2em;
+      font-weight: 400;
+      color: var(--ion-color-primary);
+    }
+    .logo_beez, 
+    .label_back {
+      vertical-align: middle;
+    }
+    .btn_back {
+      --padding-start: 0em;
+      text-transform: none;
+    }
+    .logo_food_marketplace {
+      max-height: 2.5em;
+    }
+  }
+  
+  ion-content {
+    .centered_content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  
+    .row_product_image {
+      max-height: 14em;
+      width: 100%;
+      padding-bottom: 0.5em;
+      background: #fff;
+  
+      ion-col {
+        padding: 0;
+      }
+  
+      img {
+        height: auto;
+        max-height: 14em;
+        width: auto;
+        max-width: 90%;
+      }
+    }
+  
+    .row_product_details {
+      border-top: 2px solid var(--beez-background-color);
+      text-align: center;
+  
+      .label_product_price {
+        margin: 0em;
+        font-weight: 600;
+        font-size: 1.2em;
+        color: var(--ion-color-primary);
+      }
+  
+      .label_product_name {
+        margin-bottom: 0;
+        font-weight: bold;
+        font-size: 1.2em;
+        color: var(--ion-color-tertiary);
+      }
+  
+      .label_product_details {
+        margin: 0.2em 0.5em 0em 0.5em;
+        font-size: 0.8em;
+        font-weight: 500;
+        color: var(--ion-color-medium);
+        overflow: hidden;
+      }
+  
+      .label_quantity {
+        margin: 0em;
+        font-size: 0.8em;
+        color: var(--ion-color-medium-shade);
+      }
+  
+      .label_quantity_value {
+        margin: 0em;
+        font-weight: bold;
+        font-size: 1.5em;
+        color: var(--ion-color-primary);
+      }
+  
+      .btn_quantity {
+        height: 4em;
+  
+        ion-icon {
+          font-size: 3em;
+        }
+      }
+  
+      #wrap_buttons {
+        margin-top: 1em;
+  
+        .btn_continue {
+          max-width: 15em;
+          margin: 0.5em auto 1em;
+          text-transform: none;
+        }
+      }
+    }
+  
+    .row_product_description {
+      width: 100%;
+      max-width: 580px;
+      ion-col {
+        margin: 0;
+        padding: 0;
+      }
+      .label_title {
+        margin: 0.5em 0.5em 0.5em 1em;
+        font-size: 1.2em;
+        font-weight: 500;
+        color: var(--ion-color-secondary-tint);
+      }
+      hr {
+        margin: 0em;
+        background-color: var(--beez-background-color);
+      }
+  
+      .wrap_description {
+        padding: 1em 1.3em;
+        color: var(--ion-color-tertiary-shade);
+        font-size: 0.8em!important;
+        text-align: left!important;
+        ul {
+          padding: 0;
+          list-style-type: none;
+          li {
+            padding: 0.7em 1em;
+            border-radius: 10px;
+            color: var(--ion-color-secondary-shade);
+          }
+          li:nth-child(odd) { background: #F7F7F6; }
+        }
+        img {
+          max-height: 4em;
+        }
+      }
+    }
+  }
+  

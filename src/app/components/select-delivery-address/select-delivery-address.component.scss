@@ -1,0 +1,133 @@
+#component_delivery_address {
+    background: var(--beez-background-color);
+    // height: 100%;
+    max-width: 576px;
+    margin: 0 auto;
+    // overflow-y: scroll;
+}
+
+#row_add_address {
+    width: 100%;
+    background: #ffff;
+
+    p {
+        margin-left: 1em;
+        margin-bottom: 0;
+        font-size: 1em;
+        text-align: left;
+        color: var(--ion-color-tertiary);
+    }
+
+    #btn_add_address {
+        right: 1em;
+        --padding-start: 0;
+        --padding-end: 0;
+        width: 2.2em;
+        height: 2.2em;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 0;
+    }
+}
+
+#label_select_address {
+    width: 100%;
+    position: sticky;
+    z-index: 999;
+    top: 0;
+    background: var(--beez-background-color);
+
+    // background: linear-gradient(to top, rgba(247, 247, 247, 0.274), var(--beez-background-color), var(--beez-background-color));
+    p {
+        margin-left: 1.5em;
+        text-align: left;
+        color: var(--ion-color-tertiary);
+    }
+}
+
+#row_list_of_addresses {
+    margin-top: 0;
+    padding-bottom: 6em;
+    background: var(--beez-background-color);
+    ion-col {
+        padding-top: 0;
+    }
+
+    .cardview_address:first-of-type {
+        margin-top: 0;
+    }
+
+    .cardview_address {
+        padding: 1.5em;
+        border-radius: var(--beez-border-radius);
+        --ripple-color: rgba(235, 226, 203, 0.746);
+
+        p {
+            margin: 0.1em;
+            text-align: left;
+        }
+
+        .label_name {
+            font-size: 1.2em;
+            font-weight: 500
+        }
+
+        .label_email {
+            margin-bottom: 0.5em;
+            font-size: 0.8em;
+            font-weight: 400;
+        }
+        .label_phone,
+        .label_address {
+            font-weight: 400
+        }
+    }
+
+    .unselectedAddress {
+        background: #eeeeee;
+        box-shadow: none;
+        opacity: 0.7;
+    }
+
+    .selectedAddress {
+        background: #ffff;
+        box-shadow: var(--beez-box-shadow);
+        opacity: 1 !important;
+    }
+
+    .checkbox_selected_address {
+        position: absolute;
+        top: 0.8em;
+        right: 0.8em;
+    }
+
+    .btn_edit_address {
+        position: absolute;
+        bottom: 0;
+        right: 0.4em;
+        --padding-bottom: 0;
+        --padding-end: 0;
+        --padding-start: 0;
+        --padding-top: 0;
+        --border-radius: 50%;
+    }
+}
+
+#row_buttons {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    // background: linear-gradient(180deg, rgba(255, 255, 255, 0.541), #ffff, #ffff);
+    background: #fff;
+    text-align: center;
+
+    ion-button {
+        width: fit-content;
+        margin: 1em auto;
+        --padding-end: 1em;
+        --padding-start: 1em;
+        display: block;
+        text-transform: none;
+    }
+}

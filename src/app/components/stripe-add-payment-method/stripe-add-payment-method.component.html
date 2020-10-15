@@ -1,0 +1,112 @@
+<div>
+  <form id="form_add_new_card">
+    <ion-row>
+      <ion-col size="12">
+        <div #cardNumberElement>
+        </div>
+        <p class="label_error_message" *ngIf="cardErrors.cardNumberErrors">{{cardErrors.cardNumberErrors}}</p>
+      </ion-col>
+      <ion-col class="custom_stripe_padding" size="6">
+        <div #cardExpiryElement>
+        </div>
+        <ion-icon id="icon_expiry_date" src='./assets/icon/icon_expiry_date.svg'
+          [ngClass]="{'invalid_filter': cardErrors.cardExpiryErrors !== null}"></ion-icon>
+        <p class="label_error_message" *ngIf="cardErrors.cardExpiryErrors">{{cardErrors.cardExpiryErrors}}</p>
+      </ion-col>
+      <ion-col class="custom_stripe_padding" size="6">
+        <div #cardCvcElement>
+        </div>
+        <ion-icon id="icon_cvc" src='./assets/icon/icon_card_cvc.svg'
+          [ngClass]="{'invalid_filter': cardErrors.cardCvcErrors !== null}"></ion-icon>
+        <p class="label_error_message" *ngIf="cardErrors.cardCvcErrors">{{cardErrors.cardCvcErrors}}</p>
+      </ion-col>
+      <ion-col size="12">
+        <ion-input (ionFocus)="ionFocusCardHolder()" (ionBlur)="ionBlurCardHolder()" mode="ios" type="text" placeholder="Card holder"
+          [formControl]="cardHolder"></ion-input>
+      </ion-col>
+    </ion-row>
+    <p id="label_powered_by_stripe">Powered by <span>Stripe</span></p>
+  </form>
+  <ion-row id="row_footer" *ngIf="!isKeyboardActive && !isCardHolderActive">
+    <ion-col
+      *ngIf="paymentDetails.transactionType !== 'donation' && paymentDetails.transactionType !== 'orderWithoutUpfront'">
+      <p id="label_total" *ngIf="paymentDetails.transactionType !== 'addCard'">Total</p>
+    </ion-col>
+    <ion-col size="auto"
+      *ngIf="paymentDetails.transactionType !== 'donation' && paymentDetails.transactionType !== 'orderWithoutUpfront'">
+      <p id="label_total_amount" *ngIf="paymentDetails.transactionType !== 'addCard'">
+        {{paymentDetails?.amount | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+    </ion-col>
+    <ion-col size="12" *ngIf="showAmountToPayInput">
+      <ion-row id="row_input_amount" class="ion-align-items-center">
+        <ion-col>
+          <p id="label_pay_another_amount">
+            {{(paymentDetails.transactionType == 'donation' ? 'components.stripeAddPaymentMethod.labelEnterDonation' : 'components.stripeAddPaymentMethod.labelPayAnotherAmount') | translate}}</p>
+        </ion-col>
+        <ion-col size="4">
+          <ion-input type="number" [autofocus]="true" [formControl]="amountToPay"></ion-input>
+        </ion-col>
+        <ion-col size="auto">
+          <p id="label_currency">lei</p>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col size="12" *ngIf="!isKeyboardActive && !isCardHolderActive && paymentDetails">
+      <!-- PRODUCT & ONLINE BEEZPAY ORDER & VOUCHER -->
+      <div *ngIf="paymentDetails.productType == 'ProductObjective' || paymentDetails.productType == 'OnlineBeezPayOrder' || paymentDetails.productType == 'Voucher'">
+        <!-- Add Card (new payment method & order without upfront) -->
+        <ion-button expand="block" fill="solid" shape="round" [disabled]="(formNotValid || cardHolder.invalid) || disableButton"
+          *ngIf="paymentDetails.transactionType == 'addCard' || paymentDetails.transactionType == 'orderWithoutUpfront' || paymentDetails.transactionType == 'upFront'"
+          (click)="createStripeToken()">
+          {{(paymentDetails.transactionType == 'upFront' ? 'buttons.buttonPayUpfront' : 'buttons.buttonAddCard') | translate}}
+        </ion-button>
+        <!-- Add card with payment intention -->
+        <ion-button expand="block" fill="solid" shape="round"
+          [disabled]="(formNotValid || cardHolder.invalid || amountToPay.invalid || disableButton) || !(amountToPay.value > 0)"
+          *ngIf="paymentDetails.transactionType == 'payment'" (click)="createStripeToken()">
+          {{(this.paymentDetails.productType == 'Donation' ? 'buttons.buttonDonate' : 'buttons.buttonPay') | translate}} {{amountToPay.value}}
+        </ion-button>
+        <!-- Toggle input - pay another amount -->
+        <ion-button expand="block" fill="clear" shape="round" [disabled]="disableButton"
+          *ngIf="paymentDetails.transactionType !== 'upFront' && !paymentDetails.payNow" (click)="toggleInput()">
+          {{(showAmountToPayInput ? 'buttons.buttonPayTotalAmount' : 'buttons.buttonPayAnotherAmount') | translate}}
+        </ion-button>
+      </div>
+
+      <!-- DONATION -->
+      <div *ngIf="paymentDetails.productType == 'Donation'">
+        <ion-button expand="block" fill="solid" shape="round"
+          [disabled]="(formNotValid || cardHolder.invalid) && !(amountToPay.value > 0) || amountToPay.invalid || disableButton"
+          *ngIf="paymentDetails.transactionType == 'donation'" (click)="createStripeToken()">
+          {{'buttons.buttonDonate' | translate}}
+        </ion-button>
+      </div>
+
+      <!-- FOOD MARKETPLACE -->
+      <div *ngIf="paymentDetails.productType == 'ShopCart'">
+        <ion-button expand="block" fill="solid" shape="round"
+          [disabled]="(formNotValid || cardHolder.invalid) && !(amountToPay.value > 0) || amountToPay.invalid ||disableButton"
+          *ngIf="paymentDetails.transactionType == 'payment' || paymentDetails.transactionType == 'donation' || paymentDetails.transactionType == 'upFront'"
+          (click)="createStripeToken()">
+          {{(this.paymentDetails.productType == 'Donation' ? 'buttons.buttonDonate' : 'buttons.buttonPay') | translate}}
+        </ion-button>
+      </div>
+      
+      <!-- BEEZ VIP SUBSCRIPTION -->
+      <div *ngIf="paymentDetails.productType == 'BeezVip12'">
+        <ion-button expand="block" fill="solid" shape="round" [disabled]="formNotValid || cardHolder.invalid || disableButton"
+          (click)="createStripeToken()">
+          {{'buttons.buttonBuyVipSubscription' | translate}}
+        </ion-button>
+      </div>
+      
+      <!-- ADD CARD -->
+      <div *ngIf="paymentDetails.transactionType == 'addCard'">
+        <ion-button expand="block" fill="solid" shape="round" [disabled]="(formNotValid || cardHolder.invalid) || disableButton"
+          (click)="createStripeToken()">
+          {{'buttons.buttonAddCard' | translate}}
+        </ion-button>
+      </div>
+    </ion-col>
+  </ion-row>
+</div>

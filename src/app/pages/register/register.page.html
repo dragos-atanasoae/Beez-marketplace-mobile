@@ -1,9 +1,139 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" slot="icon-only" icon="chevron-back-outline" text="" routerDirection="backward">
+      </ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content padding class="register_content">
+  <img src="./assets/imgs/logos/Logo_Beez_Auth.svg" class="auth_logo">
+  <ion-card class="card_auth_form">
+    <form [formGroup]="registerForm">
+      <ion-item class="login_form_item">
+        <ion-icon name="person" class="icon_login" item-right></ion-icon>
+        <ion-input type="email" formControlName="email" autocomplete="on" placeholder="Email"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.email">
+          <div class="error-message"
+            *ngIf="registerForm.get('email').hasError(validation.type) && (registerForm.get('email').dirty || registerForm.get('email').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <ion-item class="login_form_item">
+        <ion-icon icon-small name="key" class="icon_login" item-right></ion-icon>
+        <ion-input [type]="passwordType" clearOnEdit="false" formControlName="passwd" autocomplete="on"
+          placeholder="{{'pages.register.formPasswordLabel' | translate}}"></ion-input>
+        <ion-button fill="clear" size="small" class="passwordIcon" (click)='hideShowPassword()'>
+          <ion-icon slot="icon-only" [name]="passwordIcon"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.passwd">
+          <div class="error-message"
+            *ngIf="registerForm.get('passwd').hasError(validation.type) && (registerForm.get('passwd').dirty || registerForm.get('passwd').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <ion-item class="login_form_item">
+        <ion-icon icon-small name="key" class="icon_login" item-right></ion-icon>
+        <ion-input [type]="passwordType" clearOnEdit="false" formControlName="confirm_passwd"
+          placeholder=" {{'pages.register.formConfirmPasswordLabel' | translate}}"></ion-input>
+        <ion-button fill="clear" size="small" class="passwordIcon" (click)='hideShowPassword()'>
+          <ion-icon slot="icon-only" [name]="passwordIcon"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.confirm_passwd">
+          <div class="error-message"
+            *ngIf="registerForm.get('confirm_passwd').hasError(validation.type) && (registerForm.get('confirm_passwd').dirty || registerForm.get('confirm_passwd').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <ion-item class="login_form_item" style="display: none;">
+        <ion-label position="floating">
+          <ion-icon name="gift" class="register_form_icon"></ion-icon>
+          {{'pages.register.formPromoCodeLabel' | translate}}
+        </ion-label>
+        <ion-input type="text" formControlName="promo_code"></ion-input>
+      </ion-item>
+      <ion-row class="row_select_country">
+        <!-- SELECT COUNTRY -->
+        <ion-col size="5">
+          <ion-button fill="solid" shape="round" size="medium" class="btn_select_country"
+            [ngClass]="{btn_select_laguage_active: selectedCountry == 'ro'}" (click)="selectLanguage('ro', 'ro')">
+            <ion-icon slot="start" src="./assets/icon/flags/ro.svg"></ion-icon>România
+          </ion-button>
+        </ion-col>
+        <ion-col size="7">
+          <ion-button fill="solid" shape="round" size="medium" class="btn_select_country"
+            [ngClass]="{btn_select_laguage_active: selectedCountry == 'uk'}" (click)="selectLanguage('uk', 'en')">
+            <ion-icon slot="start" src="./assets/icon/flags/en.svg"></ion-icon>United Kingdom
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row_checkbox ion-align-items-center">
+        <ion-col size="2">
+          <ion-checkbox mode="ios" class="checkbox_terms_of_use" formControlName="accept_term_of_use"></ion-checkbox>
+        </ion-col>
+        <ion-col size="10">
+          <p id="terms_of_use">
+            {{'pages.register.formAgreeLabel' | translate}}
+            <a class="link_gdpr" (click)="openTermsOfUse()">{{'pages.register.formTermsOfUseLabel' | translate}}
+            </a>
+            <br>{{'pages.register.formAndLabel' | translate}} <a class="link_privacy"
+              (click)="openPrivacyPolicies()">{{'pages.register.formPrivacyPolicyLabel' | translate}}</a>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row_checkbox ion-align-items-center">
+        <ion-col size="2">
+          <ion-checkbox mode="ios" class="checkbox_confirm_age" formControlName="confirm_age_over_18"></ion-checkbox>
+        </ion-col>
+        <ion-col size="10">
+          <p id="confirm_legal_age">
+            {{'pages.register.confirmLegalAge' | translate}}
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-align-items-center ion-justify-content-center">
+        <ion-button fill="solid" shape="round" size="medium" class="btn_register" [disabled]="!registerForm.valid || !selectedCountry"
+          (click)="selectRegisterType('register')">
+          {{'pages.register.buttonRegister' | translate}}</ion-button>
+      </ion-row>
+      <ion-row>
+        <ion-button fill="clear" shape="round" block="full" class="link_switch_authtenticate" [routerLink]="'/login'">
+          {{'pages.register.labelGoToLogin' | translate}}<span>{{'pages.register.labelLogin' | translate}}</span> </ion-button>
+      </ion-row>
+      <p id="label_or">
+        <span>{{'pages.register.labelOr' | translate}}</span>
+      </p>
+      <ion-row class="ion-align-items-center ion-justify-content-center">
+        <!-- REGISTER WITH FACEBOOK IOS -->
+        <ion-fab-button *ngIf="showAppleSignUp" class="btn_fab_facebook"
+          [disabled]="(!registerForm.controls.confirm_age_over_18.value || !registerForm.controls.accept_term_of_use.value || !selectedCountry)"
+          (click)="selectRegisterType('registerWithFacebook')">
+          <ion-icon src="./assets/imgs/logos/Logo_Facebook_Blue.svg"></ion-icon>
+        </ion-fab-button>
+        <!-- REGISTER WITH APPLE IOS -->
+        <ion-fab-button *ngIf="showAppleSignUp" color="dark"
+          [disabled]="(!registerForm.controls.confirm_age_over_18.value || !registerForm.controls.accept_term_of_use.value || !selectedCountry)"
+          (click)="selectRegisterType('registerWithApple')">
+          <ion-icon name="logo-apple"></ion-icon>
+        </ion-fab-button>
+        <!-- REGISTER WITH FACEBOOK ANDORID -->
+        <ion-button *ngIf="!showAppleSignUp" fill="solid" shape="round" size="medium" class="btn_facebook_login"
+          [disabled]="(!registerForm.controls.confirm_age_over_18.value || !registerForm.controls.accept_term_of_use.value || !selectedCountry)"
+          (click)="selectRegisterType('registerWithFacebook')">
+          <ion-icon slot="start" src="./assets/imgs/logos/Logo_Facebook_White.svg"></ion-icon>
+          {{'pages.register.buttonRegisterWithFacebook' | translate}}
+        </ion-button>
+      </ion-row>
+    </form>
+  </ion-card>
 </ion-content>

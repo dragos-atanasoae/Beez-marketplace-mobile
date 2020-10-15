@@ -1,0 +1,115 @@
+img {
+    width: 100%;
+}
+
+.img_inactive_subscription {
+    background: linear-gradient(0deg, #ffffff 25%, var(--beez-background-color) 25%);
+}
+
+#vip_subscription_details {
+    max-width: 640px;
+    margin: auto;
+
+    .label_title {
+        max-width: 90%;
+        margin: 0em auto;
+        font-size: 2em;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .label_subscription_value {
+        margin: 0.2em 0em;
+        font-size: 1.6em;
+        font-weight: bold;
+        text-align: center;
+        color: var(--ion-color-primary);
+        sup {
+            font-size: 0.6em;
+            font-weight: 400;
+        }
+    }
+
+    .label_next_billing {
+        margin: 0em;
+        font-size: 0.75em;
+        text-align: center;
+        color: var(--ion-color-medium);
+        span {
+            color: var(--ion-color-primary);
+        }
+    }
+
+    .horizontal_line {
+        width: 100%;
+        height: 1px;
+        background-color: #ededed;
+    }
+
+    .section_title {
+        margin: 2em 0 0.5em 1.2em;
+        font-size: 1em;
+        font-weight: 600;
+        color: var(--ion-color-tertiary-shade);
+    }
+
+    #section_benefits {
+        ion-button {
+            width: 90%;
+            max-width: 350px;
+            margin: 0 auto 1.5em auto;
+            display: block;
+        }
+    }
+
+    #section_subscription_actions {
+        .action_button {
+            width: 100%;
+            margin: 0;
+            background: var(--beez-background-color);
+            box-shadow: none;
+            border-radius: 0;
+            border-bottom: 1px solid #ededed;
+            div {
+                padding: 0.5em;
+                display: flex;
+                flex-direction: row;
+                vertical-align: middle;
+                ion-icon {
+                    margin: auto 1em auto 0.5em;
+                    height: 2.5em;
+                    width: 2.5em;
+                }
+                p {
+                    margin: auto 0;
+                    line-height: 1.2em;
+                    color: var(--ion-color-secondary);
+                }
+            }
+        }
+    }
+}
+
+::ng-deep .list_of_vip_benefits {
+    padding: 0em 1em 2em 2em;
+    list-style: none;
+    line-height: 1.7em;
+    font-size: 0.9em;
+    color: var(--ion-color-tertiary-shade);
+    .dot {
+        display: inline-block;
+        height: 9px;
+        width: 9px;
+        margin-right: 0.75em;
+        border-radius: 50%;
+        background: var(--ion-color-primary);
+    }
+}
+
+@media (max-width: 360px) {
+    #section_benefits {
+        ion-button {
+            font-size: 0.9em;
+        }
+    }
+}

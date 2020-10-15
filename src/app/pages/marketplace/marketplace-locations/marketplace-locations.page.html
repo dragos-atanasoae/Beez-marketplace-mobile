@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" shape="round" color="primary" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="this.isKeyboardActive">{{'pages.marketplace.marketplaceLocation.title' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row id="row_location_info">
+    <ion-col>
+      <ion-icon name="location-sharp" color="primary" *ngIf="!this.isKeyboardActive"></ion-icon>
+      <p id="title_confirm_location" *ngIf="!this.isKeyboardActive">
+        {{'pages.marketplace.marketplaceLocation.title' | translate}}</p>
+      <p id="label_message" innerHTML="{{'pages.marketplace.marketplaceLocation.messageInfo' | translate}}"></p>
+
+      <div id="wrap_location_autocomplete" #addressSuggestionsElement>
+        <ion-button color="tertiary" fill="clear" size="small" shape="round" (click)="showAddressInput = true"
+          *ngIf="!showAddressInput">
+          {{'pages.marketplace.marketplaceLocation.buttonAddLocation' | translate}} <ion-icon name="add-circle">
+          </ion-icon>
+        </ion-button>
+
+        <div class="ng-autocomplete">
+          <ng-autocomplete name="city" [formControl]="city" class="select_autocomplete_suggestion" debounceTime="300"
+            historyHeading="{{'pages.marketplace.marketplaceLocation.historyHeading' | translate}}"
+            [data]="listOfCities" [searchKeyword]="keywordCity"
+            placeHolder="{{'pages.marketplace.marketplaceLocation.labelCity' | translate}}"
+            (selected)="postSelectedCity($event)" (inputChanged)="onChangeSearchCities($event)"
+            historyIdentifier="listOfCities" [itemTemplate]="itemTemplate">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+        </div>
+      </div>
+
+      <!-- Locations History -->
+      <ion-row id="row_locations_history" *ngIf="!showAddressInput">
+        <ion-col size="12">
+          <ion-list lines="none">
+            <ion-item-sliding *ngFor="let location of locationsHistory"
+              [ngClass]="{'location_selected': selectedLocation?.id == location.id}"
+              (click)="selectLocations(location)">
+              <ion-item>
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="auto">
+                    <ion-icon class="icon_pin_location" name="location-outline"
+                      [color]="selectedLocation?.id == location.id ? 'secondary' : 'medium'"></ion-icon>
+                  </ion-col>
+                  <ion-col>
+                    <p>{{location.locationLabel}}</p>
+                  </ion-col>
+                  <ion-col size="auto">
+                    <ion-icon class="icon_checkmark_true" name="checkmark-circle" color="primary"
+                      *ngIf="selectedLocation?.id == location.id"></ion-icon>
+                  </ion-col>
+                </ion-row>
+              </ion-item>
+              <ion-item-options side="start">
+                <ion-item-option color="danger" (click)="deleteSelectedCity(location.id)">
+                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                </ion-item-option>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  
+</ion-content>
+<ion-footer *ngIf="!isKeyboardActive && !showAddressInput">
+  <ion-toolbar>
+    <ion-row id="row_buttons">
+      <ion-col size="12">
+        <ion-button fill="solid" shape="round" size="medium" color="primary"
+          [disabled]="(this.selectedCounty == null && this.selectedCity == null)" (click)="confirmLocation()">
+          {{'buttons.buttonContinue' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

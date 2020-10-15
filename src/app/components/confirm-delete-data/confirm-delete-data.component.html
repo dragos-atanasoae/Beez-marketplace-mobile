@@ -1,0 +1,44 @@
+<div class="modal">
+    <div class="modal-body">
+        <ion-button fill="clear" shape="round" class="close_btn" (click)="closeModalQuiz('close')">
+            <ion-icon name="close-circle">
+            </ion-icon>
+        </ion-button>
+        <!-- Question -->
+        <ion-row class="row_question">
+            <ion-col size="12">
+                <img class="bee_character" src="./assets/imgs/bee-characters/Bee-Delete_Product.svg">
+                <p>{{'components.confirmDeleteData.mainQuestion' | translate}}</p>
+                <p>{{title}}</p>
+            </ion-col>
+        </ion-row>
+        <div class="modal-content">
+            <!-- Answers list-->
+            <ion-row *ngFor="let item of answersList" class="row_answer"
+                [ngClass]="selectedAnswer == item.id ? 'selected_answer': ''" (click)="selectAnswer(item.id)">
+                <ion-col size="10" class="col_answer">
+                    <span>{{item.answer}}</span>
+                </ion-col>
+                <ion-col size="2" class="wrap_checkbox">
+                    <ion-checkbox mode="ios" [checked]="selectedAnswer == item.id"></ion-checkbox>
+                </ion-col>
+            </ion-row>
+            <!-- Other reasons input -->
+            <ion-item class="other_reasons">
+                <ion-label position="floating">{{'components.confirmDeleteData.anotherReason' | translate}}</ion-label>
+                <ion-input type="string"
+                    placeholder="{{'components.confirmDeleteData.anotherReasonPlaceholder' | translate}}"
+                    [formControl]="otherReason">
+                </ion-input>
+            </ion-item>
+        </div>
+        <!-- Modal footer -->
+        <ion-row class="modal-footer">
+            <ion-col size="7">
+                <ion-button fill="solid" shape="round" size="small" (click)="closeModalQuiz('send')">
+                    {{'components.confirmDeleteData.buttonSend' | translate}}
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </div>
+</div>

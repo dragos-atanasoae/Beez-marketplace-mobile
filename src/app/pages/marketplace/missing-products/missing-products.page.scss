@@ -1,0 +1,283 @@
+.label_section_title {
+    padding: 1em 1em 0.5em 1.3em;
+    margin: 0em;
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--ion-color-tertiary-shade);
+}
+
+#item_divider_sticky {
+    --padding-start: 0;
+    background: #fff;
+}
+
+#wrap_products_list {
+    max-width: 576px;
+    margin: 0 auto;
+    padding-bottom: 12em;
+
+    .row_product {
+        padding: 0.5em 1em 0.5em 0.5em;
+        border-bottom: 1px solid var(--beez-background-color);
+
+        .layer_checkbox_protection {
+            height: 3em;
+            width: 3em;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 99;
+        }
+
+        ion-checkbox {
+            margin-right: 0.5em;
+        }
+
+        .wrap_image {
+            width: 3em;
+            height: 3em;
+            // margin: 2.5em auto 1em auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: var(--beez-border-radius);
+            box-shadow: var(--beez-box-shadow);
+
+            img {
+                height: auto;
+                max-height: 2.5em;
+                width: auto;
+                max-width: 2.5em;
+            }
+        }
+
+        .col_product_description {
+            overflow: hidden;
+
+            .label_product_name {
+                // width: 98%;
+                margin-top: 0;
+                margin-bottom: 0;
+                font-size: 0.9em;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: var(--ion-color-tertiary);
+            }
+
+            .label_price {
+                margin-top: 1em;
+                margin-bottom: 0;
+                font-size: 0.8em;
+                font-weight: 500;
+                color: var(--ion-color-tertiary);
+
+                span {
+                    color: var(--ion-color-primary);
+                }
+            }
+        }
+
+
+        .label_product_value {
+            margin-bottom: 0.1em;
+            color: var(--ion-color-tertiary);
+            font-weight: 600;
+            text-align: right;
+        }
+    }
+}
+
+#wrap_send_request {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 0.5em 1em;
+    background: #fff;
+    z-index: 99;
+    box-shadow: 0px 10px 13px 4px #000;
+
+    .wrap_refund_list {
+        height: fit-content;
+        max-height: 6em;
+        overflow-y: scroll;
+
+        .label_refund_product_name {
+            margin: 0;
+            font-size: 0.8em;
+            color: var(--ion-color-tertiary);
+        }
+
+        .label_refund_value {
+            margin: 0;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: var(--ion-color-tertiary);
+            text-align: right;
+        }
+    }
+
+    .label_section_title {
+        margin-bottom: 0 !important;
+        padding-left: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .label_refund_total_value {
+        margin: 0;
+        font-size: 1.2em;
+        font-weight: 600;
+        color: var(--ion-color-primary);
+        text-align: right;
+    }
+}
+
+#overlay_quantity_missing,
+#overlay_refund_response {
+    .overlay_container {
+        margin-top: 25%;
+        padding: 1em;
+
+        .warp_product_image {
+            width: 8em;
+            height: 7em;
+            margin: 2.5em auto 1em auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: var(--beez-border-radius);
+            box-shadow: var(--beez-box-shadow);
+
+            img {
+                height: auto;
+                max-height: 6.5em;
+                width: auto;
+                max-width: 7.5em;
+            }
+        }
+
+        .label_product_name {
+            font-size: 1.2em;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .label_select_missing {
+            width: 80%;
+            margin: 0 auto 1.5em auto;
+            text-align: center;
+            color: var(--ion-color-medium);
+        }
+
+        .label_quantity {
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        #label_selected_quantity {
+            font-size: 3em;
+            margin: 0 0.4em;
+            font-weight: 600;
+            color: var(--ion-color-primary);
+            text-align: center;
+        }
+
+        #btn_decrease_quantity,
+        #btn_increase_quantity {
+            height: 3em;
+            width: 3em;
+            --padding-start: 0;
+            --padding-end: 0;
+            --border-radius: 50%;
+        }
+
+        #btn_decrease_quantity {
+            float: right;
+        }
+
+        #btn_increase_quantity {
+            float: left;
+        }
+
+        #btn_save_changes {
+            margin: 2em 1em 1em 1em;
+        }
+
+        #btn_ok {
+            width: fit-content;
+            --padding-start: 5em;
+            --padding-end: 5em;
+            margin: 0.5em auto 1em auto;
+            display: block;
+        }
+
+        #btn_close_overlay {
+            position: absolute;
+            width: 1.5em;
+            height: 1.5em;
+            --padding-start: 0;
+            --padding-end: 0;
+            right: 1em;
+            top: 1em;
+        }
+    }
+}
+
+#overlay_refund_response {
+
+    img {
+        width: 5em;
+        height: 5em;
+        margin: 1.5em auto;
+        display: block;
+    }
+
+    .icon_refund_success {
+        animation-name: spin-animation;
+        animation-duration: 1s;
+    }
+
+    .icon_refund_error {
+        animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+
+    .label_overlay_title {
+        font-size: 1.4em;
+    font-weight: 500;
+    text-align: center;
+    margin: 1.5em 2em 2em 2em;
+    color: var(--ion-color-tertiary);
+    }
+
+    .label_refund_request_message {
+        margin: 0.5em 2em 1.5em 2em;
+        text-align: center;
+        color: var(--ion-color-medium);
+    }
+}
+
+@keyframes spin-animation {
+    0% {
+        transform: rotate(-360deg);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+}
+
+@keyframes scale-in-center {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 0.5;
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}

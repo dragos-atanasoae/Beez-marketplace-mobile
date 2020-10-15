@@ -1,0 +1,218 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" icon="chevron-back-outline" text="" routerDirection="backward"></ion-back-button>
+    </ion-buttons>
+    <ion-title [ngSwitch]="context">
+      <span *ngSwitchCase="'cashback'">{{'pages.transactionsList.titleCashbackSavings' | translate}}</span>
+      <span *ngSwitchCase="'payments'">{{'pages.transactionsList.titlePaymentsList' | translate}}</span>
+      <span *ngSwitchDefault>{{'pages.transactionsList.titleTransactionsList' | translate}}</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- Context cashback -->
+  <div id="cashback_context" *ngIf="context == 'cashback'">
+    <!-- Piggy icon -->
+    <ion-row>
+      <div class="gray_background">
+        <ion-col class="wrap_piggy_icon">
+          <ion-icon class="piggy_icon" src="./assets/icon/profile_icons/Icon_CashBackSavings.svg"> </ion-icon>
+        </ion-col>
+      </div>
+    </ion-row>
+    <!-- Available to withdraw -->
+    <ion-row id="available_to_withdraw">
+      <ion-col size="12">
+        <p class="lablel_available">{{'pages.transactionsList.labelAvailableToWithdraw' | translate}}</p>
+        <ion-spinner name="bubbles" color="primary" *ngIf="walletInfo == null"></ion-spinner>
+        <p class="value_available" [ngClass]="{dark_gray: walletInfo?.available <= 0}">
+          {{walletInfo?.available | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</p>
+      </ion-col>
+    </ion-row>
+    <!-- Cashback savings summary -->
+    <div id="cashback_savings_summary">
+      <ion-row class="ion-align-items-center">
+        <ion-col size="4" class="ion-align-self-stretch">
+          <p class="label_status">{{'pages.transactionsList.labelTotalSaving' | translate}}</p>
+          <ion-spinner name="bubbles" color="primary" *ngIf="walletInfo == null"></ion-spinner>
+          <p class="label_value">
+            {{walletInfo?.totalCashback | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+          </p>
+        </ion-col>
+        <ion-col size="4" class="ion-align-self-stretch">
+          <p class="label_status">{{'pages.transactionsList.labelStatusPending' | translate}}</p>
+          <ion-spinner name="bubbles" color="primary" *ngIf="walletInfo == null"></ion-spinner>
+          <p class="label_value">
+            {{walletInfo?.pendingCashback | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+          </p>
+        </ion-col>
+        <ion-col size="4" class="ion-align-self-stretch">
+          <p class="label_status">{{'pages.transactionsList.labelStatusCanceled' | translate}}</p>
+          <ion-spinner name="bubbles" color="primary" *ngIf="walletInfo == null"></ion-spinner>
+          <p class="label_value">
+            {{walletInfo?.canceledCashback | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+          </p>
+        </ion-col>
+      </ion-row>
+    </div>
+    <!-- WITHDRAW BTN -->
+    <ion-row [ngClass]="{'row_buttons': country =='ro', 'row_buttons_uk': country =='uk'}">
+      <!-- <ion-col size="6" *ngIf="country =='ro'">
+        <ion-button fill="solid" shape="round" class="btn_donate" (click)="openDonationCampaigns()">
+          <ion-icon src="./assets/icon/profile_icons/doneaza_ba-01.svg"></ion-icon>
+          {{'pages.transactionsList.buttonDonate' | translate}}
+        </ion-button>
+      </ion-col> -->
+      <!-- DONATION BTN -->
+      <!-- <ion-col size="6">
+        <ion-button [ngClass]="{btn_withdraw_disabled: walletInfo?.available <= 0}"
+          [disabled]="walletInfo?.available <= 0" fill="solid" shape="round" class="btn_withdraw"
+          (click)="openWithdrawModal('withdraw')">
+          <ion-icon src="./assets/icon/profile_icons/Icon_withdraw.svg"></ion-icon>
+          {{'pages.transactionsList.buttonWithdraw' | translate}}
+        </ion-button>
+      </ion-col> -->
+      <!-- MISSED TRANSACTIOS BTN -->
+      <ion-col size="12" *ngIf="country == 'ro'">
+        <ion-button class="btn_missed_transactions" fill="clear" shape="round" [routerLink]="['/missed-transactions']">
+          {{'pages.transactionsList.buttonMissedTransactions' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-col size="12" class="ion-no-padding">
+      <ion-item-divider sticky>
+        <ion-segment class="transactions_segment" mode="md" [(ngModel)]="selectedSegment">
+          <ion-segment-button mode="md" value="cashbacksList">
+            <span class="subtitle"
+              [ngClass]="{active_text: selectedSegment == 'cashbacksList'}">{{'pages.transactionsList.labelTransactions' | translate}}</span>
+          </ion-segment-button>
+          <ion-segment-button mode="md" value="withdrawalsList">
+            <span class="subtitle"
+              [ngClass]="{active_text: selectedSegment == 'withdrawalsList'}">{{'pages.transactionsList.labelWithdrawals' | translate}}</span>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-item-divider>
+    </ion-col>
+  </div>
+  <!-- Table header -->
+  <ion-item-divider
+    *ngIf="(listOfTransactions.length != 0 && selectedSegment == 'cashbacksList') || (withdrawalsList.length != 0 && selectedSegment == 'withdrawalsList') || context == 'payments'"
+    class="item_divider_table_header" sticky>
+    <ion-label>
+      <!-- Payments list header -->
+      <ion-row class="header_transactions_table" *ngIf="context == 'payments'">
+        <ion-col size="3">
+          <p>{{'pages.transactionsList.tableHeader.labelDate' | translate}}</p>
+        </ion-col>
+        <ion-col size="2">
+          <p>{{'pages.transactionsList.tableHeader.labelTransactionValue' | translate}}</p>
+        </ion-col>
+        <ion-col size="3">
+          <p>Card</p>
+        </ion-col>
+        <ion-col size="4">
+          <p>{{'pages.transactionsList.tableHeader.labelDetails' | translate}}</p>
+        </ion-col>
+      </ion-row>
+      <!-- Cashbacks list header -->
+      <ion-row class="header_transactions_table" *ngIf="context == 'cashback' && selectedSegment == 'cashbacksList'">
+        <ion-col size="3">
+          <p>{{'pages.transactionsList.tableHeader.labelDate' | translate}}</p>
+        </ion-col>
+        <ion-col size="2">
+          <p>{{'pages.transactionsList.tableHeader.labelTransactionValue' | translate}}</p>
+        </ion-col>
+        <ion-col size="3">
+          <p>{{'pages.transactionsList.tableHeader.labelShopName' | translate}}</p>
+        </ion-col>
+        <ion-col size="4">
+          <p>{{'pages.transactionsList.tableHeader.labelTransactionStatus' | translate}}</p>
+        </ion-col>
+      </ion-row>
+      <!-- Withdrawals list header -->
+      <ion-row class="withdrawals_header" *ngIf="context == 'cashback' && selectedSegment == 'withdrawalsList'">
+        <ion-col size="4">
+          <p>{{'pages.transactionsList.tableHeader.labelDate' | translate}}</p>
+        </ion-col>
+        <ion-col size="3">
+          <p>{{'pages.transactionsList.tableHeader.labelTransactionValue' | translate}}</p>
+        </ion-col>
+        <ion-col size="5">
+          <p>{{'pages.transactionsList.tableHeader.labelTransactionStatus' | translate}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-label>
+  </ion-item-divider>
+
+  <!-- Cashback transactions list -->
+  <ion-card class="cashback_table" *ngIf="context == 'cashback' && selectedSegment == 'cashbacksList'">
+    <ion-row class="table_detailed_transactions ion-align-items-center" *ngFor="let item of listOfTransactions">
+      <ion-col size="3">
+        <p class="transaction_date">{{item.date | convertToLocaleTime : 'DD.MM.YYYY hh:mm A'}}</p>
+      </ion-col>
+      <ion-col size="2">
+        <p class="transaction_value">
+          {{item.value | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+      </ion-col>
+      <ion-col size="3">
+        <p class="transaction_shop">{{item.shop}}</p>
+      </ion-col>
+      <ion-col size="4" [ngSwitch]="true">
+        <p class="transaction_status" *ngSwitchCase="item.status ==='Available' || item.status === 'Accepted'">
+          {{'pages.transactionsList.labelStatusAvailable' | translate}}
+        </p>
+        <p class="transaction_status" *ngSwitchCase="item.status ==='Pending'">
+          {{'pages.transactionsList.labelStatusPending' | translate}}
+        </p>
+        <p class="transaction_status" *ngSwitchCase="item.status ==='Cancelled'">
+          {{'pages.transactionsList.labelStatusCanceled' | translate}}
+        </p>
+        <p class="transaction_status" *ngSwitchDefault>{{item.status}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <!-- Withdrawals list -->
+  <div *ngIf="context == 'cashback' && selectedSegment == 'withdrawalsList'">
+    <ion-row *ngFor="let item of withdrawalsList; let i=index" class="table_withdrawals"
+      [ngClass]="{ 'row_even' : i%2 == 0 }">
+      <ion-col size="4">
+        <p class="transaction_date">{{item.date | convertToLocaleTime : 'DD.MM.YYYY hh:mm A'}}</p>
+      </ion-col>
+      <ion-col size="3">
+        <p class="transaction_value">
+          {{item.value | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+      </ion-col>
+      <ion-col size="5">
+        <p class="transaction_status">{{item.status}}</p>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <!-- Payments list -->
+  <ion-card class="card_payments_table" id="payments_table" *ngIf="context == 'payments'">
+    <ion-row class="table_detailed_transactions ion-align-items-center" *ngFor="let payment of listOfCardPayments">
+      <ion-col size="3">
+        <p class="transaction_date">{{payment.CreatedAt | convertToLocaleTime : 'DD.MM.YYYY hh:mm A'}}</p>
+      </ion-col>
+      <ion-col size="2">
+        <p class="transaction_value">
+          {{payment.Amount | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+      </ion-col>
+      <ion-col size="3">
+        <p class="transaction_card_number">{{payment.CardInfo}}</p>
+      </ion-col>
+      <ion-col size="4" (click)="showPaymentDetails = true; selectedPaymentId = payment.Id">
+        <p class="transaction_status">{{payment.PaymentStatus}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-row class="empty_list"
+    *ngIf="((listOfTransactions.length == 0 && selectedSegment == 'cashbacksList') || (withdrawalsList.length == 0 && selectedSegment == 'withdrawalsList')) && context != 'payments'">
+    <p>{{'pages.transactionsList.labelEmptyList' | translate}}</p>
+  </ion-row>
+</ion-content>
+<!-- <app-account-validation *ngIf="showOverlayValidationAccount" [skipAccountValidation]="skipAccountValidation"
+  (eventAccountValidated)="receiveEventAccountValidated($event)" @overlayAccountValidation>
+</app-account-validation> -->

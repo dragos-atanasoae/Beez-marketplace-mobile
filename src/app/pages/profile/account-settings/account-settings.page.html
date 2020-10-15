@@ -1,0 +1,204 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button slot="icon-only" color="primary" icon="chevron-back-outline" text="" routerDirection="back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'pages.accountSettingsPage.pageTitle' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Account settings -->
+  <ion-row class="row_options_account ion-align-items-center">
+    <ion-col class="col_wrap_buttons ion-no-padding" size="12">
+      <p class="section_title">{{'pages.accountSettingsPage.sectionTitleAccountSaftey' | translate}}</p>
+      <ion-card button class="btn_custom_profile" (click)="changeLanguage()">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon id="icon_language" [src]="'./assets/icon/flags/' + language + '.svg'"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p>{{'pages.accountSettingsPage.buttonChangeLanguage' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+      <ion-card button class="btn_custom_profile" (click)="openPage('notifications-settings')">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon name="notifications-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p>{{'pages.accountSettingsPage.buttonNotificationsSettings' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+      <ion-card button class="btn_custom_profile" (click)="resetPassword()">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon name="key"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p>{{'pages.accountSettingsPage.buttonChangePassword' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+      <ion-card button class="btn_custom_profile" (click)="logout()">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon color="danger" name="log-out"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p class="danger">{{'pages.accountSettingsPage.buttonLogout' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <!-- GDPR settings -->
+  <ion-row class="row_options_account ion-align-items-center">
+    <ion-col class="col_wrap_buttons ion-no-padding" size="12">
+      <p class="section_title">{{'pages.accountSettingsPage.sectionTitleInfoGdpr' | translate}}</p>
+      
+      <!-- Button INFO ABOUT PERSONAL DATA -->
+      <ion-card button class="btn_custom_profile" (click)="showInfoData()">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon name="information-circle-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p>{{'pages.accountSettingsPage.buttonShowInfoPersonalData' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+      <ion-card *ngIf="showInfoStoredData" class="card_detailed_info_list">
+        <ul class="list_info_data">
+          <li>{{'pages.accountSettingsPage.listOfDataLabel1' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel2' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel3' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel4' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel5' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel6' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel7' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel8' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel9' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel10' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel11' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel12' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel13' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel14' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel15' | translate}}</li>
+          <li>{{'pages.accountSettingsPage.listOfDataLabel16' | translate}}</li>
+        </ul>
+      </ion-card>
+
+      <!-- Button REQUEST DATA -->
+      <!-- Deprecated -->
+      <!-- <ion-card button class="btn_custom_profile" (click)="requestData()">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon name="reader-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p color="warning">{{'pages.accountSettingsPage.buttonRequestSavedData' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card> -->
+
+      <!-- Button DELETE STORED DATA -->
+      <!-- <ion-card button class="btn_custom_profile" (click)="requestDeleteData()">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon color="primary" name="remove-circle-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p class="warning">{{'pages.accountSettingsPage.buttonRequestDeleteData' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card> -->
+
+      <!-- Button DELETE ACCOUNT -->
+      <ion-card button class="btn_custom_profile" (click)="modalConfirmRequestDeleteAccount()">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon name="remove-circle" color="danger"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p class="danger">{{'pages.accountSettingsPage.buttonRequestDeleteAccount' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <!-- Terms of use & Privacy policy -->
+  <ion-row class="row_options_account ion-align-items-center">
+    <ion-col size="12" class="col_wrap_buttons ion-no-padding">
+      <p class="section_title">{{'pages.accountSettingsPage.sectionTitlePrivacy&Terms' | translate}}</p>
+      <ion-card button class="btn_custom_profile" (click)="openWebPage('privacyPolicy')">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon src="./assets/icon/consent.svg"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p>{{'pages.accountSettingsPage.buttonPrivacyPolicy' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+      <ion-card button class="btn_custom_profile" (click)="openWebPage('termsOfUse')">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon src="./assets/icon/consent.svg"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p>{{'pages.accountSettingsPage.buttonTermsOfUse' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+      <ion-card button class="btn_custom_profile" (click)="openWebPage('about')">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1" class="ion-text-end">
+            <ion-icon name="information-circle-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="10">
+            <p>{{'pages.accountSettingsPage.buttonAbout' | translate}}</p>
+          </ion-col>
+          <ion-col size="1">
+            <ion-icon class="icon_arrow_right" src="./assets/icon/arrow-forward.svg"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <p id="app_version">{{'pages.accountSettingsPage.appVersion' | translate}} {{appVersionNumber}}</p>
+</ion-content>

@@ -1,0 +1,179 @@
+#form_add_new_card {
+    max-width: 420px;
+    margin: 1em auto;
+    padding: 1em;
+
+    ion-col {
+        position: relative;
+    }
+
+    .stripe_input_base {
+        margin: 0.5em auto;
+        padding: 0.5rem 1rem;
+        background: #fff;
+        border-radius: var(--beez-border-radius);
+        border: 1px solid rgb(112, 112, 112, 0.1);
+        font-size: 1rem !important;
+        line-height: 1.2rem !important;
+    }
+
+    .stripe_input_focus {
+        border: 1px solid var(--ion-color-primary);
+    }
+
+    .stripe_input_invalid {
+        border: 1px solid var(--ion-color-danger);
+        animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    .label_error_message {
+        font-size: 0.5em;
+        color: var(--ion-color-danger);
+    }
+
+    .custom_stripe_padding .stripe_input_base {
+        padding-left: 2.5rem;
+    }
+
+    ion-input {
+        margin: 0.5em auto;
+        --padding-top: 0.5rem;
+        --padding-end: 1rem;
+        --padding-bottom: 0.5rem;
+        --padding-start: 1rem;
+        background: #fff;
+        border-radius: var(--beez-border-radius);
+        border: 1px solid rgb(112, 112, 112, 0.1);
+        font-size: 0.9rem;
+        line-height: 1.2rem;
+
+        &.has-focus {
+            border: 1px solid var(--ion-color-primary);
+        }
+
+        &.ion-invalid {
+            &.ion-touched {
+                border: 1px solid var(--ion-color-danger) !important;
+                color: var(--ion-color-danger);
+                animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+            }
+        }
+    }
+
+    ion-icon {
+        font-size: 1.5rem;
+        top: 0.75em;
+        left: 0.7em;
+        position: absolute !important;
+    }
+
+    .input_img_focused {
+        filter: invert(1000%) sepia(10%) saturate(4846%) hue-rotate(2deg) brightness(90%) contrast(80%);
+    }
+
+    .invalid_filter {
+        filter: invert(35%) sepia(18%) saturate(5089%) hue-rotate(335deg) brightness(80%) contrast(92%);
+        animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    #label_powered_by_stripe {
+        margin-top: 2em;
+        text-align: center;
+        font-size: 0.8em;
+        color: var(--ion-color-medium);
+        vertical-align: middle;
+        opacity: 0.5;
+        span {
+            font-size: 1.4em;
+            font-weight: 500;
+            color: #32325d;
+        }
+    }
+}
+
+#row_footer {
+    width: 100%;
+    padding: 0 1.5em 1em 1.5em;
+    position: absolute;
+    bottom: 0;
+    background: #fff;
+    z-index: 99;
+    ion-col {
+        padding: 0;
+    }
+
+    ion-button {
+        max-width: 320px;
+        margin: 0.5em auto;
+        display: block;
+    }
+
+    #label_total {
+        font-weight: 500;
+        color: var(--ion-color-tertiary);
+    }
+    #label_total_amount {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: var(--ion-color-primary);
+    }
+    #row_input_amount {
+        padding: 0!important;
+        #label_pay_another_amount {
+            color: var(--ion-color-primary);
+            font-weight: 500;
+        }
+        ion-input {
+            margin: 0.5em auto;
+            --padding-top: 0.5rem;
+            --padding-end: 1rem;
+            --padding-bottom: 0.5rem;
+            --padding-start: 1rem;
+            background: #fff;
+            // border-radius: var(--beez-border-radius);
+            border-bottom: 1px solid rgb(112, 112, 112, 0.1);
+            font-size: 1.2rem;
+            font-weight: 600;
+            line-height: 1.4rem;
+            text-align: right;
+            color: var(--ion-color-tertiary);
+    
+            &.has-focus {
+                border-bottom: 1px solid var(--ion-color-primary);
+            }
+    
+            &.ion-invalid {
+                &.ion-touched {
+                    border-bottom: 1px solid var(--ion-color-danger) !important;
+                    color: var(--ion-color-danger);
+                    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+                }
+            }
+        }
+    }
+}
+
+//  ANIMATIONS
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}

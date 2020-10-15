@@ -1,9 +1,112 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>manage-addresses</ion-title>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="primary" shape="round" size="medium" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <span>{{'pages.manageAddresses.title' | translate}}</span>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-row class="row_page_header">
+    <ion-col size="12" class="gray_background">
+      <ion-col class="icon_pin_addresses">
+        <img src="./assets/icon/profile_icons/icon_pin_addresses.svg" alt="addresses_icon">
+      </ion-col>
+    </ion-col>
+  </ion-row>
+  <div id="wrap_addresses_list">
+    <!-- Add contact address -->
+    <ion-row class="row_add_address">
+      <ion-col size="10" class="label_contact_address_title">
+        {{'pages.manageAddresses.titleContactAddress' | translate}}
+      </ion-col>
+      <!-- <ion-col size="2">
+          <ion-button fill="clear" shape="round" size="medium" class="btn_add_address"
+            (click)="openModalAddEditAddress('add')">
+            <ion-icon name="add-circle"></ion-icon>
+          </ion-button>
+        </ion-col> -->
+    </ion-row>
+    <!-- Preview contact address -->
+    <ng-container *ngIf="contactAddress != null">
+      <ion-row class="row_list_of_addresses">
+        <ion-col size="10">
+          <p class="label_name">
+            {{contactAddress.Surname}} {{contactAddress.Name}}
+          </p>
+          <p class="label_email">
+            {{contactAddress.Email}}
+          </p>
+          <p class="label_phone_number">
+            {{ (contactAddress.PhoneNumber != '' &&  contactAddress.PhoneNumber != null) ? (contactAddress.PhoneNumber) : ''}}
+          </p>
+          <p class="label_address">
+            {{contactAddress.Country}}, {{contactAddress.County}}, {{contactAddress.City}}
+          </p>
+          <p class="label_address" *ngIf="contactAddress.AddressExtended !== null">
+            {{contactAddress.AddressExtended}}
+          </p>
+          <p class="label_address">
+            {{contactAddress.Address}}
+          </p>
+        </ion-col>
+        <ion-col size="2" class="ion-align-self-stretch">
+          <ion-button fill="clear" shape="round" size="small" color="primary" class="btn_edit_address"
+            (click)="openModalAddEditAddress('editContactAddress', contactAddress)">
+            <ion-icon slot="icon-only" src="./assets/icon/Icon_edit_active.svg"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+    <!-- Add other address (delivery address/invoicing address) -->
+    <ion-row class="row_add_address">
+      <ion-col size="10" class="label_address_title">
+        {{'pages.manageAddresses.titleDeliveryAndInvoicingAddress' | translate}}
+      </ion-col>
+      <ion-col size="2">
+        <ion-button fill="clear" shape="round" size="medium" class="btn_add_address"
+          (click)="openModalAddEditAddress('add')">
+          <ion-icon name="add-circle"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <!-- List of addresses (delivery address/invoicing address) -->
+    <ng-container *ngIf="listOfDeliveryAddresses.length > 0">
+      <ion-row class="row_list_of_addresses" *ngFor="let address of listOfDeliveryAddresses">
+        <ion-col>
+          <p class="label_name">
+            {{address.Surname}} {{address.Name}}
+          </p>
+          <p class="label_phone_number">
+            {{address.PhoneNumber}}
+          </p>
+          <p class="label_address" *ngIf="address.AddressExtended !== null">
+            {{address.AddressExtended}}
+          </p>
+          <p class="label_address" *ngIf="address.AddressExtended == null || address.AddressExtended == ''">
+            {{address.City}}, {{address.County}}
+          </p>
+          <p class="label_address">
+            {{address.Address}}
+          </p>
+          <p class="label_fiscal_number" *ngIf="address.FiscalNumber">
+            CUI: {{address.FiscalNumber}}
+          </p>
+        </ion-col>
+        <ion-col size="2" class="col_address_options ion-align-self-stretch">
+          <ion-button fill="clear" color="primary" size="small" class="btn_edit_address"
+            (click)="openModalAddEditAddress('edit', address)">
+            <ion-icon slot="icon-only" src="./assets/icon/Icon_edit_active.svg"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="danger" size="small" class="btn_delete_address"
+            (click)="deleteDeliveryAddress(address.Id)">
+            <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </div>
 </ion-content>

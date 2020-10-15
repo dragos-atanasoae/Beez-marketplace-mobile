@@ -21,10 +21,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'payment',
-    loadChildren: () => import('./pages/payment/payment.module').then( m => m.PaymentPageModule)
-  },
-  {
     path: 'edit-delivery-address',
     loadChildren: () => import('./pages/edit-delivery-address/edit-delivery-address.module').then( m => m.EditDeliveryAddressPageModule)
   },
@@ -37,18 +33,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
   },
   {
-    path: 'marketplace-categories',
-    loadChildren: () => import('./pages/marketplace-categories/marketplace-categories.module').then( m => m.MarketplaceCategoriesPageModule)
-  },
-  {
-    path: 'marketplace-products',
-    loadChildren: () => import('./pages/marketplace-products/marketplace-products.module').then( m => m.MarketplaceProductsPageModule)
-  },
-  {
-    path: 'marketplace-locations',
-    loadChildren: () => import('./pages/marketplace-locations/marketplace-locations.module').then( m => m.MarketplaceLocationsPageModule)
-  },
-  {
     path: 'manage-addresses',
     loadChildren: () => import('./pages/profile/manage-addresses/manage-addresses.module').then( m => m.ManageAddressesPageModule)
   },
@@ -59,6 +43,18 @@ const routes: Routes = [
   {
     path: 'vip-subscription',
     loadChildren: () => import('./pages/profile/vip-subscription/vip-subscription.module').then( m => m.VipSubscriptionPageModule)
+  },
+  {
+    path: 'notifications-settings',
+    loadChildren: () => import('./pages/profile/notifications-settings/notifications-settings.module').then( m => m.NotificationsSettingsPageModule)
+  },
+  {
+    path: 'account-settings',
+    loadChildren: () => import('./pages/profile/account-settings/account-settings.module').then( m => m.AccountSettingsPageModule)
+  },
+  {
+    path: 'transactions-list',
+    loadChildren: () => import('./pages/transactions-list/transactions-list.module').then( m => m.TransactionsListPageModule)
   },
 ];
 @NgModule({

@@ -1,0 +1,17 @@
+<div id="overlay_turn_on_notifications">
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12">
+      <ion-card id="overlay_container">
+        <ion-button id="btn_close_overlay" color="medium" shape="round" fill="clear" (click)="closeModal()">
+          <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        </ion-button>
+        <img src="./assets/icon/icon_pin_new_vendor_notifications.svg" alt="">
+        <p class="label_overlay_title">{{'components.overlayTurnOnNewVendorNotifications.title' | translate}}</p>
+        <p class="label_refund_request_message">{{'components.overlayTurnOnNewVendorNotifications.labelInfoNewVendorsNotifications' | translate}}</p>
+        <ion-button id="btn_ok" (click)="updateStatusOfNewVendorNotifications()" expand="block" fill="solid" shape="round" @bounceIn>
+          OK
+        </ion-button>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</div>

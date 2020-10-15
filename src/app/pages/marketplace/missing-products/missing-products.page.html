@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" shape="round" color="primary" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{'pages.marketplace.missingProducts.title' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div id="wrap_products_list">
+    <ion-item-divider id="item_divider_sticky" sticky="true">
+      <!-- <ion-label>Label</ion-label> -->
+      <p class="label_section_title">{{'pages.marketplace.missingProducts.subtitle' | translate}}</p>
+    </ion-item-divider>
+    <ion-row class="row_product ion-align-items-center" *ngFor="let product of productsList" (click)="selectMissingProduct(product)">
+      <ion-col size="auto">
+        <div class="layer_checkbox_protection"></div>
+        <ion-checkbox mode="ios" [checked]="product.missingQuantity > 0"></ion-checkbox>
+      </ion-col>
+      <ion-col size="auto">
+        <div class="wrap_image">
+          <img
+          [src]="product.imgUrl != null ? ('https://static.use-beez.com' + product.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+          onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" alt="">
+        </div>
+      </ion-col>
+      <ion-col class="col_product_description">
+        <div>
+          <p class="label_product_name">{{product.name}}</p>
+          <p class="label_price">{{product.unitValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}} <span>x {{product.quantity - product.missingQuantity}}</span></p>
+        </div>
+      </ion-col>
+      <ion-col size="auto" class="ion-align-self-end">
+        <p class="label_product_value">{{product.unitValue * (product.quantity - product.missingQuantity) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div id="wrap_send_request" *ngIf="totalRefund > 0" @slideIn>
+    <div class="wrap_refund_list">
+      <ion-row *ngFor="let product of missingProducts">
+        <ion-col><p class="label_refund_product_name">{{product.name}} x {{product.missingQuantity}}</p></ion-col>
+        <ion-col size="auto"><p class="label_refund_value">{{(product.missingQuantity * product.unitValue) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p></ion-col>
+      </ion-row>
+    </div>
+    <ion-row class="ion-align-items-baseline">
+      <ion-col>
+        <p class="label_section_title">{{'pages.marketplace.missingProducts.subtitle' | translate}}</p>
+      </ion-col>
+      <ion-col size="auto"><p class="label_refund_total_value">{{totalRefund | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p></ion-col>
+    </ion-row>
+    <ion-button color="primary" expand="block" fill="solid" shape="round" (click)="sendOrderRefund()">
+      {{'pages.marketplace.missingProducts.btnSendRequest' | translate}}
+    </ion-button>
+  </div>
+</ion-content>
+
+<!-- Overlay SELECT QUANTITY FOR THE MISSING PRODUCT -->
+<div id="overlay_quantity_missing" class="overlay_backdrop" *ngIf="showOverlaySelectQuantity && selectedProduct !== null">
+  <ion-row>
+    <ion-col size="12">
+      <ion-card class="overlay_container">
+        <ion-button id="btn_close_overlay" color="medium" shape="round" (click)="showOverlaySelectQuantity = false">
+          <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        </ion-button>
+        <div class="warp_product_image">
+          <img
+              [src]="selectedProduct?.imgUrl != null ? ('https://static.use-beez.com' + selectedProduct?.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+              onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" alt="">
+        </div>
+        <p class="label_product_name">{{selectedProduct?.name}}</p>
+        <p class="label_select_missing">{{'pages.marketplace.missingProducts.overlaySelectQuantity.labelMessage' | translate}}</p>
+        <p class="label_quantity">{{'pages.marketplace.missingProducts.overlaySelectQuantity.labelQuantity' | translate}}</p>
+        <ion-row class="ion-align-items-center">
+          <ion-col>
+            <ion-button id="btn_decrease_quantity" [disabled]="selectedProduct.missingQuantity == 0" (click)="changeMissingQuantity('remove')">
+              <ion-icon slot="icon-only" name="remove"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col size="auto">
+            <p id="label_selected_quantity">{{selectedProduct?.missingQuantity}}</p>
+          </ion-col>
+          <ion-col>
+            <ion-button id="btn_increase_quantity" [disabled]="selectedProduct.quantity <= selectedProduct.missingQuantity" (click)="changeMissingQuantity('add')">
+              <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-button id="btn_save_changes" color="primary" expand="block" fill="solid" shape="round" (click)="saveChangesForCurrentProduct()" @bounceIn>
+          {{'pages.marketplace.missingProducts.overlaySelectQuantity.btnConfirm' | translate}}
+        </ion-button>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</div>
+
+<!-- OVERLAY REFUND RESPONSE -->
+<div id="overlay_refund_response" class="overlay_backdrop" *ngIf="showOverlayRefundResponse">
+  <ion-row>
+    <ion-col size="12">
+      <ion-card class="overlay_container">
+        <ion-button id="btn_close_overlay" color="medium" shape="round" (click)="showOverlayRefundResponse = false">
+          <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        </ion-button>
+        <img [class]="refundRequestReceived ? 'icon_refund_success' : 'icon_refund_error'" [src]="refundRequestReceived ? './assets/icon/icon_refund_request.svg' : './assets/icon/Icon_Warning.svg'" alt="">
+        <p class="label_overlay_title">{{(refundRequestReceived ? 'pages.marketplace.missingProducts.overlayRefundResponse.titleSuccess' : "pages.marketplace.missingProducts.overlayRefundResponse.titleError") | translate}}</p>
+        <p class="label_refund_request_message">{{(refundRequestReceived ? 'pages.marketplace.missingProducts.overlayRefundResponse.messageSuccess' : 'pages.marketplace.missingProducts.overlayRefundResponse.messageError') | translate}}</p>
+        <ion-button id="btn_ok" (click)="closeOverlayRefundResponse()" expand="block" fill="solid" shape="round" @bounceIn>
+          OK
+        </ion-button>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</div>

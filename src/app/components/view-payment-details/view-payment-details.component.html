@@ -1,0 +1,40 @@
+<div id="payment_details">
+    <div class="payment_details_content slide-in-fwd-bottom" *ngIf="detailsOfSelectedPayment != null">
+      <ion-row id="row_billing_info">
+        <p>{{'components.viewPaymentDetails.labelUserDetails' | translate}}</p>
+        <p>{{detailsOfSelectedPayment.BillingInfo.FirstName}} {{detailsOfSelectedPayment.BillingInfo.LastName}}</p>
+        <p>{{detailsOfSelectedPayment.BillingInfo.EmailAddress}}</p>
+      </ion-row>
+      <ion-row id="row_payment_details">
+        <p>{{'components.viewPaymentDetails.labelTransactionDetails' | translate}}</p>
+        <ion-row>
+          <ion-col size="8">
+            <p class="label_title">Card</p>
+            <p>{{detailsOfSelectedPayment.Card.PanMasked}}</p>
+          </ion-col>
+          <ion-col size="4">
+            <p class="label_title">{{'components.viewPaymentDetails.labelAmount' | translate}}</p>
+            <p id="label_amount">{{detailsOfSelectedPayment.Amount}} <span>lei</span></p>
+          </ion-col>
+        </ion-row>
+        <div>
+          <p class="label_title">{{'components.viewPaymentDetails.labelPaymentType' | translate}} 
+            <span class="label_payment_type" *ngIf="detailsOfSelectedPayment.IsRecurrent">{{'components.viewPaymentDetails.labelRecurrentPayment' | translate}}</span>
+            <span class="label_payment_type" *ngIf="!detailsOfSelectedPayment.IsRecurrent">{{'components.viewPaymentDetails.labelNormalPayment' | translate}}</span>
+          </p>
+          <p class="label_title">Status: <span class="label_status_description">{{detailsOfSelectedPayment.Status}}</span></p>
+        </div>
+        <ion-row>
+          <ion-col size="6">
+            <p class="label_title">{{'components.viewPaymentDetails.labelCreationDate' | translate}}</p>
+            <p class="label_date">{{detailsOfSelectedPayment.CreatedAt | convertToLocaleTime : 'DD.MM.YYYY hh:mm A'}}</p>
+          </ion-col>
+          <ion-col size="6">
+            <p class="label_title">{{'components.viewPaymentDetails.labelUpdateDate' | translate}}</p>
+            <p class="label_date">{{detailsOfSelectedPayment.UpdatedAt | convertToLocaleTime : 'DD.MM.YYYY hh:mm A'}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-row>
+      <ion-button fill="clear" shape="round" size="small" expanded="block" (click)="closeDetailsView()">{{'buttons.buttonClose' | translate}}</ion-button>
+    </div>
+  </div>

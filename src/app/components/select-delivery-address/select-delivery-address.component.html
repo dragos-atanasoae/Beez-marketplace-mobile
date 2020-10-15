@@ -1,0 +1,57 @@
+<div id="component_delivery_address">
+  <ion-row id="row_add_address" class="align-items-center">
+    <ion-col size="10">
+      <p
+        [innerHTML]="(isVoucher ? 'components.selectDeliveryAddress.labelAddAddress' : 'components.selectDeliveryAddress.labelAddDeliveryAddress') | translate">
+      </p>
+    </ion-col>
+    <ion-col size="2">
+      <ion-button id="btn_add_address" fill="clear" shape="round" size="small"
+        (click)="openModalAddEditDeliveryAddress('add')">
+        <ion-icon slot="icon-only" color="light" src="./assets/icon/add.svg"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row id="label_select_address">
+    <ion-col size="12">
+      <p
+        [innerHTML]="(isVoucher ? 'components.selectDeliveryAddress.titleSelectAddress' : 'components.selectDeliveryAddress.titleSelectDeliveryAddress') | translate">
+      </p>
+    </ion-col>
+  </ion-row>
+
+  <ion-row id="row_list_of_addresses" *ngIf="listOfDeliveryAddresses !== null">
+    <ion-col size="12">
+      <div *ngFor="let address of listOfDeliveryAddresses">
+        <ion-card button="true" class="cardview_address"
+          [ngClass]="selectedId === address.Id ? 'selectedAddress' : 'unselectedAddress'"
+          (click)="selectedAddress = address; selectedId = address.Id; sendSelectedAddress()">
+          <p class="label_name">
+            {{address.Surname}} {{address.Name}}
+          </p>
+          <p class="label_email">
+            {{address.Email}}
+          </p>
+          <p class="label_phone">
+            {{address.PhoneNumber}}
+          </p>
+          <p class="label_address" *ngIf="address.AddressExtended == null || address.AddressExtended == ''">
+            {{address.Country}}, {{address.County}}, {{address.City}}
+          </p>
+          <p class="label_address" *ngIf="address.AddressExtended !== null">
+            {{address.AddressExtended}}
+          </p>
+          <p class="label_address">
+            {{address.Address}}
+          </p>
+          <ion-checkbox class="checkbox_selected_address" mode="ios" [checked]="selectedId == address.Id">
+          </ion-checkbox>
+          <ion-button fill="clear" shape="round" size="large" class="btn_edit_address" *ngIf="selectedId == address.Id"
+            (click)="openModalAddEditDeliveryAddress('edit')">
+            <ion-icon slot="icon-only" src="./assets/icon/Button_edit.svg"></ion-icon>
+          </ion-button>
+        </ion-card>
+      </div>
+    </ion-col>
+  </ion-row>
+</div>

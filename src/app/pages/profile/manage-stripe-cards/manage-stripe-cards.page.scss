@@ -1,0 +1,52 @@
+.row_page_header {
+    .gray_background {
+        width: 100%;
+        background: linear-gradient(to bottom, #F8F8F8 50%, #fff 50%);
+    }
+    .credit_cards_icon{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 6em;
+        width: 6em;
+        margin: 2em auto 1em auto;
+        padding: 0.5em;
+        border-radius: 50%;
+        box-shadow: 0em 0.25em 0.5em #00000029;
+        overflow: hidden;
+        background: #fff;
+        img {
+            min-width: 4em;
+        }
+    }
+}
+
+// Empty CARDS LIST -> START
+#row_empty_cards_list {
+    color: #a3a3a3;
+    font-size: 0.9em;
+    text-align: center;
+
+    .empty_list_message {
+        width: 60%;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    ion-card {
+        width: fit-content;
+        margin: 1em auto;
+        padding: 1em 4em;
+        border-radius: var(--beez-border-radius);
+        border: 0.08em dashed #dddddd;
+        box-shadow: none;
+
+        ion-icon {
+            font-size: 4em;
+        }
+
+        .label_add_card {
+            display: block;
+        }
+    }
+}

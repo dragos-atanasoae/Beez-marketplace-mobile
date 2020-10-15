@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { ManageAddressesPageRoutingModule } from './manage-addresses-routing.module';
 
 import { ManageAddressesPage } from './manage-addresses.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    TranslateModule,
     ManageAddressesPageRoutingModule
   ],
   declarations: [ManageAddressesPage]

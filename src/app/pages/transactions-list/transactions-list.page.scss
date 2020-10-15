@@ -1,0 +1,302 @@
+ion-toolbar {
+    --background: #F8F8F8;
+    ion-title {
+        color: #525252;
+        font-weight: normal;
+        font-size: 1em;
+    }
+}
+#cashback_context {
+    .gray_background {
+        width: 100%;
+        background: linear-gradient(to bottom, #F8F8F8 50%, #fff 50%);
+    }
+    .wrap_piggy_icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 6em;
+        width: 6em;
+        margin: 1em auto 2em;
+        border-radius: 50%;
+        box-shadow: 0em 0.25em 0.5em #00000029;
+        overflow: hidden;
+        background: #fff;
+
+        .piggy_icon {
+            font-size: 3.8em;
+            margin: auto;
+            display: block;
+        }
+    }
+    #available_to_withdraw {
+        padding-bottom: 0.7em;
+        .lablel_available, .value_available {
+            text-align: center;
+            margin: 0.5em;
+        }
+        .lablel_available {
+            font-size: 1.1em;
+            color: #A3A3A3;
+            font-weight: 400;
+        }
+        .value_available {
+            font-size: 1.2em;
+            color: var(--ion-color-primary);
+            font-weight: bold;
+        }
+        ion-spinner {
+            height: 1.1em;
+            width: 1.1em;
+            margin: 0.5em auto;
+            display: block;
+        }
+    }
+
+    #cashback_savings_summary {
+        margin: 0px auto;
+        z-index: 100;
+        width: 94%;
+        $border: 0.5px solid #E0E0E0;
+        ion-row {
+            border-radius: var(--beez-border-radius);
+            ion-spinner {
+                height: 1em;
+                width: 1em;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+            }
+            ion-col {
+                padding-top: 1em;
+                padding-bottom: 1em;
+            }
+            ion-col:first-of-type {
+                border: $border;
+                border-top-left-radius: 0.5em;
+                border-bottom-left-radius: 0.5em;
+            }
+            ion-col:nth-child(2) {
+                border-top: $border;
+                border-bottom: $border;
+            }
+            ion-col:last-of-type {
+                border: $border;
+                border-top-right-radius: 0.5em;
+                border-bottom-right-radius: 0.5em;
+            }
+            p {
+                margin: 0;
+            }
+            .label_value {
+                font-size: 0.8em;
+                font-weight: 600;
+                text-align: center;
+                color: var(--ion-color-secondary);
+            }
+            .label_status {
+                font-size: 0.8em;
+                font-weight: normal;
+                text-align: center;
+                color: #B1B1B1;
+                margin-bottom: 0.5em;
+            }
+        }
+    }
+
+    .row_buttons_uk {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .row_buttons, .row_buttons_uk {
+        margin: 1em 0em;
+
+        ion-col {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn_donate, .btn_withdraw {
+            height: 2.4em;
+            text-transform: none;
+            ion-icon {
+                margin-right: 0.3em;
+            }
+        }
+    
+        .btn_donate {
+            --color: var(--ion-color-primary);
+            --background: #fff;
+            --border-color: var(--ion-color-primary);
+            --border-width: 0.08em;
+            --border-style: solid;
+            --box-shadow: 0em 0.25em 0.5em #F0A62233;
+        }
+    
+        .btn_withdraw {
+            // max-width: 15em;
+            --box-shadow: 0em 0.25em 0.5em #00000029;
+            --background: var(--ion-color-primary);
+        }
+
+        .btn_missed_transactions {
+            font-weight: normal;
+            text-decoration: underline;
+            text-transform: none;
+            color: #B1B1B1;
+        }
+    
+        .btn_withdraw_disabled {
+            --background: #DBDBDB !important;
+            --box-shadow: none;
+            --opacity: 1;
+        }
+    
+        .dark_gray {
+            color: #707070 !important;
+        }
+    }
+    ion-item-divider {
+        --padding-start: 0;
+        --padding-end: 0;
+        --inner-padding-start: 0;
+        --inner-padding-end: 0;
+        margin-bottom: 0.7em;
+        --background: #fff;
+    }
+    .transactions_segment {
+        ion-segment-button {
+            font-size: 0.9em;
+            line-height: 0.5em;
+            text-transform: none;
+            color: #C6C6C6;
+            background: #fff;
+            --indicator-color: #E0E0E0;
+        }
+        .active_text {
+            color: var(--ion-color-primary) !important;
+        }
+    }
+ 
+}
+/* Table transactions details */
+.item_divider_table_header {
+    margin: 0 auto!important;
+    width: 100%!important;
+    max-width: 720px;
+    padding: 4px 0 0 0!important;
+    --background: #fff !important;
+    --box-shadow: var(--beez-box-shadow);
+    
+
+    ion-label {
+        width: 100%;
+        padding: 2px!important;
+        margin: 0;
+    }
+    ion-segment {
+        margin: 0!important;
+        width: 100%!important;
+        ion-segment-button {
+            text-transform: none;
+        }
+    }
+    .header_transactions_table {
+        width: 100%;
+        background: #fff;
+        margin-top: 4px;
+        border-bottom-left-radius: var(--beez-border-radius);
+        border-bottom-right-radius: var(--beez-border-radius);
+        text-align: center;
+        ion-col {
+            padding: 0;
+            p {
+                line-height: 1.4em;
+                font-weight: 400;
+                color: #F3A527;
+            }
+        }
+    }
+}
+.cashback_table,
+.card_payments_table {
+    width: 98%;
+    box-shadow: var(--beez-box-shadow);
+    margin: 0 auto 1em auto;
+    padding-bottom: 4px;
+    border: 1px solid rgba(70, 69, 69, 0);
+    background: #fff;
+    .header_transactions_table {
+        margin: 0;
+        padding: 4px;
+        p {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--ion-color-primary);
+            text-align: center;
+        } 
+    }
+    .loading_data_table {
+        height: 32px;
+        width: auto;
+        margin: 10px auto;
+    }
+    .table_detailed_transactions {
+        border-bottom: 1px dashed var(--beez-background-color);
+    }
+    .transaction_date,
+    .transaction_value,
+    .transaction_shop,
+    .transaction_status,
+    .transaction_card_number {
+        text-align: center;
+        color: #5c5c5c;
+        font-size: 0.8em;
+        span {
+            font-size: 0.8em;
+        }
+    }
+}
+#payments_table {
+    .transaction_status {
+        color: var(--ion-color-primary);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-height: 21px;
+        max-height: 48px;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+}
+.empty_list {
+    justify-content: center;
+    text-align: center;
+    padding: 1em;
+    // border-top: 1px solid #D9D9D9;
+    // background: #F8F8F8;
+    color: #A3A3A3;
+}
+.withdrawals_header, .table_withdrawals {
+    text-align: left;
+    font-size: 80%;
+}
+.withdrawals_header, .table_withdrawals {
+    padding: 0.5em 1em;
+}
+.table_withdrawals {
+    color: #9A9A9A;
+    p {
+        margin: 0.5em auto;
+    }
+}
+.withdrawals_header {
+    color: var(--ion-color-primary);
+}
+.row_even {
+    background: #F7F7F6;
+}

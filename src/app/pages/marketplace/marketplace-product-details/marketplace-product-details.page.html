@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" shape="round" color="primary" (click)="closeModal()">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{productDetails.name | titlecase}}
+      <!-- <img class="logo_food_marketplace" src="./assets/icon/icon_food_marketplace.svg" alt="logo_food_marketplace"> -->
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="centered_content">
+    <!-- Product image -->
+    <ion-row class="row_product_image">
+      <ion-col size="12" class="centered_content">
+        <img class="product_image"
+          [src]="productDetails.imgUrl != null ? ('https://static.use-beez.com' + productDetails.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+          onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" alt=""
+          (click)="openImageViewer('https://static.use-beez.com' + productDetails.imgUrl, productDetails.name)">
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="row_product_details">
+      <ion-col size="12">
+        <!-- Product name -->
+        <p class="label_product_name">{{productDetails.name | titlecase}}</p>
+        <p class="label_product_details">{{productDetails.weightInKG}}</p>
+      </ion-col>
+      <ion-col size="12">
+        <p class="label_product_price">
+          {{productDetails.unitValue * quantity | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+        </p>
+      </ion-col>
+      <!-- Increase / Decrease quantity -->
+      <ion-col size="4" class="centered_content">
+        <ion-button fill="clear" shape="round" size="small" color="primary" class="btn_quantity"
+          (click)="decreaseQuantity()">
+          <ion-icon name="remove-circle-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="4" class="centered_content">
+        <p class="label_quantity_value">{{quantity}}</p>
+      </ion-col>
+      <ion-col size="4" class="centered_content">
+        <ion-button fill="clear" shape="round" size="small" color="primary" class="btn_quantity"
+          (click)="increaseQuantity()">
+          <ion-icon name="add-circle" class="icon_add_to_cart"></ion-icon>
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="12" id="wrap_buttons">
+        <ion-button expand="block" fill="solid" shape="round" color="primary" class="btn_continue"
+          [disabled]="isDisabled" (click)="this.context === 'edit' ? editProductFromCart() : addProductToCart()">
+          <span
+            *ngIf="context === 'add'">{{'pages.marketplace.marketplaceProductDetails.buttonAddToCart' | translate}}</span>
+          <span
+            *ngIf="context === 'edit'">{{'pages.marketplace.marketplaceProductDetails.buttonEdit' | translate}}</span>
+        </ion-button>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row class="row_product_description" *ngIf="productDetails.details || productDetails.country">
+      <ion-col size="12">
+        <p class="label_title">{{'pages.marketplace.marketplaceProductDetails.labelProductDetails' | translate}}</p>
+        <hr>
+        <div class="wrap_description" *ngIf="productDetails.country">
+          {{'pages.marketplace.marketplaceProductDetails.labelCountryOfOrigin' | translate}}{{productDetails.country}}
+        </div>
+        <div class="wrap_description" [innerHTML]="productDetails.details | safeHTML"></div>
+      </ion-col>
+    </ion-row>
+
+  </div>
+</ion-content>

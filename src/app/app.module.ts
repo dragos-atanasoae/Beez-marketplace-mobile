@@ -10,11 +10,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { InternationalizationService } from './services/internationalization.service';
-import { registerLocaleData } from '@angular/common';
+import { CurrencyPipe, registerLocaleData } from '@angular/common';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import localeRo from '@angular/common/locales/ro';
 import localeEnGB from '@angular/common/locales/en-GB';
+import { LoadingService } from './services/loading.service';
+import { MomentModule } from 'ngx-moment';
+import { ReactiveFormsModule } from '@angular/forms';
 
 registerLocaleData(localeRo, 'ro');
 registerLocaleData(localeEnGB, 'en-GB');
@@ -29,9 +32,11 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({scrollAssist: true}),
     AppRoutingModule,
     HttpClientModule,
+    MomentModule,
+    ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -43,6 +48,7 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     StatusBar,
     SplashScreen,
+    LoadingService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]
