@@ -7,11 +7,12 @@ import { WalletService } from 'src/app/services/wallet.service';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AccountValidationService } from 'src/app/services/account-validation.service';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { fadeOut } from 'ng-animate';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Plugins } from '@capacitor/core';
-
+// import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 const { Browser } = Plugins;
 
@@ -50,11 +51,16 @@ export class TransactionsListPage implements OnInit {
   eventContext = 'Transactions List Page';
 
   constructor(
+    private platform: Platform,
+    // private inAppBrowser: InAppBrowser,
     private loadingService: LoadingService,
     private route: ActivatedRoute,
+    private router: Router,
     public modalCtrl: ModalController,
     public translate: TranslateService,
+    private authenticationService: AuthenticationService,
     private walletService: WalletService,
+    private accountValidationService: AccountValidationService,
     private analyticsService: AnalyticsService,
     private internationalizationService: InternationalizationService
   ) {
@@ -186,6 +192,45 @@ export class TransactionsListPage implements OnInit {
       console.log(data);
       this.listOfTransactions = data;
     });
+  }
+
+  /**
+   * @name openWithdrawModal
+   * @description Open modal withdraw form (request)
+   */
+  async openWithdrawModal(context: string) {
+    // const withdrawalModal = await this.modalCtrl.create({
+    //   component: WithdrawalPage,
+    //   componentProps: { withdrawalContext: context, walletInfo: this.walletInfo }
+    // });
+    // this.accountValidationService.isVerified().subscribe((res: any) => {
+    //   console.log(res);
+    //   switch (res) {
+    //     case 'NewUser':
+    //       this.skipAccountValidation = false;
+    //       this.showOverlayValidationAccount = true;
+    //       break;
+    //     case 'OldUser':
+    //       this.skipAccountValidation = true;
+    //       this.showOverlayValidationAccount = true;
+    //       break;
+    //     case 'NumberIsVerified':
+    //       console.log('This account is validated: ', res);
+    //       withdrawalModal.present();
+    //       const eventParams = { context: this.eventContext };
+    //       this.analyticsService.logEvent('open_withdrawal_page', eventParams);
+    //       break;
+    //     default:
+    //       console.log('Error on verify account status: ', res);
+    //       break;
+    //   }
+    // });
+    // withdrawalModal.onDidDismiss()
+    //   .then((data) => {
+    //     if (data.data !== undefined) {
+    //       this.reloadData();
+    //     }
+    //   });
   }
 
   reloadData() {

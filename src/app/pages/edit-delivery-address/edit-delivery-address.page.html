@@ -1,9 +1,326 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>edit-delivery-address</ion-title>
+    <ion-title color="secondary">
+      {{(context == 'add' ? 'pages.editAddress.titleContextAdd' : (donationContext || context == 'addCard') ? 'pages.editAddress.titleContextDonation' : 'pages.editAddress.titleContextEdit') | translate}}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div id="delivery_address_form">
+    <form [formGroup]="deliveryAddressForm" (ngSubmit)="fiscalNumberValidation()">
 
+      <!-- Google autocomplete address UK -->
+      <!-- <app-google-autocomplete-address *ngIf="country == 'uk'" [editAddress]="extendedGoogleAddress"
+        (setAddress)="getAddress($event)">
+      </app-google-autocomplete-address> -->
+
+      <!-- Autocomplete City Fan Courier API RO -->
+      <div class="ng-autocomplete" *ngIf="country == 'ro'" >
+        <p class="label_details">{{'pages.editAddress.labelCity' | translate}}</p>
+        <ng-autocomplete class="select_autocomplete_suggestion" name="City" formControlName="City" debounceTime="300"
+          autocomplete="off" (inputCleared)="onClearOption()"
+          historyHeading="{{'pages.editAddress.historyHeading' | translate}}" [data]="autocompleteCities"
+          [searchKeyword]="keywordCity" placeHolder="{{'pages.editAddress.placeholderCity' | translate}}"
+          (selected)="onSelectOption($event, 'city')" (inputChanged)="onChangeSearchCities($event)"
+          historyIdentifier="autocompleteCities" [itemTemplate]="itemTemplate"
+          notFoundText="{{'pages.editAddress.labelNotFoundCity' | translate}}" (closed)="closeCityAutocomplete($event)"
+          [notFoundTemplate]="notFoundTemplate">
+        </ng-autocomplete>
+
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
+
+      </div>
+
+      <div class="validation-errors mb-2" *ngIf="country == 'ro'" >
+        <ng-container *ngFor="let validation of validationMessages.City">
+          <div class="error-message"
+            *ngIf="deliveryAddressForm.get('City').hasError(validation.type) && (deliveryAddressForm.get('City').dirty || deliveryAddressForm.get('City').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Address Line 2 UK -->
+      <ion-item mode="ios" lines="none" *ngIf="country == 'uk'"
+        [hidden]="context == 'add' && this.autocompleteAddress == null">
+        <ion-label color="tertiary" position="floating">{{'pages.editAddress.labelAddressLine2' | translate}}
+          <span class="label_placeholder">{{'pages.editAddress.labelAddressLine2Part2' | translate}}</span>
+        </ion-label>
+        <ion-input type="text" autocomplete="nope" name="Address" formControlName="Address" required>
+        </ion-input>
+      </ion-item>
+
+      <!-- Autocomplete street RO -->
+      <div class="ng-autocomplete" *ngIf="country == 'ro'" >
+        <p class="label_details">
+          {{'pages.editAddress.labelAddressLine2' | translate}}
+          <span>{{'pages.editAddress.labelAddressLine2Part2' | translate}}</span>
+        </p>
+        <ng-autocomplete class="select_autocomplete_suggestion" name="Address" formControlName="Address"
+          autocomplete="off" debounceTime="300" historyHeading="{{'pages.editAddress.historyHeading' | translate}}"
+          [data]="autocompleteStreets" [searchKeyword]="keywordStreet"
+          placeHolder="{{'pages.editAddress.placeholderAddressLine2' | translate}}"
+          (inputCleared)="deliveryAddressForm.patchValue({Address: null})" (selected)="onSelectOption($event, 'street')"
+          (inputChanged)="onChangeSearchStreet($event)" historyIdentifier="autocompleteStreets"
+          [itemTemplate]="itemTemplate">
+        </ng-autocomplete>
+
+        <ng-template #itemTemplate let-item>
+          <a [innerHTML]="item.name"></a>
+        </ng-template>
+        <!-- 
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template> -->
+      </div>
+
+      <div class="validation-errors" *ngIf="country == 'ro'">
+        <ng-container *ngFor="let validation of validationMessages.Address">
+          <div class="error-message"
+            *ngIf="deliveryAddressForm.get('Address').hasError(validation.type) && (deliveryAddressForm.get('Address').dirty || deliveryAddressForm.get('Address').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Address details (nr, building and other) -->
+      <ion-item mode="ios" lines="none" *ngIf="country == 'ro'">
+        <ion-label color="secondary" position="stacked">
+          {{'pages.editAddress.labelOtherDetails' | translate}}
+        </ion-label>
+        <ion-input type="string" name="ContactInfo" formControlName="ContactInfo"
+          placeholder="{{'pages.editAddress.placeholderAddressLine2' | translate}}">
+        </ion-input>
+      </ion-item>
+      <div class="validation-errors" style="display: none;">
+        <ng-container *ngFor="let validation of validationMessages.ContactInfo">
+          <div class="error-message"
+            *ngIf="deliveryAddressForm.get('ContactInfo').hasError(validation.type) && (deliveryAddressForm.get('ContactInfo').dirty || deliveryAddressForm.get('ContactInfo').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Post Code -->
+      <ion-item mode="ios" lines="none" *ngIf="country == 'uk'">
+        <ion-label color="tertiary" position="floating">{{'pages.editAddress.labelAddressZip' | translate}}
+        </ion-label>
+        <ion-input type="text" autocomplete="postal-code" name="AddressZip" formControlName="AddressZip" required>
+        </ion-input>
+      </ion-item>
+      <div class="validation-errors" *ngIf="country == 'uk'">
+        <ng-container *ngFor="let validation of validationMessages.AddressZip">
+          <div class="error-message"
+            *ngIf="deliveryAddressForm.get('AddressZip').hasError(validation.type) && (deliveryAddressForm.get('AddressZip').dirty || deliveryAddressForm.get('AddressZip').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- COUNTY -->
+      <ion-item mode="ios" lines="none" *ngIf="country == 'uk'" [hidden]="true">
+        <ion-label color="tertiary" position="floating">{{'pages.editAddress.labelCounty' | translate}}</ion-label>
+        <ion-input type="text" autocomplete="nope" name="County" formControlName="County" required>
+        </ion-input>
+      </ion-item>
+      <ion-item mode="ios" lines="none" *ngIf="country == 'ro'" [hidden]="true">
+        <ion-label color="tertiary" position="floating">{{'pages.editAddress.labelCounty' | translate}}
+        </ion-label>
+        <ion-select [value]="selectedAddress?.County" interface="alert"
+          placeholder="{{'pages.editAddress.placeholderCounty' | translate}}" formControlName="County"
+          cancelText="{{'buttons.buttonCancel' | translate}}"
+          (ionChange)="getListOfCities('Romania', deliveryAddressForm.value.County)">
+          <ion-select-option *ngFor="let county of listOfCounties" [value]="county.Name">{{county.Name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.County">
+          <div class="error-message"
+            *ngIf="deliveryAddressForm.get('County').hasError(validation.type) && deliveryAddressForm.get('County').touched">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Select City UK -->
+      <ion-item mode="ios" lines="none" *ngIf="country == 'uk'" [hidden]="true">
+        <ion-label color="tertiary" position="floating">{{'pages.editAddress.labelCity' | translate}}</ion-label>
+        <ion-input type="text" autocomplete="nope" name="City" formControlName="City">
+        </ion-input>
+      </ion-item>
+
+      <!-- Select City RO -->
+      <ion-item lines="none" *ngIf="country == 'ro'" [hidden]="true">
+        <ion-label ion-label color="primary" position="floating">
+          {{deliveryAddressForm.controls.County.value === 'Bucuresti' ? 'Sector' : ('pages.editAddress.labelCity' | translate)}}
+        </ion-label>
+        <!-- <ion-input type="text" autocomplete="false" name="City" formControlName="City" required
+          *ngIf="deliveryAddressForm.controls.City.value !== ''" (click)="getListOfCities('Romania', deliveryAddressForm.value.County)">
+        </ion-input> -->
+        <ionic-selectable #selectCityComponent formControlName="City" itemValueField="Name" itemTextField="Name"
+          [shouldStoreItemValue]="true" [items]="listOfCities" [canSearch]="true" (onChange)="portChange($event)"
+          (click)="presentLoading()">
+        </ionic-selectable>
+      </ion-item>
+      <div class="validation-errors" [hidden]="true">
+        <ng-container *ngFor="let validation of validationMessages.City">
+          <div class="error-message"
+            *ngIf="deliveryAddressForm.get('City').hasError(validation.type) && (deliveryAddressForm.get('City').dirty || deliveryAddressForm.get('City').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- SECTION PERSONAL DETAILS -->
+      <div id="wrap_contact_address_section">
+        <ion-row id="header_personal_details" class="ion-align-items-center">
+          <ion-col>
+            <p id="title_section_personal_details">{{'pages.editAddress.titlePersonalDetails' | translate}}</p>
+          </ion-col>
+          <ion-col size="auto">
+            <ion-button fill="solid" shape="round" size="small"
+              *ngIf="!sectionPersonalDetailsIsLocked && !hideButtonConfirmChanges"
+              (click)="sectionPersonalDetailsIsLocked = !sectionPersonalDetailsIsLocked">
+              {{'buttons.buttonConfirmChanges' | translate}}
+            </ion-button>
+            <ion-button fill="clear" color="medium" shape="round" size="small"
+              (click)="sectionPersonalDetailsIsLocked = !sectionPersonalDetailsIsLocked"
+              *ngIf="sectionPersonalDetailsIsLocked">
+              <ion-icon slot="end" src="./assets/icon/icon_edit_dark_gray.svg"></ion-icon>
+              {{'buttons.buttonEdit' | translate}}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row id="row_preview_personal_details" *ngIf="sectionPersonalDetailsIsLocked">
+          <ion-col size="12">
+            <!-- <p>{{deliveryAddressForm.get('Email').value}}</p> -->
+            <p>{{deliveryAddressForm.get('Name').value}} {{deliveryAddressForm.get('Surname').value}}</p>
+            <p>{{deliveryAddressForm.get('PhoneNumber').value}}</p>
+            <p>{{deliveryAddressForm.get('FiscalNumber').value}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!sectionPersonalDetailsIsLocked">
+          <ion-col size="12" style="display: none;">
+            <!-- EMAIL INPUT -->
+            <ion-item mode="ios" lines="none" [disabled]="sectionPersonalDetailsIsLocked">
+              <!-- <ion-label color="tertiary" position="floating">Email</ion-label> -->
+              <ion-input type="email" name="Email" placeholder="Email" formControlName="Email" required>
+              </ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validationMessages.Email">
+                <div class="error-message"
+                  *ngIf="deliveryAddressForm.get('Email').hasError(validation.type) && (deliveryAddressForm.get('Email').dirty || deliveryAddressForm.get('Email').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <!-- FIRSTNAME INPUT -->
+            <ion-item mode="ios" lines="none" [disabled]="sectionPersonalDetailsIsLocked">
+              <!-- <ion-label color="tertiary" position="floating">{{'pages.editAddress.labelName' | translate}}</ion-label> -->
+              <ion-input type="text" placeholder="{{'pages.editAddress.labelName' | translate}}"
+                autocomplete="firstname" name="Name" formControlName="Name" required>
+              </ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validationMessages.Name">
+                <div class="error-message"
+                  *ngIf="deliveryAddressForm.get('Name').hasError(validation.type) && (deliveryAddressForm.get('Name').dirty || deliveryAddressForm.get('Name').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <!-- LASTNAME INPUT -->
+            <ion-item mode="ios" lines="none" [disabled]="sectionPersonalDetailsIsLocked">
+              <!-- <ion-label color="tertiary" position="floating">{{'pages.editAddress.labelSurname' | translate}}
+              </ion-label> -->
+              <ion-input type="text" placeholder="{{'pages.editAddress.labelSurname' | translate}}"
+                autocomplete="lastname" name="Surname" formControlName="Surname" required>
+              </ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validationMessages.Surname">
+                <div class="error-message"
+                  *ngIf="deliveryAddressForm.get('Surname').hasError(validation.type) && (deliveryAddressForm.get('Surname').dirty || deliveryAddressForm.get('Surname').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+          </ion-col>
+          <ion-col size="12">
+            <!-- PHONE NUMBER -->
+            <app-phone-verification [existentPhoneNumber]="phoneNumber"
+              (verifiedPhoneNumber)="receiveEventPhoneIsVerififed($event)" *ngIf="phoneVerificationRequired">
+            </app-phone-verification>
+            <ion-item mode="ios" lines="none" *ngIf="!phoneVerificationRequired">
+              <ion-input type="tel" placeholder="{{'pages.editAddress.labelPhoneNumber' | translate}}"
+                name="PhoneNumber" formControlName="PhoneNumber" [disabled]="context == 'editContactAddress'" required>
+              </ion-input>
+            </ion-item>
+            <div class="validation-errors" *ngIf="context != 'editContactAddress' && !phoneVerificationRequired">
+              <ng-container *ngFor="let validation of validationMessages.PhoneNumber">
+                <div class="error-message"
+                  *ngIf="deliveryAddressForm.get('PhoneNumber').hasError(validation.type) && (deliveryAddressForm.get('PhoneNumber').dirty || deliveryAddressForm.get('PhoneNumber').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+          </ion-col>
+          <!-- CUI -->
+          <!-- <ion-col size="12">
+            <ion-item mode="ios" lines="none" [disabled]="sectionPersonalDetailsIsLocked"
+              *ngIf="context != 'editContactAddress'">
+              <ion-input type="text" placeholder="CUI" name="FiscalNumber" formControlName="FiscalNumber">
+              </ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <div class="error-message" *ngIf="fiscalNumberError != ''">
+                {{ fiscalNumberError }}
+              </div>
+            </div>
+          </ion-col> -->
+        </ion-row>
+      </div>
+    </form>
+  </div>
 </ion-content>
+<ion-footer *ngIf="!isKeyboardActive">
+  <ion-toolbar>
+    <ion-row id="row_buttons">
+      <ion-col size="6">
+        <ion-button fill="clear" shape="round" size="small" color="tertiary" (click)="closeModal('cancel')">
+          {{'buttons.buttonCancel' | translate}}
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <!-- Add/Edit Delivery address -->
+        <ion-button fill="solid" shape="round" size="small" color="primary"
+          [disabled]="!deliveryAddressForm.valid || !deliveryAddressForm.controls.PhoneNumber.value"
+          *ngIf="context !== 'addCard' && context !== 'editContactAddress'" (click)="fiscalNumberValidation()">
+          {{'buttons.buttonSave' | translate}}
+        </ion-button>
+        <!-- Add/Edit Contact details -->
+        <ion-button fill="solid" shape="round" size="small" color="primary" [disabled]="!deliveryAddressForm.valid"
+          *ngIf="context == 'editContactAddress'" (click)="fiscalNumberValidation()">
+          {{'buttons.buttonSave' | translate}}
+        </ion-button>
+        <ion-button fill="solid" shape="round" size="small" color="primary" [disabled]="!deliveryAddressForm.valid"
+          *ngIf="context == 'addCard'" (click)="sendAddressToAddCard()">
+          {{'buttons.buttonSave' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

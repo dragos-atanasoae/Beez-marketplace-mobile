@@ -1,9 +1,31 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>image-viewer</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content fullscreen>
+  <ion-row id="row_header" class="ion-align-items-center">
+    <ion-col>
+      <p class="label_image_name">{{options.title | titlecase}}</p>
+    </ion-col>
+    <ion-col size="auto" (click)="closeModal()">
+      <ion-button fill="clear" color="primary" shape="round" size="large">
+        <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-slides [options]="defaultSlideOptions" #imageSlide *ngIf="showImage">
+    <ion-slide>
+      <div class="swiper-zoom-container">
+        <img alt="image_viewer" [src]="options.imageSource | convertPathOfShopImage:'~/'" @zoomIn/>
+      </div>
+    </ion-slide>
+  </ion-slides>
+  <ion-row class="wrap_zoom_buttons">
+    <ion-col size="6">
+      <ion-button shape="round" size="small" id="button_zoom_out" [disabled]="!isZoomSelected" (click)="zoomIn(false)" @slideIn>
+        <ion-icon src="./assets/icon/icon_zoom_out.svg"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button shape="round" fill="solid" size="small" id="button_zoom_in" (click)="zoomIn(true)" @slideIn>
+        <ion-icon src="./assets/icon/icon_zoom_in.svg"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
 </ion-content>

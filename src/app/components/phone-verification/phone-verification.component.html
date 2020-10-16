@@ -1,0 +1,82 @@
+<div>
+  <!-- <p id="label_validation_code_sent" *ngIf="waitingForConfirmationCode">{{'components.phoneVerification.labelVerificationCodeSent' | translate}}
+    <span>{{phoneNumber}}</span></p> -->
+  <ion-row id="row_preview_phone_number">
+    <ion-col>
+      <p id="label_validation_code_sent" *ngIf="waitingForConfirmationCode">
+        {{'components.phoneVerification.labelVerificationCodeSent' | translate}}
+        <br><span>{{phoneNumber}}</span> <span id="label_change_number" (click)="waitingForConfirmationCode = false">{{'components.phoneVerification.buttonChangeNumber' | translate}}</span></p>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="align-items-center">
+    <ion-col size="7" *ngIf="!waitingForConfirmationCode">
+      <div id="form_phone_validation">
+        <form [formGroup]="countryPhoneGroup">
+          <ion-item lines="none" id="input_phone_number">
+            <img
+              [src]="'../../../assets/icon/flags/' + ((selectedCountry.iso === 'GB' ? 'en' : selectedCountry.iso) | lowercase) + '.svg'"
+              alt="" (click)="selectCountry.open()">
+            <ion-select #selectCountry interface="popover" formControlName="country" required>
+              <ion-select-option *ngFor="let country of countries" [value]="country">{{country.iso}}
+              </ion-select-option>
+            </ion-select>
+            <ion-input type="tel" inputmode="tel" [placeholder]="selectedCountry.sampleMobilePhone" name="PhoneNumber"
+              formControlName="phone" required>
+            </ion-input>
+          </ion-item>
+        </form>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validationMessages.phone">
+            <div class="error-message" @animationError
+              *ngIf="(countryPhoneGroup.get('phone').hasError(validation.type) && (countryPhoneGroup.get('phone').dirty || countryPhoneGroup.get('phone').touched) && countryPhoneGroup.get('phone').value.length > 9)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col size="5" *ngIf="!waitingForConfirmationCode && !existentPhoneNumber">
+      <!-- Send verification code to the inserted phone number -->
+      <ion-button fill="solid" shape="round" [disabled]="countryPhoneGroup.invalid || verifyNumberDisabled"
+        [ngClass]="{btn_disabled: countryPhoneGroup.invalid}" (click)="verifyNumber()"
+        *ngIf="!waitingForConfirmationCode">
+        {{'components.phoneVerification.buttonSendSms' | translate}} <span>
+          {{countdownBeforeVerifyNumberAgain > 0 ? '(' + countdownBeforeVerifyNumberAgain + 's)' : ''}}</span>
+      </ion-button>
+    </ion-col>
+
+    <!-- Confirmation Code -->
+    <ion-col *ngIf="waitingForConfirmationCode">
+      <ion-item lines="none" id="input_verification_code" *ngIf="waitingForConfirmationCode">
+        <ion-input type="text" placeholder="{{'components.phoneVerification.placeholderInputCode' | translate}}"
+          [color]="invalidCodeMsg !== '' ? 'danger' : 'medium'" onKeyPress="if(this.value.length==4) return false;"
+          [formControl]="validationCode" (keydown.enter)="validationCode.value.length==4?verifyCode():''"></ion-input>
+      </ion-item>
+      <p id="label_resend_code" *ngIf="waitingForConfirmationCode && validationCode.pristine" (click)="resendVerificationCode()">{{'components.phoneVerification.buttonResendSms' | translate}}</p>
+      <span class="invalid_code" *ngIf="invalidCodeMsg != ''" @animationError>{{invalidCodeMsg}}</span>
+      <span class="invalid_code" *ngIf="userErrorMsg != ''" @animationError>{{userErrorMsg}}</span>
+    </ion-col>
+    <ion-col size="auto" *ngIf="waitingForConfirmationCode">
+      <!-- Confirm verification code -->
+      <ion-button fill="solid" shape="round" [disabled]="validationCode.invalid" (click)="verifyCode()"
+        [ngClass]="{btn_disabled: validationCode.invalid}" *ngIf="waitingForConfirmationCode && codeIsValid">
+        {{'components.phoneVerification.buttonValidate' | translate}}
+      </ion-button>
+      <!-- Resend verification code -->
+      <ion-button id="btn_resend_sms" fill="solid" shape="round"
+        [color]="resendCodeDisabled ? 'medium' : 'primary'" [disabled]="resendCodeDisabled"
+        (click)="resendVerificationCode()" *ngIf="waitingForConfirmationCode && codeIsValid == false">
+        {{'components.phoneVerification.buttonResendSms' | translate}}
+        {{countdownBeforeResendCode > 0 ? '(' + countdownBeforeResendCode + 's)' : ''}}
+      </ion-button>
+      <!-- Resend verification code -->
+      <!-- <ion-button class="btn_resend_sms" block="full" fill="clear" shape="round" size="small" [color]="resendCodeDisabled ? 'medium' : 'primary'"
+        [disabled]="resendCodeDisabled" (click)="resendVerificationCode()"
+        *ngIf="waitingForValidationCode && codeIsValid == false">
+        Resend sms
+        {{countdownBeforeResendCode > 0 ? '(' + countdownBeforeResendCode + 's)' : ''}}
+      </ion-button> -->
+    </ion-col>
+  </ion-row>
+</div>

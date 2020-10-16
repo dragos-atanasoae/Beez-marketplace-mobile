@@ -8,6 +8,7 @@ import { SafeHTMLPipe } from './safe-html.pipe';
 import { FilterByMetacategoryPipe } from './filter-by-metacategory.pipe';
 import { ConvertToLocaleTimePipe } from './convert-to-locale-time.pipe';
 import { ConvertPathOfShopImagePipe } from './convert-path-of-shop-image.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -20,21 +21,20 @@ import { ConvertPathOfShopImagePipe } from './convert-path-of-shop-image.pipe';
     FilterByMetacategoryPipe,
     ConvertToLocaleTimePipe,
     ConvertPathOfShopImagePipe,
-
   ],
   imports: [
-
+    TranslateModule
   ],
   exports: [
     SearchPipe,
-    ConvertToLocaleTimePipe,
-    ConvertPathOfShopImagePipe,
     CorrectHttpToHttpsPipe,
     RemoveCommaPipe,
     ReverseArrayPipe,
     SafeHTMLPipe,
     ReplaceCommaPipe,
     FilterByMetacategoryPipe,
+    ConvertToLocaleTimePipe,
+    ConvertPathOfShopImagePipe,
   ]
 })
 export class PipesModule {}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="41.334" height="26.583" viewBox="0 0 41.334 26.583">
+  <g id="Credit_card" data-name="Credit card" transform="translate(-4 -4)">
+    <circle id="Ellipse_8" data-name="Ellipse 8" cx="2" cy="2" r="2" transform="translate(31.333 23.559)" fill="#f0a622"/>
+    <path id="Union_1" data-name="Union 1" d="M2.845,19.2V19.19H2.214A2.214,2.214,0,0,1,0,16.976V0H41.334V16.976a2.214,2.214,0,0,1-2.214,2.214H25.069V19.2Zm31.107-1.488a3.69,3.69,0,1,0-2.222-6.631,3.653,3.653,0,0,0-2.206-.75,3.691,3.691,0,1,0,2.206,6.631A3.684,3.684,0,0,0,33.952,17.714ZM15.51,8.9l-.029-.038H25.1V7.381H2.953V8.857H9.615L9.586,8.9ZM7.381,4.428H29.524V2.952H7.381Zm-4.428,0H5.9V2.952H2.953Z" transform="translate(4 11.381)" fill="#f0a622"/>
+    <path id="Path_3219" data-name="Path 3219" d="M49.56,30a2.2,2.2,0,0,0-1.239.391,3.566,3.566,0,0,1,0,3.646A2.21,2.21,0,1,0,49.56,30Z" transform="translate(-11.608 -6.81)" fill="#f0a622"/>
+    <path id="Path_3221" data-name="Path 3221" d="M45.333,6.214A2.214,2.214,0,0,0,43.119,4H6.214A2.214,2.214,0,0,0,4,6.214V9.9H45.333Z" transform="translate(0)" fill="#f0a622"/>
+  </g>
+</svg>

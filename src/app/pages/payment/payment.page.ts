@@ -6,6 +6,8 @@ import { StripePaymentService } from 'src/app/services/stripe-payment.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { trigger, transition, useAnimation } from '@angular/animations';
+import { zoomIn, zoomOut, slideInUp, slideOutDown, slideInDown, fadeIn } from 'ng-animate';
 import { StripeCardPaymentModel } from 'src/app/models/stripeCardPayment.model';
 import { EventsService } from 'src/app/services/events.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,6 +21,16 @@ declare var Stripe;
   selector: 'app-payment',
   templateUrl: './payment.page.html',
   styleUrls: ['./payment.page.scss'],
+  animations: [
+    trigger('animationSlideInOut', [
+      transition(':enter', useAnimation(fadeIn), {
+        params: { timing: 0.2, delay: 0 }
+      }),
+      transition(':leave', useAnimation(slideOutDown), {
+        params: { timing: 0.1, delay: 0 }
+      }),
+    ]),
+  ]
 })
 export class PaymentPage implements OnInit, OnDestroy {
 
@@ -27,7 +39,7 @@ export class PaymentPage implements OnInit, OnDestroy {
 
   localeData = new LocaleDataModel();
   country = localStorage.getItem('country');
-  eventContext = 'Stripe Payment Page';
+  eventContext = 'Payment Page';
   stripe = Stripe(environment.apiURL === '-test-api.use-beez.com/' ? 'pk_test_rGzVsaLqy9AQSvCCWhCaNxVK00GhrAj3U5' : 'pk_live_NuLbq6PSfgLbYZNTWvuURv5B00er7SXsoR', { locale: 'ro' });
   private unsubscribe$: Subject<boolean> = new Subject();
   paymentMethods = [];
@@ -77,11 +89,29 @@ export class PaymentPage implements OnInit, OnDestroy {
 
   initializeProductType() {
     switch (this.paymentDetails.productType) {
+      case 'ProductObjective':
+        this.amountToPay.setValue(this.paymentDetails.amount);
+        break;
       case 'BeezVip12':
+        this.amountToPay.setValue(this.paymentDetails.amount);
+        break;
+      case 'OnlineBeezPayOrder':
+        this.amountToPay.setValue(this.paymentDetails.amount);
+        if (!this.paymentDetails.payNow) {
+          this.installments = this.paymentDetails.payLaterDetails?.installments.details.map(x => {x.selected = false; return x; });
+          console.log('Updated installments:', this. installments);
+          this.autoSelectInstallment();
+        }
+        break;
+      case 'Voucher':
         this.amountToPay.setValue(this.paymentDetails.amount);
         break;
       case 'ShopCart':
         this.amountToPay.setValue(this.paymentDetails.amount);
+        break;
+      case 'Donation':
+        this.amountToPay.setValue(null);
+        this.showAmountToPayInput = true;
         break;
       default:
         this.amountToPay.setValue(null);
@@ -102,6 +132,35 @@ export class PaymentPage implements OnInit, OnDestroy {
   }
 
   /**
+   * @name updateSelectedInstallments
+   * @description Calculate sum of selected installments value/leftToPay
+   */
+  updateSelectedInstallments() {
+    console.log('Update selected installments: ', this.installments);
+    // Update amount to pay
+    let amount = 0;
+    this.installments.forEach(item => amount += item.selected ? parseFloat(item.leftToPay.toFixed(2)) : 0);
+    console.log(amount);
+    this.amountToPay.setValue(amount);
+  }
+
+  /**
+   * @name autoSelectInstallment
+   * @description Find and select first installment with leftToPay value (!isPaid)
+   */
+  autoSelectInstallment() {
+    const firstUnpaidInstallment = this.installments.find(x => x.leftToPay > 0 && !x.isPaid);
+    console.log(this.installments.find(x => x.leftToPay > 0 && !x.isPaid));
+    this.installments.map(x => {
+      if (x.orderNumber === firstUnpaidInstallment.orderNumber) {
+        x.selected = true;
+      }
+    });
+    console.log('Preselected installment: ', this.installments);
+    this.updateSelectedInstallments();
+  }
+
+  /**
    * @description Post Stripe payment using the selected card
    */
   postStripePayment() {
@@ -115,6 +174,10 @@ export class PaymentPage implements OnInit, OnDestroy {
       AnonymousDonation: null,
       NicknameDonation: null
     };
+    if (this.paymentDetails.productType === 'Donation') {
+      cardPaymentData.AnonymousDonation = this.donationDetails.anonymous;
+      cardPaymentData.NicknameDonation = this.donationDetails.nickname;
+    }
     console.log(cardPaymentData);
 
     this.stripePaymentService.postPaymentIntentForExistingMethod(cardPaymentData).subscribe((res: any) => {
@@ -154,6 +217,8 @@ export class PaymentPage implements OnInit, OnDestroy {
         if (result.paymentIntent.status === 'succeeded') {
           // The payment is complete!
           this.switchTransactionType('payment');
+          // this.modalCtrl.dismiss();
+          // this.eventsService.publishEvent('payment:success');
         }
       }
     });
@@ -195,6 +260,12 @@ export class PaymentPage implements OnInit, OnDestroy {
         this.modalCtrl.dismiss();
         this.eventsService.publishEvent('payment:success');
         this.disableButton = false;
+        break;
+      case 'donation':
+        this.loadingService.dismissLoading();
+        this.modalCtrl.dismiss();
+        this.disableButton = false;
+        // TODO
         break;
     }
   }

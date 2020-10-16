@@ -8,11 +8,10 @@ import { InternationalizationService } from 'src/app/services/internationalizati
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Plugins } from '@capacitor/core';
+import { PaymentPage } from '../../payment/payment.page';
 import { CustomAlertComponent } from 'src/app/components/custom-alert/custom-alert.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PaymentPage } from '../../payment/payment.page';
-
 const { Browser } = Plugins;
 
 @Component({
@@ -88,7 +87,6 @@ export class VipSubscriptionPage implements OnInit, OnDestroy {
     const messagePart2 = this.translate.instant('contactSupportWhatsapp.messagePart2');
     const messagePart3 = this.translate.instant('contactSupportWhatsapp.messagePart3.vipSubscription');
     const contactMessage = messagePart1 + ' ' + userEmail + ', ' + messagePart2 + ' ' + messagePart3;
-    Browser.open({url: 'https://api.whatsapp.com/send?phone=+40744791302&text=' + contactMessage, windowName: '_system'});
     // this.inAppBrowser.create('https://api.whatsapp.com/send?phone=+40744791302&text=' + contactMessage, '_system');
   }
 

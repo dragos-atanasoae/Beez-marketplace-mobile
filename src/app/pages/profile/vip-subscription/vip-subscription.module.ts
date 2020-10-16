@@ -1,5 +1,3 @@
-import { TranslateModule } from '@ngx-translate/core';
-import { PipesModule } from './../../../pipes/pipes.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,6 +8,8 @@ import { VipSubscriptionPageRoutingModule } from './vip-subscription-routing.mod
 
 import { VipSubscriptionPage } from './vip-subscription.page';
 import { MomentModule } from 'ngx-moment';
+import { PipesModule } from 'src/app/pipes/pipes.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [

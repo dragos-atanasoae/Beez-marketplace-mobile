@@ -95,6 +95,9 @@
           <p class="label_fiscal_number" *ngIf="address.FiscalNumber">
             CUI: {{address.FiscalNumber}}
           </p>
+          <p class="label_address" *ngIf="address.ContactInfo">
+            {{address.ContactInfo}}
+          </p>
         </ion-col>
         <ion-col size="2" class="col_address_options ion-align-self-stretch">
           <ion-button fill="clear" color="primary" size="small" class="btn_edit_address"

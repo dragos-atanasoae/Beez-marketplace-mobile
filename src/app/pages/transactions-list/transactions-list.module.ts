@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { TransactionsListPageRoutingModule } from './transactions-list-routing.module';
 
 import { TransactionsListPage } from './transactions-list.page';
-import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { MomentModule } from 'ngx-moment';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    MomentModule,
     PipesModule,
     TranslateModule,
     TransactionsListPageRoutingModule

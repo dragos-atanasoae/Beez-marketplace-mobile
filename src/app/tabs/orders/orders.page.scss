@@ -1,0 +1,467 @@
+// Toolbar details
+ion-toolbar {
+    img {
+        height: 1.5em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+#section_first_order {
+    height: 80vh;
+    background: url("../../../assets/imgs/beez_pay_background.svg");
+    background-color: var(--beez-background-color);
+    background-size: cover;
+    // background-position: center;
+
+    #banner_free_shipping {
+        width: fit-content;
+        margin: 1.5em auto;
+        padding: 0.2em 1em;
+        background: rgba(1, 163, 1, 0.7);
+        border-radius: 4px;
+        display: flex;
+        align-content: center;
+
+        p {
+            margin: 0;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        ion-icon {
+            margin-right: 1em;
+            filter: invert(1000%) sepia(0%) saturate(16%) hue-rotate(159deg) brightness(1000%) contrast(103%);
+        }
+    }
+
+    #label_first_order {
+        width: 80%;
+        max-width: 320px;
+        margin: 0.2em auto;
+        text-align: center;
+        font-size: 1.6em;
+        font-weight: 500;
+        color: var(--ion-color-tertiary);
+    }
+
+    ion-button {
+        width: fit-content;
+        max-width: 320px;
+        --padding-start: 3em;
+        --padding-end: 3em;
+        display: block;
+        margin: 1em auto 2em auto;
+        text-transform: none;
+    }
+}
+
+#section_orders_list {
+    max-width: 576px;
+    margin: 0 auto;
+
+    .col_section_name {
+        display: inline-block;
+
+        ion-badge {
+            font-size: 0.7rem;
+            font-weight: 400;
+        }
+    }
+
+    ion-card {
+        margin: 0;
+        padding: 0.5em 1.5em;
+        border-radius: none;
+        box-shadow: none;
+        border-bottom: 1px solid var(--beez-background-color);
+        background: #fff;
+    }
+}
+
+ion-content {
+    padding-bottom: 2em;
+    --ion-background-color: var(--beez-background-color);
+
+    .wrap_content {
+        max-width: 576px;
+        margin: 0 auto;
+    }
+
+    ion-button {
+        text-transform: none;
+    }
+
+    .centered_content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+}
+
+// Card KYC validation required
+#cardview_message_kyc_required {
+    max-width: 576px;
+    margin: 0.5em auto 0.2em auto;
+    padding: 0 0.5em;
+    border-radius: var(--beez-border-radius);
+    box-shadow: var(--beez-box-shadow);
+    background-color: #fff;
+
+    ion-col {
+        padding: 0;
+        overflow: hidden;
+
+        #label_message {
+            white-space: nowrap;
+            overflow: initial;
+            color: var(--ion-color-primary);
+            animation: scrolling-text 20s linear infinite;
+        }
+
+        ion-button {
+            --padding-start: 0.5em;
+            --padding-end: 0.5em;
+        }
+    }
+}
+
+@keyframes scrolling-text {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-200%);
+    }
+}
+
+// Loading (Skeleton)
+.row_loading {
+    div {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .skeleton_header {
+        width: 40%;
+        height: 1em;
+        margin: 0.5em auto;
+        border-radius: 2em;
+    }
+
+    .skeleton_image {
+        width: 5.5em;
+        height: 5.5em;
+        margin-left: 1em;
+        margin-right: 1em;
+        border-radius: 1em;
+    }
+
+    .skeleton_name {
+        width: 80%;
+        height: 1em;
+        margin-top: 0.5em;
+        border-radius: 2em;
+    }
+
+    .skeleton_value {
+        height: 1.5em;
+        width: 60%;
+        margin-top: 1em;
+        border-radius: 2em;
+    }
+
+    .skeleton_days {
+        height: 0.8em;
+        width: 4em;
+        margin-top: 1em;
+        border-radius: 2em;
+    }
+
+}
+
+// orders list (online/offline and vouchers)
+.row_orders {
+    margin: 0em 0em 0.7em 0em;
+    padding: 0.7em;
+    background: var(--ion-color-light);
+}
+
+#orders_history {
+    margin-top: 1em;
+}
+
+.row_history {
+    margin-bottom: 0.5em;
+    padding: 0em 0.7em;
+    background: #fff;
+    opacity: 0.7;
+    border-bottom: 1px solid var(--ion-color-light-shade);
+}
+
+.row_orders_list {
+    width: 100%;
+
+    .col_order_status,
+    .col_order_installments,
+    .col_category_tag {
+        height: 2em;
+        padding-right: 0em;
+        border-bottom: 1px solid var(--ion-color-light-shade);
+    }
+
+    .label_order_status {
+        margin-top: -0.2em;
+        margin-left: 0;
+        display: flex;
+        align-items: center;
+        font-size: 0.8em;
+        color: var(--ion-color-tertiary);
+
+        ion-icon {
+            margin-right: 0.5em;
+            margin-bottom: 0.2em;
+            font-size: 1.8em;
+        }
+    }
+
+    .wrap_category_tag {
+        padding: 0.1em 0.8em 0.1em 0.4em;
+        display: flex;
+        border-radius: 6px;
+        background: #EDEDED;
+        text-align: right;
+
+        ion-icon {
+            margin-right: 0.4em;
+            font-size: 1em;
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.8em;
+            font-weight: 500;
+            text-align: right;
+            color: var(--ion-color-tertiary);
+        }
+    }
+
+    // order INSTALLMENTS
+    .wrap_installments {
+        display: block;
+
+        #row_installements_circles {
+            ion-col {
+                padding: 0;
+            }
+
+            ion-col:first-of-type {
+                .horizontal_line {
+                    width: 50% !important;
+                    right: 0;
+                }
+            }
+
+            ion-col:last-of-type {
+                .horizontal_line {
+                    width: 50% !important;
+                    left: 0;
+                }
+            }
+
+            .horizontal_line {
+                width: 100%;
+                height: 1px;
+                position: absolute;
+                top: 0.5rem;
+                background-color: var(--ion-color-medium);
+                // box-shadow: var(--beez-box-shadow);
+                z-index: 1;
+            }
+
+            .active_installment,
+            .payed_installment {
+                width: 100%;
+                height: 100%;
+            }
+
+            .active_installment {
+                background: var(--ion-color-primary);
+            }
+
+            .payed_installment {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: var(--ion-color-light);
+                background: var(--ion-color-tertiary);
+            }
+
+            .progress_circle,
+            .payed_installment,
+            .active_installment {
+                border-radius: 50%;
+                z-index: 2;
+            }
+
+            .progress_circle {
+                width: 1rem;
+                height: 1rem;
+                padding: 2px;
+                margin: 0 auto;
+                position: relative;
+                background-color: #fff;
+                border: 1px solid var(--ion-color-medium);
+                // box-shadow: var(--beez-box-shadow);
+            }
+        }
+    }
+
+    .row_order_details {
+        padding-top: 0.5em;
+
+        // Online order image
+        .row_order_image {
+            height: 5em;
+            width: 5em;
+
+            // border-radius: var(--beez-border-radius);
+            // box-shadow: var(--beez-box-shadow);
+            // background: #fff;
+            ion-col {
+                padding: 0;
+            }
+
+            img {
+                height: auto;
+                max-height: 4.2em;
+                width: auto;
+                max-width: 4em;
+            }
+        }
+
+        // Voucher image
+        .voucher_details {
+            position: relative;
+
+            .voucher_value {
+                position: absolute;
+                top: -0.1em;
+                line-height: 0;
+                font-weight: 600;
+
+                sup {
+                    font-size: 0.67em;
+                    font-weight: 600;
+                    margin-left: -7px;
+                }
+            }
+
+            .voucher_icon {
+                min-height: 1.5em;
+                min-width: 4.5em;
+            }
+
+            .active_voucher {
+                color: #fff;
+            }
+
+            .is_used_value {
+                color: var(--ion-color-tertiary-shade);
+            }
+        }
+
+        .label_order_name,
+        .label_order_price {
+            margin: 0em;
+            color: var(--ion-color-secondary-tint);
+        }
+
+        .label_order_name {
+            width: 98%;
+            font-size: 0.9em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .label_order_price {
+            font-weight: 500;
+            font-size: 1.2em;
+        }
+
+        .label_remaining_days {
+            margin: 0.2em 0em;
+            font-size: 0.9em;
+            font-weight: 400;
+            color: var(--ion-color-tertiary);
+        }
+
+        .btn_view_details {
+            height: 2em;
+            width: 100%;
+            --box-shadow: none;
+        }
+    }
+}
+.wrap_payment_progress {
+    padding-left: 0;
+    padding-right: 0;
+}
+.row-progress-bar {
+    padding-top: 0em;
+
+    ion-col {
+        padding: 0;
+    }
+
+    .progress-outer {
+        width: 100%;
+        margin: 4px 2px 0 2px;
+        padding: 1px;
+        text-align: center;
+        background-color: rgba(190, 190, 190, 0.2);
+        color: #fff;
+        border-radius: 20px;
+    }
+
+    .progress-inner {
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 0.3em;
+        border-radius: 20px;
+        background-color: var(--ion-color-medium);
+    }
+
+    .label_amount_due {
+        margin-bottom: 0;
+        color: var(--ion-color-medium);
+        font-size: 0.75em;
+        font-weight: 400;
+    }
+
+    .label_total_value {
+        margin-bottom: 0;
+        color: var(--ion-color-primary);
+        font-weight: 400;
+        // font-size: 0.75em;
+    }
+
+    .checkmark_order_paid {
+        margin-top: 0.2em;
+        float: right;
+        font-size: 1.4em;
+        color: var(--ion-color-primary);
+    }
+}
+
+.btn_orders_history {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}

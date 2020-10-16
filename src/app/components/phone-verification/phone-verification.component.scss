@@ -1,0 +1,112 @@
+
+#row_preview_phone_number {
+    ion-col {
+        padding: 0;
+    }
+    #label_validation_code_sent {
+        margin: 1em 1em 0.5em 1em;
+        font-size: 0.8em;
+        color: var(--ion-color-tertiary);
+    
+        span:first-of-type {
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        #label_change_number {
+            margin-left: 1em;
+            font-size: 1em!important;
+            color: var(--ion-color-primary);
+        }
+    }
+    ion-button {
+        --padding-start: 0.5em;
+        --padding-end: 0.5em;
+        display: block;
+        margin: auto 0 auto 0.5em;
+    }
+}
+
+#form_phone_validation {
+    width: 100%;
+    padding: 0;
+
+    #input_phone_number {
+        margin-left: 0.4em;
+        --padding-start: 0;
+
+        ion-select {
+            position: absolute;
+            width: fit-content;
+            height: 1.5em;
+            margin: 0;
+            opacity: 0;
+            --padding-start: 0;
+            --padding-end: 0;
+            z-index: 999;
+
+            .select-text {
+                width: fit-content !important;
+            }
+        }
+
+        img {
+            width: 1.5em;
+            height: 1.5em;
+            margin: auto 0 auto 0.5em;
+            position: absolute;
+            z-index: 99;
+        }
+
+        ion-input {
+            padding-left: 2.5em !important;
+            // border: 1px solid var(--ion-color-medium);
+            color: var(--ion-color-secondary);
+            background: var(--beez-background-color);
+            border: 1px solid #dddddd;
+            border-radius: var(--beez-border-radius);
+            z-index: 9;
+        }
+
+    }
+
+}
+
+ion-item.item-has-focus>ion-input {
+    border: 1px solid var(--ion-color-primary) !important;
+    background: #fff !important;
+}
+
+#input_verification_code {
+    margin-left: 0.4em;
+    --padding-start: 0;
+
+    ion-input {
+        padding-left: 1em !important;
+        // border: 1px solid var(--ion-color-medium);
+        color: var(--ion-color-secondary);
+        background: var(--beez-background-color);
+        border: 1px solid #dddddd;
+        border-radius: var(--beez-border-radius);
+        z-index: 9;
+    }
+}
+
+#label_resend_code {
+    margin-top: 0.5em;
+    margin-left: 1em;
+    font-size: 0.8em;
+    color: var(--ion-color-primary);
+}
+
+.validation-errors {
+    margin-left: 1em;
+    font-size: 0.7em;
+    color: var(--ion-color-danger);
+}
+
+.invalid_code {
+    margin-left: 1em;
+    display: block;
+    font-size: 0.7em;
+    color: var(--ion-color-danger);
+}

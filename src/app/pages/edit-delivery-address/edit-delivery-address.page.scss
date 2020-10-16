@@ -1,0 +1,182 @@
+#delivery_address_form {
+    #logo_google_attribution {
+        height: 0.5em;
+        float: right;
+    }
+
+    max-width: 420px;
+    height: 90%;
+    padding: 1em;
+    margin: 0.5em auto 4.5em auto;
+    position: relative;
+    background: #fff;
+    z-index: 99;
+
+    .label_info {
+        color: #424242;
+        font-size: 0.8em;
+        text-align: center;
+
+        span {
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+    }
+
+    #label_description {
+        font-size: 0.9em;
+        margin-top: 1em;
+    }
+
+    img {
+        height: 2.5em;
+        width: auto;
+        margin: 2em auto 0 auto;
+        display: block;
+    }
+
+    p {
+        width: 92%;
+        text-align: center;
+        margin: 0 auto;
+        color: rgb(107, 107, 107);
+    }
+
+    form {
+        width: 100%;
+        margin-bottom: 5em;
+        position: relative;
+
+        ion-item.item-has-focus > ion-input {
+            border: 1px solid var(--ion-color-primary) !important;
+            background-color: #fff;
+        }
+
+        ion-item {
+            margin: 0;
+            --padding-start: 10px;
+
+            ion-label {
+                // margin-left: 0.5em !important;
+                font-size: 0.9em;
+                z-index: 999;
+            }
+
+            ion-input {
+                padding-left: 0.5em !important;
+                // border: 1px solid var(--ion-color-medium);
+                color: var(--ion-color-secondary);
+                background: var(--beez-background-color);
+                border: 1px solid #dddddd;
+                border-radius: var(--beez-border-radius);
+            }
+        }
+
+        ion-col {
+            padding: 0;
+        }
+
+        .label_optional,
+        .label_placeholder {
+            color: var(--ion-color-medium);
+            font-size: 0.8em;
+        }
+        #wrap_contact_address_section {
+            ion-item {
+                margin-top: 0.5em;
+            }
+        }
+        #header_personal_details {
+            margin-top: 1.5em;
+            border-bottom: 1px solid var(--beez-background-color);
+            ion-col {
+                padding: 0;
+            }
+            #title_section_personal_details {
+                text-align: left !important;
+                font-size: 1em;
+                font-weight: 500;
+                color: var(--ion-color-secondary);
+            }
+            ion-button {
+                --padding-start: 1em;
+                --padding-end: 1em;
+                font-size: 0.8em;
+                ion-icon {
+                    font-size: 2em;
+                }
+            }
+        }
+        #row_preview_personal_details {
+            margin-top: 0.5em;
+            margin-left: 0.5em;
+            opacity: 0.6;
+            p {
+                text-align: left;
+            }
+        }
+    }
+
+    #row_buttons {
+        margin-top: 2em;
+        margin-bottom: 0;
+        padding: 0 12px;
+
+        ion-button {
+            display: block;
+            margin: 1em auto 0 auto;
+            text-transform: none;
+        }
+    }
+
+    .mb-2 {
+        margin-bottom: 2em !important;
+    }
+    
+    .label_details {
+        margin-bottom: 0.4em;
+        margin-left: 0.4em;
+        text-align: left;
+        color: var(--ion-color-secondary);
+        span {
+            font-size: 0.75em;
+            color: var(--ion-color-primary);
+        }
+    }
+
+    .validation-errors {
+        color: var(--ion-color-danger);
+        font-size: 10px;
+        font-weight: 300;
+        margin: 4px auto 0 18px;
+    }
+}
+
+.action-sheet-group {
+    overflow: auto !important;
+}
+
+ion-footer {
+    ion-toolbar {
+        --min-height: fit-content;
+        --background: none !important;
+        --border-style: none;
+        --border-width: 0;
+    }
+}
+
+#row_buttons {
+    width: 100%;
+    bottom: 0;
+    background: #fff;
+    // background: linear-gradient(180deg, rgba(255, 255, 255, 0.541), #ffff, #ffff);
+    text-align: center;
+    z-index: 999;
+
+    ion-button {
+        max-width: 80%;
+        margin: 1em auto;
+        display: block;
+        text-transform: none;
+    }
+}

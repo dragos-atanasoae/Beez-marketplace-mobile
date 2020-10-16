@@ -10,7 +10,7 @@ import { IonicModule } from '@ionic/angular';
   exports: [CustomAlertComponent],
   imports: [
     CommonModule,
-    IonicModule
+    IonicModule,
   ]
 })
 export class CustomAlertModule { }

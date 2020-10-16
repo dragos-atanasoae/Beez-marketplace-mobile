@@ -8,29 +8,41 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'tab-orders',
-        loadChildren: () => import('../tab-orders/tab-orders.module').then(m => m.TabOrdersPageModule)
+        path: 'orders',
+        loadChildren: () => import('./orders/orders.module').then( m => m.OrdersPageModule)
       },
       {
-        path: 'tab-marketplace',
-        loadChildren: () => import('../tab-marketplace/tab-marketplace.module').then(m => m.TabMarketplacePageModule)
+        path: 'marketplace',
+        loadChildren: () => import('./marketplace/marketplace.module').then( m => m.MarketplacePageModule)
       },
       {
-        path: 'tab-profile',
-        loadChildren: () => import('../tab-profile/tab-profile.module').then(m => m.TabProfilePageModule)
+        path: 'profile',
+        loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
       },
       {
         path: '',
-        redirectTo: '/tabs/tab-marketplace',
+        redirectTo: '/tabs/marketplace',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab-marketplace',
+    redirectTo: '/tabs/marketplace',
     pathMatch: 'full'
-  }
+  },
+  // {
+  //   path: 'orders',
+  //   loadChildren: () => import('./orders/orders.module').then( m => m.OrdersPageModule)
+  // },
+  // {
+  //   path: 'marketplace',
+  //   loadChildren: () => import('./marketplace/marketplace.module').then( m => m.MarketplacePageModule)
+  // },
+  // {
+  //   path: 'profile',
+  //   loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  // }
 ];
 
 @NgModule({

@@ -58,21 +58,6 @@
     </div>
     <!-- WITHDRAW BTN -->
     <ion-row [ngClass]="{'row_buttons': country =='ro', 'row_buttons_uk': country =='uk'}">
-      <!-- <ion-col size="6" *ngIf="country =='ro'">
-        <ion-button fill="solid" shape="round" class="btn_donate" (click)="openDonationCampaigns()">
-          <ion-icon src="./assets/icon/profile_icons/doneaza_ba-01.svg"></ion-icon>
-          {{'pages.transactionsList.buttonDonate' | translate}}
-        </ion-button>
-      </ion-col> -->
-      <!-- DONATION BTN -->
-      <!-- <ion-col size="6">
-        <ion-button [ngClass]="{btn_withdraw_disabled: walletInfo?.available <= 0}"
-          [disabled]="walletInfo?.available <= 0" fill="solid" shape="round" class="btn_withdraw"
-          (click)="openWithdrawModal('withdraw')">
-          <ion-icon src="./assets/icon/profile_icons/Icon_withdraw.svg"></ion-icon>
-          {{'pages.transactionsList.buttonWithdraw' | translate}}
-        </ion-button>
-      </ion-col> -->
       <!-- MISSED TRANSACTIOS BTN -->
       <ion-col size="12" *ngIf="country == 'ro'">
         <ion-button class="btn_missed_transactions" fill="clear" shape="round" [routerLink]="['/missed-transactions']">
@@ -213,6 +198,3 @@
     <p>{{'pages.transactionsList.labelEmptyList' | translate}}</p>
   </ion-row>
 </ion-content>
-<!-- <app-account-validation *ngIf="showOverlayValidationAccount" [skipAccountValidation]="skipAccountValidation"
-  (eventAccountValidated)="receiveEventAccountValidated($event)" @overlayAccountValidation>
-</app-account-validation> -->

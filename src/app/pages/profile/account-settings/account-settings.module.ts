@@ -7,19 +7,19 @@ import { IonicModule } from '@ionic/angular';
 import { AccountSettingsPageRoutingModule } from './account-settings-routing.module';
 
 import { AccountSettingsPage } from './account-settings.page';
-import { TranslateModule } from '@ngx-translate/core';
-import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ConfirmDeleteDataModule } from 'src/app/components/confirm-delete-data/confirm-delete-data.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ConfirmDeleteDataModule,
     PipesModule,
     TranslateModule,
-    AccountSettingsPageRoutingModule,
-    ConfirmDeleteDataModule
+    AccountSettingsPageRoutingModule
   ],
   declarations: [AccountSettingsPage]
 })

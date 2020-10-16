@@ -26,7 +26,29 @@
 </ion-content>
 
 <ion-footer *ngIf="!showAddCardForm">
-  <ion-toolbar *ngIf="selectedCard !== null">
+  <ion-toolbar *ngIf="selectedCard !== null" @animationSlideInOut>
+    <!-- Select installments/amount to pay -->
+    <ion-row id="wrap_installments" *ngIf="paymentDetails.productType === 'OnlineBeezPayOrder' && !paymentDetails.payNow">
+      <ion-col size="12" *ngFor="let installment of installments">
+        <ion-item button lines="none" mode="md" [disabled]="installment.isPaid" (click)="installment.selected = !installment.selected; updateSelectedInstallments()">
+          <ion-row class="align-items-center" [ngClass]="{'disabled_installment': installment.isPaid, 'selected_installment' : installment.selected}">
+            <ion-col size="1">
+              <ion-icon [color]="installment.selected ? 'primary' : 'medium'" [name]="installment.isPaid || installment.selected ? 'checkmark-circle' : 'checkmark-circle-outline'"></ion-icon>
+            </ion-col>
+            <ion-col>
+              <p class="label_installment_name">{{(installment.isPaid ? 'pages.stripePaymentPage.installments.labelInstallmentPaid' : 'pages.stripePaymentPage.installments.labelInstallment' + installment.orderNumber) | translate}}</p>
+            </ion-col>
+            <ion-col size="auto">
+              <p class="label_installment_value">
+                <!-- <span *ngIf="(installment.leftToPay > 0 && !installment.isPaid) && (installment.value - installment.leftToPay !== 0)">({{installment.value | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}})</span> -->
+                {{(installment.isPaid ? installment.value : installment.leftToPay )| currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+              </p>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
     <ion-row class="ion-align-items-center">
       <ion-col *ngIf="paymentDetails.transactionType !== 'donation'">
         <p id="label_total" [ngClass]="{'decrease_size': showAmountToPayInput}">{{'pages.stripePaymentPage.labelOrderTotal' | translate}}</p>

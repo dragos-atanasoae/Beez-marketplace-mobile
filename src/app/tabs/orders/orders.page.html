@@ -1,0 +1,180 @@
+<ion-header>
+  <ion-toolbar>
+    <img src="./assets/icon/icon_food_marketplace.svg" alt="Beez">
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row id="section_first_order" class="ion-align-items-center" *ngIf="showFirstOrderTemplate">
+    <ion-col size="12">
+      <div id="banner_free_shipping">
+        <ion-icon slot="icon-only" src="./assets/icon/product_states/icon_ordered_inactive.svg"></ion-icon>
+        <p>{{'pages.beezPayTab.firstTimeUserContext.labelFreeShipping' | translate}}</p>
+      </div>
+      <p id="label_first_order">{{'pages.beezPayTab.firstTimeUserContext.labelFirstOrder' | translate}}</p>
+      <ion-button fill="solid" shape="round" size="medium" (click)="navigateToPath('tabs/marketplace')">
+        {{'pages.beezPayTab.firstTimeUserContext.labelBuyNowPayLater' | translate}}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <div class="wrap_content">
+
+    <!-- Loading content -->
+    <div *ngIf="showLoadingSkeleton">
+      <ion-row class="row_orders_list row_orders row_loading ion-align-items-center"
+        *ngFor="let skeleton of [0, 1, 2, 3, 4, 5, 6]">
+        <ion-col size="12">
+          <div>
+            <ion-skeleton-text animated class="skeleton_header"></ion-skeleton-text>
+            <ion-skeleton-text animated class="skeleton_header"></ion-skeleton-text>
+          </div>
+          <ion-row>
+            <ion-col size="auto">
+              <ion-skeleton-text animated class="skeleton_image"></ion-skeleton-text>
+            </ion-col>
+            <ion-col>
+              <ion-skeleton-text animated class="skeleton_name"></ion-skeleton-text>
+              <ion-skeleton-text animated class="skeleton_value"></ion-skeleton-text>
+              <ion-skeleton-text animated class="skeleton_days"></ion-skeleton-text>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- orders list -->
+    <div
+      *ngIf="(activeOrdersList != null || ordersHistory != null) && (activeOrdersList.length > 0 || ordersHistory.length > 0)">
+      <ion-row *ngFor="let order of activeOrdersList" class="row_orders_list row_orders ion-align-items-center"
+        (click)="openOrderDetailsPage(order)" #sectionActiveOrders>
+        <!-- <ion-col class="col_order_status">
+          <p class="label_order_status">
+            <ion-icon [src]="getOrderStatus(order).status.icon"></ion-icon>
+            {{getOrderStatus(order).status.text}}
+          </p>
+        </ion-col>
+        <ion-col class="col_category_tag" size="auto">
+          <div class="wrap_category_tag">
+            <ion-icon slot="start" [src]="'./assets/icon/icon_food_marketplace_dark.svg'"></ion-icon>
+            <p class="label_order_category">{{('pages.beezPayTab.orderCategories.label'+ order.category) | translate}}
+            </p>
+          </div>
+        </ion-col> -->
+        <ng-container *ngTemplateOutlet="orderDetails; context: {order: order}"></ng-container>
+      </ion-row>
+
+      <!-- Toggle orders history -->
+      <ion-col size="12" *ngIf="ordersHistory.length > 0 && activeOrdersList.length !== 0" class="centered_content">
+        <ion-button (click)="toggleordersHistory()" fill="outline" shape="round" size="small" color="tertiary"
+          class="btn_orders_history">
+          {{btnordersHistory}}
+        </ion-button>
+      </ion-col>
+
+      <!-- orders history -->
+      <div #sectionHistory>
+        <ion-row *ngIf="showHistory || activeOrdersList.length == 0" @toggleHistory>
+          <ion-row *ngFor="let order of ordersHistory" class="row_orders_list row_history"
+            (click)="openOrderDetailsPage(order)">
+            <ng-container *ngTemplateOutlet="orderDetails; context: {order: order}"></ng-container>
+          </ion-row>
+        </ion-row>
+      </div>
+
+    </div>
+  </div>
+  <!-- Pull to Refresh -->
+  <ion-refresher slot="fixed" class="custom_refresher" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="refresh" pullingText="{{'pullToRefresh.pullingText' | translate}}"
+      refreshingSpinner="bubbles" refreshingText="{{'pullToRefresh.refreshingText' | translate}}">
+    </ion-refresher-content>
+  </ion-refresher>
+  <!-- <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content class="refresher_item" pullingIcon="chevron-down-circle-outline" pullingText="Refresh"
+      refreshingSpinner="bubbles" refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher> -->
+</ion-content>
+
+<!-- orders details (online/offline/voucher/marketplace) -->
+<ng-template #orderDetails let-order="order">
+  <ion-col size="12"
+    *ngIf="order.category == 'ShoppingOrder'">
+    <ion-row class="row_order_details">
+      <ion-col size="3" class="centered_content">
+
+        <!-- Online order image -->
+        <ion-row
+          *ngIf="order.category === 'ShoppingOrder'"
+          class="row_order_image">
+          <ion-col size="12" class="centered_content">
+            <img class="order_image"
+              [src]="order.imagePath != null ? (order.imagePath.includes('http') ? order.imagePath : ('https://static.use-beez.com'+order.imagePath | convertPathOfShopImage:'~/')) : './assets/imgs/bee-characters/icon_pending_bee.svg'"
+              onerror="this.onerror==null;this.src='./assets/imgs/bee-characters/icon_pending_bee.svg'" />
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <!-- order name and price (online/voucher) -->
+      <ion-col size="9">
+        <ng-container *ngTemplateOutlet="orderNameAndPrice; context: {order: order}"></ng-container>
+      </ion-col>
+      <!-- Section ProgressBar Days Due Date -->
+      <!-- <ion-col size="12" class="wrap_payment_progress" *ngIf="order?.value - order?.paidValue > 0">
+        <ion-row class="row-progress-bar" *ngIf="order?.status.status !== 'Initiated'">
+          <ion-col>
+            <ion-row class="ion-align-items-center">
+              <ion-col>
+                <p class="label_amount_due">
+                  {{'pages.beezPayTab.labelAmountDue' | translate}}
+                  <span class="label_total_value">
+                    {{(order?.value - order?.paidValue)| currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+                </p>
+              </ion-col>
+              <ion-col size="auto" *ngIf="this.order?.paymentDueDate != null">
+                <p *ngIf="order?.value - order?.paidValue > 0 && (order?.status.status  !== 'CancellationRequested' && order?.status.status  !== 'Cancelled')" class="label_upcoming_installment">
+                  {{'pages.beezPayTab.labelDueDate' | translate}}
+                  <span class="label_due_date">
+                    {{order.paymentDueDate | convertToLocaleTime : 'DD.MM.YYYY'}}
+                  </span>
+                  <span class="warning_due_date"
+                    [ngClass]="{'overdue_payment': (order.paymentDueDate | amDifference : today) < 3}"
+                    *ngIf="(order.paymentDueDate | amDifference : today) < 3">
+                    ({{order.paymentDueDate | amDifference : today : 'days'}}
+                    {{'pages.beezPayTab.labelDays' | translate}})
+                  </span>
+                </p>
+              </ion-col>
+            </ion-row>
+            <div class="progress-outer">
+              <div class="progress-inner" [style.max-width]="(order?.paidValue) * 100/order?.value +'%'">
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col> -->
+    </ion-row>
+  </ion-col>
+</ng-template>
+
+<!-- order name and price -->
+<ng-template #orderNameAndPrice let-order="order">
+  <ion-row class="ion-align-items-center">
+    <ion-col size="12">
+      <p class="label_order_name" *ngIf="order.category == 'ShoppingOrder'">
+        {{'pages.beezPayTab.labelOrderCode' | translate}} {{order.orderCode}}
+      </p>
+    </ion-col>
+    <ion-col size="6">
+      <p class="label_order_price">
+        {{order.value  | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+      </p>
+
+    </ion-col>
+    <!-- View order details button -->
+    <ion-col size="6" class="centered_content">
+      <ion-button fill="solid" shape="round" size="small" class="btn_view_details">
+        {{getOrderStatus(order).status.btnAction}}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ng-template>

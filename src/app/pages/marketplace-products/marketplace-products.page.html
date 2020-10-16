@@ -1,0 +1,196 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" shape="round" color="primary" (click)="closeModal()">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-title>{{selectedCategory.name | titlecase}}</ion-title> -->
+    <ion-row id="row_searchbar">
+      <ion-col size="auto">
+        <img id="vendor_logo_navbar" [src]="vendor.imageUrl"
+          onerror="this.onerror==null;this.src='./assets/icon/icon_food_marketplace.svg'" />
+      </ion-col>
+      <ion-col>
+        <ion-searchbar placeholder="{{'pages.marketplace.marketplaceCategories.labelSearchTheProduct' | translate}}" inputmode="text" type="text" (ionChange)="searchProduct($event.target.value)"
+          (ionClear)="cancelSearch()" [debounce]="1000" mode="ios" showCancelButton="never"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <ion-buttons slot="end">
+      <ion-label id="label_cart_value">
+        {{cartValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</ion-label>
+      <ion-card class="shopping_cart" (click)="openShoppingCart()" @bounceIn>
+        <ion-badge color="primary" *ngIf="shoppingCartList.length > 0">
+          {{shoppingCartList.length}}
+        </ion-badge>
+        <img src="./assets/icon/icon_shopping_basket.svg" alt="">
+      </ion-card>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Page header -->
+  <ion-item-divider lines="none" sticky>
+
+    <!-- <ion-row id="row_banner_minimum_order" *ngIf="cartValue < vendor.minimumOrderValue">
+        <ion-col size="12">
+          <p id="label_minimum_value">{{'pages.marketplace.marketplaceProducts.labelMinimumOrder' | translate}}
+            <span>{{vendor.minimumOrderValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+          </p>
+          <p id="label_required_value">{{'pages.marketplace.marketplaceProducts.labelRequiredMore' | translate}}
+            <span>{{vendor.minimumOrderValue  - cartValue | number : '0.2'}} lei</span></p>
+        </ion-col>
+      </ion-row> -->
+    <ion-row class="row_products_header ion-align-items-center" style="display: none;"
+      [ngClass]="{'header_margin_bottom': allCategories?.length > 1}">
+      <!-- Vendor logo -->
+      <ion-col size="4" class="col_shop_logo">
+        <ion-card>
+          <img src="./assets/icon/icon_food_marketplace.svg" />
+        </ion-card>
+      </ion-col>
+      <!-- Product category image -->
+      <ion-col size="4" class="col_category_image centered_content">
+        <div class="wrap_image" @bounceIn>
+          <img class="img_product"
+            [src]="selectedCategory.imgUrl != null ? ('https://static.use-beez.com' + selectedCategory.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+            onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" />
+        </div>
+      </ion-col>
+      <!-- Shopping cart details -->
+      <ion-col size="4" class="col_shopping_cart">
+        <ion-card button mode="ios" class="btn_shopping_cart" (click)="openShoppingCart()">
+          <ion-badge color="primary">
+            {{shoppingCartList.length}}
+          </ion-badge>
+          <img src="./assets/icon/icon_shopping_basket.svg" alt="">
+        </ion-card>
+        <p class="label_total_cart">
+          {{cartValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+      </ion-col>
+    </ion-row>
+    <!-- PAGE HEADER -->
+    <ion-row class="row_page_header ion-align-items-center">
+      <!-- Vendor logo -->
+      <!-- <ion-col size="3" class="col_shop_logo"> -->
+      <!-- <ion-card>
+            <img [src]="vendor.imageUrl"
+              onerror="this.onerror==null;this.src='./assets/icon/icon_food_marketplace.svg'" />
+          </ion-card> -->
+      <!-- <div class="wrap_vendor_logo">
+          <img [src]="vendor.imageUrl"
+            onerror="this.onerror==null;this.src='./assets/icon/icon_food_marketplace.svg'" />
+        </div>
+      </ion-col> -->
+      <!-- Minimum order progress -->
+      <ion-col [size]="vendor?.deliveryFeeThreshold !== null ? 6 : 12">
+        <ion-row class="row_progress_minimum_order ion-align-items-center">
+          <ion-col size="2">
+            <img
+              [src]="cartValue < vendor.minimumOrderValue ? './assets/icon/icon_shopping_basket.svg' : './assets/icon/icon_shopping_basket_minimum_done.svg'"
+              alt="">
+          </ion-col>
+          <ion-col size="10" class="col_progress">
+            <div>
+              <div class="progres_outer">
+                <div class="progres_inner" [style.max-width]="(cartValue * 100 / vendor.minimumOrderValue) + '%'"></div>
+              </div>
+              <div class="wrap_text">
+                <p><span class="label_progress">Minimum order </span>
+                  <span
+                    class="label_value_required">{{vendor.minimumOrderValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+                </p>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="6">
+        <ion-row class="row_progress_minimum_order ion-align-items-center"
+          *ngIf="vendor?.deliveryFeeThreshold !== null">
+          <ion-col size="2">
+            <img
+              [src]="cartValue < vendor.deliveryFeeThreshold ? './assets/icon/icon_minimum_order_free_shipping_incomplete.svg' : './assets/icon/icon_minimum_order_free_shipping_done.svg'"
+              alt="">
+          </ion-col>
+          <ion-col size="10" class="col_progress">
+            <div>
+              <div class="progres_outer">
+                <div class="progres_inner" [style.max-width]="(cartValue * 100 / vendor.deliveryFeeThreshold) + '%'">
+                </div>
+              </div>
+              <div class="wrap_text">
+                <p><span class="label_value_required">
+                    <span class="label_progress">{{'pages.marketplace.marketplaceCategories.labelAddMore' | translate}}</span>
+                    {{ (vendor.deliveryFeeThreshold > cartValue ? (vendor.deliveryFeeThreshold - cartValue) : 0) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+                  </span></p>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="12">
+        <!-- CATEGORIES HORIZONTAL LIST -->
+        <div id="row_switch_category" *ngIf="allCategories?.length > 1">
+          <div id="list_of_categories" scrollX="true">
+            <ion-card button mode="md"
+              [ngClass]="{'active_category': category.name === selectedCategory.name && context !== 'search'}"
+              *ngFor="let category of allCategories" (click)="updateActiveCategory(category)">
+              <ion-row class="ion-align-items-center">
+                <ion-col size="auto">
+                  <div class="wrap_category_image">
+                    <img
+                      [src]="selectedCategory.imgUrl != null ? ('https://static.use-beez.com' + category.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+                      onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" />
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <p class="label_category_name">{{category.name}}</p>
+                </ion-col>
+              </ion-row>
+            </ion-card>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-item-divider>
+  <!-- Products list -->
+  <ion-row *ngFor="let product of productsList" class="row_products_list"
+    (click)="openMarketplaceProductsDetails(product)">
+    <!-- Product image -->
+    <ion-col size="3" class="centered_content">
+      <!-- Product image -->
+      <ion-row class="row_product_image">
+        <ion-col size="12" class="centered_content">
+          <img class="product_image"
+            [src]="product.imgUrl != null ? ('https://static.use-beez.com' + product.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+            onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" alt="">
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <!-- Product details -->
+    <ion-col size="7">
+      <p class="label_product_name">{{product.name | titlecase}}</p>
+      <p class="label_product_details" [innerHTML]="product.weightInKG"></p>
+      <p class="label_product_price"><span>{{'pages.marketplace.marketplaceProducts.labelYouPay' | translate}}</span>
+        {{product?.unitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+        <span class="label_unit_type">&nbsp;/{{product.unitType | lowercase}}</span>
+      </p>
+      <p class="label_cashback">{{'pages.marketplace.marketplaceProducts.labelCashbackPercent' | translate}}&nbsp;<span>
+          {{vendor.cashback}}</span></p>
+    </ion-col>
+    <!-- Button add -->
+    <ion-col size="2" class="centered_content">
+      <ion-button fill="clear" shape="round" size="small">
+        <ion-icon name="add-circle" class="icon_add_to_cart"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <!-- No products -->
+  <div id="wrap_empty_list" *ngIf="productsList.length < 1">
+    <!-- <p id="_title_empty_list"></p> -->
+    <img src="./assets/imgs/bee-characters/icon_pending_bee.svg" alt="">
+  </div>
+</ion-content>

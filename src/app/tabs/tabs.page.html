@@ -1,21 +1,21 @@
 <ion-tabs #ionTabs (ionTabsDidChange)="getSelectedTab()">
 
   <ion-tab-bar #tabsBar slot="bottom">
-    <ion-tab-button tab="tab-orders">
-      <ion-icon [ngClass]="activeTab == 'tab-orders'? 'scale-in-center' : ''"
-        [src]="activeTab == 'tab-orders'? '../../../assets/icon/tabs_icons/ordersTabActive.svg' : '../../../assets/icon/tabs_icons/ordersTabInactive.svg'">
+    <ion-tab-button tab="orders">
+      <ion-icon [ngClass]="activeTab == 'orders'? 'scale-in-center' : ''"
+        [src]="activeTab == 'orders'? '../../../assets/icon/tabs_icons/ordersTabActive.svg' : '../../../assets/icon/tabs_icons/ordersTabInactive.svg'">
+      </ion-icon>
+    </ion-tab-button>
+    <ion-tab-button tab="marketplace">
+      <ion-icon [ngClass]="activeTab == 'marketplace'? 'scale-in-center' : ''"
+        [src]="activeTab == 'marketplace'? '../../../assets/icon/tabs_icons/marketplaceTabActive.svg' : '../../../assets/icon/tabs_icons/marketplaceTabInactive.svg'">
       </ion-icon>
     </ion-tab-button>
 
-    <ion-tab-button tab="tab-marketplace">
-      <ion-icon name="ellipse"></ion-icon>
-      <!-- <ion-label>Marketplace</ion-label> -->
-    </ion-tab-button>
-
-    <ion-tab-button class="profile_btn" tab="tab-profile">
+    <ion-tab-button class="profile_btn" tab="profile">
       <img src="./assets/icon/profile_icons/icon_vip_crown.svg" *ngIf="isVIPMember" alt="vip" class="img_vip_crown">
-      <ion-icon [ngClass]="activeTab == 'tab-profile'? 'scale-in-center' : ''" class="icon_profile"
-        [src]="activeTab == 'tab-profile'? '../../../assets/icon/tabs_icons/profileTabActive.svg' : '../../assets/icon/tabs_icons/profileTabInactive.svg'">
+      <ion-icon [ngClass]="activeTab == 'profile'? 'scale-in-center' : ''" class="icon_profile"
+        [src]="activeTab == 'profile'? '../../../assets/icon/tabs_icons/profileTabActive.svg' : '../../assets/icon/tabs_icons/profileTabInactive.svg'">
       </ion-icon>
       <ion-badge class="scale-in-center" *ngIf="notificationsCount > 0 && notificationsCount != undefined">
       </ion-badge>

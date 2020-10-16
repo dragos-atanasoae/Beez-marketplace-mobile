@@ -5,7 +5,6 @@ import { IonicModule } from '@ionic/angular';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { SelectDeliveryAddressComponent } from './select-delivery-address.component';
-import { EditDeliveryAddressPageModule } from 'src/app/pages/edit-delivery-address/edit-delivery-address.module';
 
 @NgModule({
   imports: [
@@ -14,7 +13,6 @@ import { EditDeliveryAddressPageModule } from 'src/app/pages/edit-delivery-addre
     IonicModule,
     PipesModule,
     TranslateModule,
-    // EditDeliveryAddressPageModule
   ],
   exports: [
       SelectDeliveryAddressComponent

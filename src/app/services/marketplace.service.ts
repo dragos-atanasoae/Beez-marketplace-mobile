@@ -115,7 +115,17 @@ export class MarketplaceService {
   }
 
   /**
-   * @name getProductDetails
+   * @name getAllOrders
+   * @description Get list of all products (online/offline/voucher/marketplace)
+   */
+  getAllOrders() {
+    this.prepareHeaderForRequest();
+    const url = this.prefixUrlByCountry + this.apiURL + 'api/BeezPay/Items';
+    return this.httpClient.get(url, { headers: this.headers });
+  }
+
+  /**
+   * @name getItemDetails
    * @param itemId
    * @param itemCategory
    */

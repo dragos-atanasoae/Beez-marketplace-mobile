@@ -6,14 +6,14 @@ import { MarketplaceService } from 'src/app/services/marketplace.service';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
 import { Observable, Subject } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
+import { PaymentPage } from '../payment/payment.page';
 import { NavigationExtras, Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/services/analytics.service';
 import { ImageViewerOptionsModel } from 'src/app/models/imageViewerOptions.model';
 
-import { MarketplaceProductDetailsPage } from '../marketplace/marketplace-product-details/marketplace-product-details.page';
+import { MarketplaceProductDetailsPage } from '../marketplace-product-details/marketplace-product-details.page';
 import { ImageViewerPage } from '../image-viewer/image-viewer.page';
 import { takeUntil } from 'rxjs/operators';
-import { PaymentPage } from '../payment/payment.page';
 import { StripePaymentService } from 'src/app/services/stripe-payment.service';
 import { CustomAlertComponent } from 'src/app/components/custom-alert/custom-alert.component';
 @Component({
@@ -248,7 +248,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     modal.onDidDismiss().then(() => {
       this.marketplaceService.getShoppingCart(this.vendor.id, this.city.Id);
       this.modalCtrl.dismiss().then(() => { this.modalCtrl.dismiss().then(() => { this.modalCtrl.dismiss(); }); });
-      this.router.navigate(['/tabs/beez-pay']);
+      this.router.navigate(['/tabs/orders']);
     });
   }
 
