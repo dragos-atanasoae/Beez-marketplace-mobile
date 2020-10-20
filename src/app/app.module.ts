@@ -20,6 +20,7 @@ import { MomentModule } from 'ngx-moment';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { CustomAlertModule } from './components/custom-alert/custom-alert.module';
+import { Mixpanel, MixpanelPeople } from '@ionic-native/mixpanel/ngx';
 
 registerLocaleData(localeRo, 'ro');
 registerLocaleData(localeEnGB, 'en-GB');
@@ -49,12 +50,14 @@ export function createTranslateLoader(http: HttpClient) {
     CustomAlertModule
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
-    LoadingService,
     CallNumber,
     CurrencyPipe,
     DatePipe,
+    LoadingService,
+    Mixpanel,
+    MixpanelPeople,
+    SplashScreen,
+    StatusBar,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]

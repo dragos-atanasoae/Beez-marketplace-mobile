@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "91030328254",
+    "firebase_url": "https://beez-food-marketplace.firebaseio.com",
+    "project_id": "beez-food-marketplace",
+    "storage_bucket": "beez-food-marketplace.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91030328254:android:93566bdff747bb9b37dfef",
+        "android_client_info": {
+          "package_name": "com.beez.marketplace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91030328254-7goptqtn09joe53k9d5kv6dkkod2n2hd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beez.marketplace",
+            "certificate_hash": "0982b9b656471c5424ecc2e23470f7bed1b599f0"
+          }
+        },
+        {
+          "client_id": "91030328254-9np5hsvnuk0n0td2jamd0t1qrijeh9b9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7sMijXlTd7tf82pYl7y87Q_17uKAUyGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91030328254-9np5hsvnuk0n0td2jamd0t1qrijeh9b9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,8 +7,7 @@
       </ion-icon>
     </ion-tab-button>
     <ion-tab-button tab="marketplace">
-      <ion-icon [ngClass]="activeTab == 'marketplace'? 'scale-in-center' : ''"
-        [src]="activeTab == 'marketplace'? '../../../assets/icon/tabs_icons/marketplaceTabActive.svg' : '../../../assets/icon/tabs_icons/marketplaceTabInactive.svg'">
+      <ion-icon id="tab_home" [ngClass]="activeTab == 'marketplace'? 'scale-in-center' : 'inactive_tab'" name="home">
       </ion-icon>
     </ion-tab-button>
 

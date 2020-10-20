@@ -106,6 +106,13 @@ img {
     }
 }
 
+ion-footer ion-button {
+    width: 90%;
+    max-width: 360;
+    margin: 0.5em auto 1.5em auto;
+    display: block;
+}
+
 @media (max-width: 360px) {
     #section_benefits {
         ion-button {

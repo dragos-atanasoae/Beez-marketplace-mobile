@@ -2,6 +2,7 @@
 
 export const environment = {
   production: true,
+  mixpanelToken: 'd9aaa06e882aac726e751378c9cadea2',
   // full path example https://ro-prod-api.use-beez.com
   /* LIVE */
   // headlessCmsUrl: 'https://cdn-live-headless-cms.azureedge.net/',

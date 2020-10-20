@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  mixpanelToken: 'acb76fcf96e63e58ac23a4494b4a4937',
   // full path example https://ro-prod-api.use-beez.com
   // Test URL
 
