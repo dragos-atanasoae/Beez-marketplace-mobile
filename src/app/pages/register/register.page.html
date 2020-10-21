@@ -112,10 +112,10 @@
           {{'pages.register.labelGoToLogin' | translate}}<span>{{'pages.register.labelLogin' | translate}}</span>
         </ion-button>
       </ion-row>
-      <p id="label_or">
+      <p id="label_or" style="display: none;">
         <span>{{'pages.register.labelOr' | translate}}</span>
       </p>
-      <ion-row class="ion-align-items-center ion-justify-content-center">
+      <ion-row class="ion-align-items-center ion-justify-content-center" style="display: none;">
         <!-- REGISTER WITH FACEBOOK IOS -->
         <ion-fab-button *ngIf="showAppleSignUp" class="btn_fab_facebook"
           (click)="selectRegisterType('registerWithFacebook')">
