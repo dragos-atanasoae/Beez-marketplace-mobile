@@ -60,8 +60,7 @@
       <!-- Autocomplete street RO -->
       <div class="ng-autocomplete" *ngIf="country == 'ro'" >
         <p class="label_details">
-          {{'pages.editAddress.labelAddressLine2' | translate}}
-          <span>{{'pages.editAddress.labelAddressLine2Part2' | translate}}</span>
+          {{'pages.editAddress.labelStreet' | translate}}
         </p>
         <ng-autocomplete class="select_autocomplete_suggestion" name="Address" formControlName="Address"
           autocomplete="off" debounceTime="300" historyHeading="{{'pages.editAddress.historyHeading' | translate}}"
@@ -91,7 +90,7 @@
       </div>
 
       <!-- Address details (nr, building and other) -->
-      <ion-item mode="ios" lines="none" *ngIf="country == 'ro'">
+      <ion-item mode="ios" lines="none" class="item_other_details" *ngIf="country == 'ro'">
         <ion-label color="secondary" position="stacked">
           {{'pages.editAddress.labelOtherDetails' | translate}}
         </ion-label>

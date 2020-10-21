@@ -50,19 +50,6 @@
       </ion-row>
     </form>
     <ion-row class="ion-align-items-center ion-justify-content-center">
-      <!-- SELECT COUNTRY -->
-      <ion-col size="5">
-        <ion-button fill="solid" shape="round" size="medium" class="btn_select_country"
-          [ngClass]="{btn_select_laguage_active: selectedCountry == 'ro'}" (click)="selectLanguage('ro', 'ro')">
-          <ion-icon slot="start" src="./assets/icon/flags/ro.svg"></ion-icon>România
-        </ion-button>
-      </ion-col>
-      <ion-col size="7">
-        <ion-button fill="solid" shape="round" size="medium" class="btn_select_country"
-          [ngClass]="{btn_select_laguage_active: selectedCountry == 'uk'}" (click)="selectLanguage('uk', 'en')">
-          <ion-icon slot="start" src="./assets/icon/flags/en.svg"></ion-icon>United Kingdom
-        </ion-button>
-      </ion-col>
       <!-- LOGIN BUTTON -->
       <ion-col size="12">
         <ion-button fill="solid" shape="round" size="medium" class="btn_login" (click)="selectAccountType('login')"
@@ -94,7 +81,8 @@
   <ion-row>
     <ion-button fill="clear" shape="round" expand="block" size="small" color="tertiary" class="link_switch_auth"
       [routerLink]="'/register'">
-      {{'pages.login.labelGoToRegister' | translate}} <span>{{'pages.login.labelRegister' | translate}}</span></ion-button>
+      {{'pages.login.labelGoToRegister' | translate}} <span>{{'pages.login.labelRegister' | translate}}</span>
+    </ion-button>
   </ion-row>
 </ion-content>
 <ion-footer *ngIf="" class="copyright_footer">

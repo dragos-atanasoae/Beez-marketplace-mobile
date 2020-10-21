@@ -53,7 +53,6 @@ export class LoginPage implements OnInit {
   };
   eventContext = 'LoginPage';
   showAppleSignIn = false;
-  selectedCountry = localStorage.getItem('country') ? localStorage.getItem('country') : 'ro';
 
   constructor(
     public modalCtrl: ModalController,
@@ -94,8 +93,6 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    // console.log('The current language is: ', navigator.language);
-    this.getDeviceLocaleData();
   }
 
   ionViewDidLoad() {
@@ -110,30 +107,6 @@ export class LoginPage implements OnInit {
   hideShowPassword() {
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
-  }
-
-  getDeviceLocaleData() {
-    const deviceCountry = navigator.language.split('-')[1];
-
-    console.log('Device country is: ', deviceCountry);
-    if (deviceCountry === 'RO' || deviceCountry === 'GB') {
-      console.log('Preselected country: ', deviceCountry);
-      localStorage.setItem('country', deviceCountry === 'GB' ? 'uk' : deviceCountry.toLowerCase());
-      this.selectedCountry = deviceCountry === 'GB' ? 'uk' : deviceCountry.toLowerCase();
-    } else {
-      console.log('The device country is not UK or RO. Please select your country');
-      localStorage.setItem('country', 'ro');
-      this.selectedCountry = 'ro';
-    }
-  }
-
-  selectLanguage(country: string, language: string) {
-    this.language = language;
-    localStorage.setItem('country', country);
-    localStorage.setItem('language', language);
-    this.translate.setDefaultLang(this.language);
-    this.translate.use(this.language);
-    this.selectedCountry = country;
   }
 
   /**
@@ -188,27 +161,7 @@ export class LoginPage implements OnInit {
     localStorage.setItem('userName', userName);
     localStorage.setItem('jwtToken', token);
     this.getProfileInfo(userName);
-    // this.getAccountLanguage();
     this.navCtrl.navigateRoot('/tabs');
-  }
-
-  /**
-   * @description Get the language from databse for the current user
-   */
-  getAccountLanguage() {
-    this.loadingService.presentLoading();
-    this.manageAccountService.getLanguage()
-      .subscribe(response => {
-        // console.log(response);
-        const languageResponse: any = response;
-        if (languageResponse.language !== localStorage.getItem('language')) {
-          localStorage.setItem('language', languageResponse.language.toLowerCase());
-        }
-        this.navCtrl.navigateRoot('/tabs');
-        this.loadingService.dismissLoading();
-      }, () => {
-        this.loadingService.dismissLoading();
-      });
   }
 
   /**

@@ -58,7 +58,6 @@ export class RegisterPage implements OnInit {
       { type: 'required', message: '' }
     ]
   };
-  selectedCountry = localStorage.getItem('country') ? localStorage.getItem('country') : 'ro';
 
   constructor(
     public navCtrl: NavController,
@@ -95,32 +94,7 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getDeviceLocaleData();
     this.initializeValidationMessages();
-  }
-
-  getDeviceLocaleData() {
-    const deviceCountry = navigator.language.split('-')[1];
-
-    console.log('Device country is: ', deviceCountry);
-    if (deviceCountry === 'RO' || deviceCountry === 'GB' || deviceCountry === 'UK') {
-      console.log('Preselected country: ', deviceCountry);
-      localStorage.setItem('country', (deviceCountry === 'GB' || deviceCountry === 'UK') ? 'uk' : deviceCountry.toLowerCase());
-      this.selectedCountry = (deviceCountry === 'GB' || deviceCountry === 'UK') ? 'uk' : deviceCountry.toLowerCase();
-    } else {
-      console.log('The device country is not UK or RO. Please select your country');
-      localStorage.setItem('country', 'ro');
-      this.selectedCountry = 'ro';
-    }
-  }
-
-  selectLanguage(country: string, language: string) {
-    this.language = language;
-    localStorage.setItem('country', country);
-    localStorage.setItem('language', language);
-    this.translate.setDefaultLang(this.language);
-    this.translate.use(this.language);
-    this.selectedCountry = country;
   }
 
   // =============== 1 =================

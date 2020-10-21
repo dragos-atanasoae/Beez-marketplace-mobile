@@ -44,14 +44,8 @@ export class WelcomePage implements OnInit, OnDestroy {
       this.translate.use(this.language);
     }
 
-    if (!localStorage.getItem('country')) {
-      console.log('No country in localeStorage');
-      if (navigator.language.split('-')[1] === 'RO' || navigator.language.split('-')[1] === 'UK') {
-        localStorage.setItem('country', navigator.language.split('-')[1].toLowerCase());
-      } else {
-        localStorage.setItem('country', 'ro');
-      }
-    }
+    localStorage.setItem('country', 'ro');
+
     // Initialize locale context
     this.internationalizationService.initializeCountry().subscribe(res => {
       this.localeData = res;
