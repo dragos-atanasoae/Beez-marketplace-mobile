@@ -21,6 +21,7 @@ import { StripePaymentService } from 'src/app/services/stripe-payment.service';
 import { Subject } from 'rxjs';
 import { EventsService } from 'src/app/services/events.service';
 import { CustomAlertComponent } from 'src/app/components/custom-alert/custom-alert.component';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 const { Browser } = Plugins;
 
@@ -65,7 +66,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
     private translate: TranslateService,
     private marketplaceService: MarketplaceService,
     private callNumber: CallNumber,
-    // private inAppBrowser: InAppBrowser,
+    private inAppBrowser: InAppBrowser,
     private stripePaymentService: StripePaymentService,
     private loadingService: LoadingService,
     private eventsService: EventsService
@@ -323,8 +324,8 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
     const messagePart2 = this.translate.instant('contactSupportWhatsapp.messagePart2');
     const messagePart3 = this.translate.instant('contactSupportWhatsapp.messagePart3.foodMarketplaceOrder');
     const contactMessage = messagePart1 + ' ' + userEmail + ', ' + messagePart2 + ' ' + messagePart3 + ' ' + this.orderDetails.id;
-    // Browser.open({ url: 'https://api.whatsapp.com/send?phone=' + this.orderDetails.customerSupport.WhatsAppPhoneNumber + '&text=' + contactMessage });
-    // this.inAppBrowser.create('https://api.whatsapp.com/send?phone=' + this.orderDetails.customerSupport.WhatsAppPhoneNumber + '&text=' + contactMessage, '_system');
+    // Browser.open({ url: 'https://api.whatsapp.com/send?phone=' + this.orderDetails.customerSupport.WhatsAppPhoneNumber + '&text=' + contactMessage,  windowName: '_system' });
+    this.inAppBrowser.create('https://api.whatsapp.com/send?phone=' + this.orderDetails.customerSupport.WhatsAppPhoneNumber + '&text=' + contactMessage, '_system');
   }
 
   /**

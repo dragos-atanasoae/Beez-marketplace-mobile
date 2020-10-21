@@ -7,12 +7,11 @@ import { LocaleDataModel } from './../../../models/localeData.model';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Plugins } from '@capacitor/core';
 import { PaymentPage } from '../../payment/payment.page';
 import { CustomAlertComponent } from 'src/app/components/custom-alert/custom-alert.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-const { Browser } = Plugins;
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-vip-subscription',
@@ -28,7 +27,7 @@ export class VipSubscriptionPage implements OnInit, OnDestroy {
 
   constructor(private modalCtrl: ModalController,
               private router: Router,
-              // private inAppBrowser: InAppBrowser,
+              private inAppBrowser: InAppBrowser,
               private translate: TranslateService,
               private walletService: WalletService,
               private eventsService: EventsService,
@@ -87,7 +86,7 @@ export class VipSubscriptionPage implements OnInit, OnDestroy {
     const messagePart2 = this.translate.instant('contactSupportWhatsapp.messagePart2');
     const messagePart3 = this.translate.instant('contactSupportWhatsapp.messagePart3.vipSubscription');
     const contactMessage = messagePart1 + ' ' + userEmail + ', ' + messagePart2 + ' ' + messagePart3;
-    // this.inAppBrowser.create('https://api.whatsapp.com/send?phone=+40744791302&text=' + contactMessage, '_system');
+    this.inAppBrowser.create('https://api.whatsapp.com/send?phone=+40744791302&text=' + contactMessage, '_system');
   }
 
   async openPaymentModal() {

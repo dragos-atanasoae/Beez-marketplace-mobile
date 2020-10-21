@@ -3,5 +3,7 @@
     <string name="app_name">Beez Food Marketplace</string>
     <string name="title_activity_main">Beez Food Marketplace</string>
     <string name="package_name">com.beez.marketplace</string>
-    <string name="custom_url_scheme">com.beez.marketplace</string>
+    <string name="custom_url_scheme">beez-marketplace</string>
+    <string name="branch_key">key_live_mjN47aidNzcc7UlhEPCT6lgiwrleQNue</string>
+    <string name="branch_test_key">key_test_ljH65pomLsli0JlawGFHWlcnwCniRHCy</string>
 </resources>

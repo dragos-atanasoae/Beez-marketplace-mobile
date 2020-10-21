@@ -3,6 +3,7 @@
     package="com.beez.marketplace">
 
     <application
+        android:name="io.branch.referral.BranchApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -49,6 +50,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
+        <meta-data android:name="io.branch.sdk.BranchKey" android:value="@string/branch_key" />
+        <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="@string/branch_test_key" />
+        <meta-data android:name="io.branch.sdk.TestMode" android:value="true" /> <!-- Set to true to use test key -->
     </application>
 
     <!-- Permissions -->

@@ -6,6 +6,11 @@
     <param name="ios-package" value="CFCallNumber"/>
   </feature>
 
+  <feature name="InAppBrowser">
+    <param name="ios-package" value="CDVWKInAppBrowser"/>
+    <param name="onload" value="true"/>
+  </feature>
+
   <feature name="Mixpanel">
     <param name="ios-package" value="MixpanelPlugin"/>
     <param name="onload" value="true"/>
