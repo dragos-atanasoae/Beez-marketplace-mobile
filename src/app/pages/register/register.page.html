@@ -62,21 +62,6 @@
         </ion-label>
         <ion-input type="text" formControlName="promo_code"></ion-input>
       </ion-item>
-      <ion-row class="row_select_country">
-        <!-- SELECT COUNTRY -->
-        <ion-col size="5">
-          <ion-button fill="solid" shape="round" size="medium" class="btn_select_country"
-            [ngClass]="{btn_select_laguage_active: selectedCountry == 'ro'}" (click)="selectLanguage('ro', 'ro')">
-            <ion-icon slot="start" src="./assets/icon/flags/ro.svg"></ion-icon>România
-          </ion-button>
-        </ion-col>
-        <ion-col size="7">
-          <ion-button fill="solid" shape="round" size="medium" class="btn_select_country"
-            [ngClass]="{btn_select_laguage_active: selectedCountry == 'uk'}" (click)="selectLanguage('uk', 'en')">
-            <ion-icon slot="start" src="./assets/icon/flags/en.svg"></ion-icon>United Kingdom
-          </ion-button>
-        </ion-col>
-      </ion-row>
       <div class="validation-errors-checkboxes">
         <ng-container *ngFor="let validation of validationMessages.accept_term_of_use">
           <div class="error-message"
@@ -118,8 +103,8 @@
         </ion-col>
       </ion-row>
       <ion-row class="ion-align-items-center ion-justify-content-center">
-        <ion-button fill="solid" shape="round" size="medium" class="btn_register"
-          [disabled]="!registerForm.valid || !selectedCountry" (click)="selectRegisterType('register')">
+        <ion-button fill="solid" shape="round" size="medium" class="btn_register" [disabled]="!registerForm.valid"
+          (click)="selectRegisterType('register')">
           {{'pages.register.buttonRegister' | translate}}</ion-button>
       </ion-row>
       <ion-row>
@@ -132,18 +117,17 @@
       </p>
       <ion-row class="ion-align-items-center ion-justify-content-center">
         <!-- REGISTER WITH FACEBOOK IOS -->
-        <ion-fab-button *ngIf="showAppleSignUp" class="btn_fab_facebook" [disabled]="!selectedCountry"
+        <ion-fab-button *ngIf="showAppleSignUp" class="btn_fab_facebook"
           (click)="selectRegisterType('registerWithFacebook')">
           <ion-icon src="./assets/imgs/logo/Logo_Facebook_Blue.svg"></ion-icon>
         </ion-fab-button>
         <!-- REGISTER WITH APPLE IOS -->
-        <ion-fab-button *ngIf="showAppleSignUp" color="dark" [disabled]="!selectedCountry"
-          (click)="selectRegisterType('registerWithApple')">
+        <ion-fab-button *ngIf="showAppleSignUp" color="dark" (click)="selectRegisterType('registerWithApple')">
           <ion-icon name="logo-apple"></ion-icon>
         </ion-fab-button>
         <!-- REGISTER WITH FACEBOOK ANDORID -->
         <ion-button *ngIf="!showAppleSignUp" fill="solid" shape="round" size="medium" class="btn_facebook_login"
-          [disabled]="!selectedCountry" (click)="selectRegisterType('registerWithFacebook')">
+          (click)="selectRegisterType('registerWithFacebook')">
           <ion-icon slot="start" src="./assets/imgs/logo/Logo_Facebook_White.svg"></ion-icon>
           {{'pages.register.buttonRegisterWithFacebook' | translate}}
         </ion-button>

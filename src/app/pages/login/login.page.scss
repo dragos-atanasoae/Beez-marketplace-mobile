@@ -66,25 +66,6 @@
             height: 100%;
         }
     }
-    .btn_select_country {
-        width: 100%;
-        height: 3em;
-        display: block;
-        --padding-start: 0em;
-        --padding-end: 0em;
-        --background: #fff;
-        --background-activated: #ddd;
-        --background-hover: #ddd;
-        font-size: 1em;
-        color: var(--ion-color-secondary-tint);
-        filter: grayscale(100%);
-        opacity: 0.5;
-    }
-    .btn_select_laguage_active {
-        --background: var(--beez-background-color);
-        filter: grayscale(0%);
-        opacity: 1;
-    }
     .btn_login {
         width: 100%;
         height: 3em;
