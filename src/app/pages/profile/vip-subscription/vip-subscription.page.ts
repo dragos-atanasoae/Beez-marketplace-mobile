@@ -12,6 +12,7 @@ import { CustomAlertComponent } from 'src/app/components/custom-alert/custom-ale
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 @Component({
   selector: 'app-vip-subscription',
@@ -24,14 +25,18 @@ export class VipSubscriptionPage implements OnInit, OnDestroy {
   subscriptionCost = 99;
   expirationDate: string;
   localeData = new LocaleDataModel();
+  eventContext: 'VIP Subscription';
 
-  constructor(private modalCtrl: ModalController,
-              private router: Router,
-              private inAppBrowser: InAppBrowser,
-              private translate: TranslateService,
-              private walletService: WalletService,
-              private eventsService: EventsService,
-              private internationalizationService: InternationalizationService) {
+  constructor(
+    private analyticsService: AnalyticsService,
+    private modalCtrl: ModalController,
+    private router: Router,
+    private inAppBrowser: InAppBrowser,
+    private translate: TranslateService,
+    private walletService: WalletService,
+    private eventsService: EventsService,
+    private internationalizationService: InternationalizationService
+  ) {
     // * Listen for the payment success event
     this.eventsService.event$.pipe(takeUntil(this.unsubscribe$)).subscribe((res) => {
       if (res === 'payment:success') {
@@ -61,7 +66,8 @@ export class VipSubscriptionPage implements OnInit, OnDestroy {
 
   goToShops() {
     this.closeModal();
-    this.router.navigateByUrl('/tabs/search/null');
+    this.analyticsService.logEvent('select_tab_marketplace', { context: this.eventContext });
+    this.router.navigateByUrl('/tabs/marketplace');
   }
 
   /**
@@ -81,6 +87,7 @@ export class VipSubscriptionPage implements OnInit, OnDestroy {
    * @description Open Whatsapp conversation with Beez phone number
    */
   openWhatsapp() {
+    this.analyticsService.logEvent('contact_via_whatsapp', { context: this.eventContext });
     const userEmail = localStorage.getItem('userName');
     const messagePart1 = this.translate.instant('contactSupportWhatsapp.messagePart1');
     const messagePart2 = this.translate.instant('contactSupportWhatsapp.messagePart2');
@@ -104,6 +111,7 @@ export class VipSubscriptionPage implements OnInit, OnDestroy {
         paymentDetails: paymentData
       }
     });
+    this.analyticsService.logEvent('open_payment_page', { context: this.eventContext });
     modal.present();
   }
 

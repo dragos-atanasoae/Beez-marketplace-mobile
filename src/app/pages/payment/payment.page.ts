@@ -164,6 +164,7 @@ export class PaymentPage implements OnInit, OnDestroy {
    * @description Post Stripe payment using the selected card
    */
   postStripePayment() {
+    this.analyticsService.logEvent('post_payment', { context: this.eventContext });
     this.disableButton = true;
     this.loadingService.presentLoading(true);
     const cardPaymentData: StripeCardPaymentModel = {
@@ -174,18 +175,16 @@ export class PaymentPage implements OnInit, OnDestroy {
       AnonymousDonation: null,
       NicknameDonation: null
     };
-    if (this.paymentDetails.productType === 'Donation') {
-      cardPaymentData.AnonymousDonation = this.donationDetails.anonymous;
-      cardPaymentData.NicknameDonation = this.donationDetails.nickname;
-    }
     console.log(cardPaymentData);
 
     this.stripePaymentService.postPaymentIntentForExistingMethod(cardPaymentData).subscribe((res: any) => {
       // console.log(res);
       if (res.status === 'error') {
         this.loadingService.dismissLoading();
+        this.analyticsService.logEvent('payment_error', { context: this.eventContext });
         if (res.data.retryPayment) {
           console.log('The payment has additional confirmation');
+          this.analyticsService.logEvent('retry_payment', { context: this.eventContext });
           this.confirmStripeCardPayment(res.data.retryPayment.clientSecret, res.data.retryPayment.stripePaymentMethodId);
         } else {
           this.disableButton = false;
@@ -193,6 +192,7 @@ export class PaymentPage implements OnInit, OnDestroy {
         }
       } else if (res.status === 'success') {
         setTimeout(() => {
+          this.analyticsService.logEvent('payment_successful', { context: this.eventContext });
           this.switchTransactionType('payment');
           // this.modalCtrl.dismiss();
           // this.eventsService.publishEvent('payment:success');

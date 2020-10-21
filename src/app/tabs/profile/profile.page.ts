@@ -117,9 +117,6 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    // Send to analytics open/select tab
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('select_profile_tab', eventParams);
     this.getDashboardInfo();
   }
 
@@ -189,6 +186,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     const modal = await this.modalCtrl.create({
       component: VipSubscriptionPage,
     });
+    this.analyticsService.logEvent('open_vip_subscription_page', {context: this.eventContext});
     await modal.present();
   }
 
@@ -261,8 +259,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   async openManageCreditCards() {
     // console.log(this.profileInfo.CreditCards);
     const modal = await this.modalCtrl.create({
-      // component: ManageCreditCardsPage,
-      component: this.paymentProcessor === 'Stripe' ? ManageStripeCardsPage : ManageStripeCardsPage,
+      component: ManageStripeCardsPage,
       componentProps: { profileInfo: this.profileInfo }
     });
     modal.onDidDismiss().then((data) => {
@@ -273,6 +270,7 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.getUserInformation();
       }
     });
+    this.analyticsService.logEvent('open_manage_cards_page', {context: this.eventContext});
     await modal.present();
   }
 
@@ -286,6 +284,7 @@ export class ProfilePage implements OnInit, OnDestroy {
       componentProps: { profileInfo: this.profileInfo }
     });
     await modal.present();
+    this.analyticsService.logEvent('open_manage_addresses_page', {context: this.eventContext});
     modal.onDidDismiss().then((data) => {
       if (data.data === 'add' || data.data === 'edit') {
         this.getUserInformation();
@@ -300,7 +299,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   addPromoCode() {
     this.loadingService.presentLoading();
     // console.log('Adding promo code: ' + this.promoCode);
-    const eventParams = { context: this.eventContext, user_code: this.referralCode, promo_code: this.promoCode };
+    const eventParams: any = { context: this.eventContext, promo_code: this.promoCode };
     this.manageAccountService.addPromoCode(this.promoCode).subscribe(data => {
       this.addPromoCodeResponse = data;
       if (this.addPromoCodeResponse === 'OK') {
@@ -309,6 +308,7 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.analyticsService.logEvent('add_promo_code', eventParams);
       } else {
         this.presentToast(this.addPromoCodeResponse);
+        eventParams.error = this.addPromoCodeResponse;
         this.analyticsService.logEvent('add_promo_code_error', eventParams);
       }
       this.loadingService.dismissLoading();
@@ -361,7 +361,7 @@ export class ProfilePage implements OnInit, OnDestroy {
         contextData: context
       }
     };
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
+    const eventParams = { context: this.eventContext };
     this.router.navigate(['transactions-list'], navigationExtras);
     switch (context) {
       case 'payments':
@@ -375,41 +375,6 @@ export class ProfilePage implements OnInit, OnDestroy {
     }
   }
 
-
-  /**
-   * @name openDonationsPage
-   * @description (Android) => navigate to Donation Campaigns Page; (iOS) => redirect to Beez webpage on section Profile
-   */
-  openDonationsPage() {
-    // console.log('Redirect iOS: ', this.platform.is('ios'));
-    if (this.platform.is('ios')) {
-      this.authenticationService.fastLogin().subscribe((res: any) => {
-        // console.log(res);
-        if (res.status === 'success') {
-          this.redirectDonationToWeb(res.message);
-        } else {
-          this.redirectDonationToWeb(null);
-        }
-      });
-    } else {
-      this.router.navigate(['donation-campaigns']);
-      const eventParams = { context: this.eventContext, user_code: this.referralCode };
-      this.analyticsService.logEvent('open_donation_campaigns_page', eventParams);
-    }
-  }
-
-  /**
-   * @name redirectDonationToWeb
-   * @description Open system browser and redirect to Beez website on Donations page
-   */
-  redirectDonationToWeb(token: string) {
-    const donationUrl = 'https://use-beez.com/welcome?token=' + token + '&location=donations';
-    // console.log(donationUrl);
-    Browser.open({url: donationUrl, windowName: '_system'});
-    const eventParams = { context: this.eventContext };
-    this.analyticsService.logEvent('redirect_donation_to_web', eventParams);
-  }
-
   // ====================== 3 =========================
   // ============ FACEBOOK AUTHENTICATION  ============
   // ==================================================
@@ -418,7 +383,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   // ==========================
   facebookLogin() {
     const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('link_facebook_account', eventParams);
+    // this.analyticsService.logEvent('link_facebook_account', eventParams);
     // this.postInteractionsLogAnalytics('Profile Page', 'Conectare Facebook', 'Asociere cont Facebook', 'Click', 'facebookLogin()', '', '', '', '');
     // this.facebook.login(['public_profile', 'email'])
     //   .then((res: FacebookLoginResponse) => {

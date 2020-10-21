@@ -11,6 +11,7 @@ import { ImageViewerOptionsModel } from 'src/app/models/imageViewerOptions.model
 import { MarketplaceProductDetailsPage } from '../marketplace-product-details/marketplace-product-details.page';
 import { ImageViewerPage } from '../image-viewer/image-viewer.page';
 import { takeUntil } from 'rxjs/operators';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 @Component({
   selector: 'app-marketplace-products',
   templateUrl: './marketplace-products.page.html',
@@ -40,8 +41,10 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
   shoppingCartList: any = [];
   totalCart: Observable<any>;
   cartValue = 0;
+  eventContext: 'Products';
 
   constructor(
+    private analyticsService: AnalyticsService,
     private modalCtrl: ModalController,
     private loadingService: LoadingService,
     private marketplaceService: MarketplaceService,
@@ -113,6 +116,7 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
     this.selectedCategory = category;
     this.context = null;
     this.getProductsForCategories();
+    this.analyticsService.logEvent('update_selected_category', { context: this.eventContext });
   }
 
   /**
@@ -143,6 +147,7 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
       },
       cssClass: 'overlay_tutorial'
     });
+    this.analyticsService.logEvent('open_product_details', { context: this.eventContext });
     modal.present();
     modal.onDidDismiss().then((data: any) => {
       if (data.data === 'successfullyAddedToCart') {
@@ -161,6 +166,7 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
         city: this.city
       }
     });
+    this.analyticsService.logEvent('open_shopping_cart', { context: this.eventContext });
     modal.present();
   }
 
@@ -181,7 +187,7 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
       cssClass: 'modal_image_viewer',
       animated: false
     });
-
+    this.analyticsService.logEvent('open_product_image', { context: this.eventContext });
     imageViewer.present();
   }
 

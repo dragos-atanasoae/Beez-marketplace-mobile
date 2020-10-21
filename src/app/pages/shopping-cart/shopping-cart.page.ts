@@ -143,6 +143,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
       },
       cssClass: 'overlay_tutorial'
     });
+    this.analyticsService.logEvent('open_product_details', { context: this.eventContext });
     modal.present();
     modal.onDidDismiss().then((data: any) => {
       if (data.data === 'successfullyAddedToCart') {
@@ -191,6 +192,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     modal.onDidDismiss().then((res: any) => {
       console.log(res.data);
       if (res.data === 'success') {
+        this.analyticsService.logEvent('remove_product_from_cart', { context: this.eventContext });
         this.marketplaceService.editProductFromCart(productDetails.productReferenceId, 0, this.vendor.id, this.city.Id, true);
       }
     });
@@ -215,7 +217,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     this.loadingService.presentLoading();
     this.logAnalyticsEvent('checkout_shopping_cart');
     console.log(this.shoppingCartId, this.vendor.id, this.city.Id, this.selectedAddress.Id);
-
+    this.analyticsService.logEvent('checkout_shopping_cart', { context: this.eventContext });
     this.marketplaceService.checkoutShoppingCart(this.shoppingCartId, this.vendor.id, this.city.Id, this.selectedAddress.Id).subscribe((res: any) => {
       if (res.status === 'success') {
         this.modalCtrl.dismiss();
@@ -243,7 +245,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
       component: this.paymentProcessor === 'Stripe' ? PaymentPage : PaymentPage,
       componentProps: { paymentDetails: payment }
     });
-
+    this.analyticsService.logEvent('open_payment_page', { context: this.eventContext });
     modal.present();
     modal.onDidDismiss().then(() => {
       this.marketplaceService.getShoppingCart(this.vendor.id, this.city.Id);
@@ -275,7 +277,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
       cssClass: 'modal_image_viewer',
       animated: false
     });
-
+    this.analyticsService.logEvent('open_product_image', { context: this.eventContext });
     imageViewer.present();
   }
 

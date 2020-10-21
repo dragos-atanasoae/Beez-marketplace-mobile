@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Plugins } from '@capacitor/core';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 declare var Stripe;
 const { Keyboard } = Plugins;
 @Component({
@@ -28,11 +29,8 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
   @Output() eventNewPaymentMethodAdded = new EventEmitter<object>();
   private unsubscribe$: Subject<boolean> = new Subject();
   localeData = new LocaleDataModel();
-  // Test
-  // stripe = Stripe('pk_test_rGzVsaLqy9AQSvCCWhCaNxVK00GhrAj3U5', { locale: 'ro' });
-  // LIVE
-  // stripe = Stripe('pk_live_NuLbq6PSfgLbYZNTWvuURv5B00er7SXsoR', { locale: 'ro' });
-  stripe = Stripe(environment.apiURL === '-test-api.use-beez.com/' ? 'pk_test_rGzVsaLqy9AQSvCCWhCaNxVK00GhrAj3U5' : 'pk_live_NuLbq6PSfgLbYZNTWvuURv5B00er7SXsoR', { locale: 'ro' });
+
+  stripe = Stripe(environment.stripeToken, { locale: 'ro' });
   cardNumber;
   cardExpiry;
   cardCvc;
@@ -55,6 +53,7 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
   isKeyboardActive = false;
   isCardHolderActive = false;
   disableButton = false;
+  eventContext = 'Add Card';
 
   constructor(
     public platform: Platform,
@@ -64,7 +63,8 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
     private translate: TranslateService,
     private toastCtrl: ToastController,
     private internationalizationService: InternationalizationService,
-    private stripePaymentService: StripePaymentService
+    private stripePaymentService: StripePaymentService,
+    private analyticsService: AnalyticsService
   ) {}
 
   ngOnInit() {
@@ -86,19 +86,19 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
 
     this.getPaymentMethods();
     // Listen for show/hide keyboard to hide the slide navigation buttons
-    // if (!this.platform.is('desktop')) {
-      // Keyboard.addListener('keyboardWillShow', () => {
-      //   this.zone.run(() => {
-      //     this.isKeyboardActive = true;
-      //   });
-      // });
-      // Keyboard.addListener('keyboardDidHide', () => {
-      //   this.zone.run(() => {
-      //     this.isKeyboardActive = false;
-      //     this.isCardHolderActive = false;
-      //   });
-      // });
-    // }
+    if (!this.platform.is('desktop')) {
+      Keyboard.addListener('keyboardWillShow', () => {
+        this.zone.run(() => {
+          this.isKeyboardActive = true;
+        });
+      });
+      Keyboard.addListener('keyboardDidHide', () => {
+        this.zone.run(() => {
+          this.isKeyboardActive = false;
+          this.isCardHolderActive = false;
+        });
+      });
+    }
     console.log(this.paymentDetails);
   }
 
@@ -257,10 +257,6 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
       product: this.paymentDetails.productType,
       amount: this.paymentDetails.amount,
     };
-    if (this.paymentDetails.productType === 'Donation') {
-      stripePaymentData.AnonymousDonation = this.donationDetails.anonymous;
-      stripePaymentData.NicknameDonation = this.donationDetails.nickname;
-    }
     // Post payment intent and receive client secret key for Stripe
     this.stripePaymentService.postPaymentIntent(stripePaymentData).subscribe((res: any) => {
       if (res.status === 'success') {
@@ -280,6 +276,7 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
             this.errorHandling(result.error);
             this.disableButton = false;
           } else if (result.paymentIntent.status === 'succeeded') {
+            this.analyticsService.logEvent('add_card_with_payment_intent', { context: this.eventContext });
             console.log('Payment success!');
             setTimeout(() => {
               this.loadingService.dismissLoading();
@@ -332,6 +329,7 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
                 this.eventNewPaymentMethodAdded.emit({context: 'addCard', status: 'success'});
                 this.loadingService.dismissLoading();
                 this.disableButton = false;
+                this.analyticsService.logEvent('add_card', { context: this.eventContext });
                 // console.log('Stop asking for new data');
                 clearInterval(pooling);
               }

@@ -57,9 +57,11 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
   reviewSubmited = false;
   paymentProcessor = null;
   private unsubscribe$: Subject<boolean> = new Subject();
+  eventContext = 'Order Details';
 
   constructor(
     private alertCtrl: AlertController,
+    private analyticsService: AnalyticsService,
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
     private internationalizationService: InternationalizationService,
@@ -133,6 +135,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
    * @description Get invoice URL for the current order
    */
   getInvoiceUrl() {
+    this.analyticsService.logEvent('download_invoice', { context: this.eventContext });
     this.loadingService.presentLoading();
     this.marketplaceService.getInvoiceUrl(this.orderDetails.id, 'ShoppingOrder').subscribe((res: any) => {
       if (res.status === 'success') {
@@ -199,6 +202,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
     });
 
     modal.present();
+    this.analyticsService.logEvent('open_payment_page', { context: this.eventContext });
     modal.onDidDismiss().then(() => {
       this.getItemDetails();
     });
@@ -218,6 +222,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
       },
       cssClass: 'modal_no_background'
     });
+    this.analyticsService.logEvent('show_order_code_info', { context: this.eventContext });
     modal.present();
   }
 
@@ -254,12 +259,15 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
    * @description Remove marketplace order
    */
   removeOrder() {
+    this.analyticsService.logEvent('remove_order', { context: this.eventContext });
     this.marketplaceService.removeOrder(this.orderDetails.id)
       .subscribe((response: any) => {
         if (response.status === 'success') {
           this.modalCtrl.dismiss();
+          this.analyticsService.logEvent('order_removed', { context: this.eventContext });
           this.showAlertMessageThankYou(this.translate.instant('pages.marketplace.orderDetails.toastMessages.successRemoveOrder'));
         } else {
+          this.analyticsService.logEvent('error_on_remove_order', { context: this.eventContext });
           this.presentToast(this.translate.instant('pages.marketplace.orderDetails.toastMessages.errorRemoveOrder'));
         }
       });
@@ -270,6 +278,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
    * @description Post feedback for the current order
    */
   sendReview() {
+    this.analyticsService.logEvent('post_feedback', { context: this.eventContext });
     this.loadingService.presentLoading();
     this.marketplaceService.postOrderFeedback(this.orderDetails.id, this.messageReviewOrder.value).subscribe((res: any) => {
       this.loadingService.dismissLoading();
@@ -292,6 +301,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
         orderId: this.orderDetails.id
       }
     });
+    this.analyticsService.logEvent('open_missing_products_page', { context: this.eventContext });
     modal.present();
     modal.onWillDismiss().then((res) => { if (res.data === 'success') { this.getItemDetails(); } });
   }
@@ -319,6 +329,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
    * @description Open Whatsapp conversation with Beez phone number
    */
   openWhatsapp() {
+    this.analyticsService.logEvent('contact_via_whatsapp', { context: this.eventContext });
     const userEmail = localStorage.getItem('userName');
     const messagePart1 = this.translate.instant('contactSupportWhatsapp.messagePart1');
     const messagePart2 = this.translate.instant('contactSupportWhatsapp.messagePart2');
@@ -333,6 +344,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
    * @description Open Beez phone number in phone dialer
    */
   callBeez() {
+    this.analyticsService.logEvent('contact_via_phone_call', { context: this.eventContext });
     this.callNumber.callNumber(this.orderDetails.customerSupport.PhoneNumber, true)
       .then(res => console.log('Launched dialer!', res))
       .catch(err => console.log('Error launching dialer', err));
@@ -361,7 +373,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
       cssClass: 'modal_image_viewer',
       animated: false
     });
-
+    this.analyticsService.logEvent('open_product_image', { context: this.eventContext });
     imageViewer.present();
   }
 

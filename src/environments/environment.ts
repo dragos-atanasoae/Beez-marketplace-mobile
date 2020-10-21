@@ -4,19 +4,17 @@
 
 export const environment = {
   production: false,
+  // Mixpanel Analytics token
   mixpanelToken: 'acb76fcf96e63e58ac23a4494b4a4937',
+
+  // Stripe token - payment procesor
+  stripeToken: 'pk_test_rGzVsaLqy9AQSvCCWhCaNxVK00GhrAj3U5',
   // full path example https://ro-prod-api.use-beez.com
   // Test URL
-
   // country-env-api.use-beez.com
   apiURL : '-test-api.use-beez.com/',
-
   // apiURL: '-prod-api.use-beez.com/',
-  // apiURL : 'https://beezapitest.azurewebsites.net/'
-  // staging URL
-  // apiURL: '-apiteststaging.use-beez.com/'
-  // Live URL
-  // apiURL : '-api.use-beez.com/'
+
 
   // headless cms url
   // test

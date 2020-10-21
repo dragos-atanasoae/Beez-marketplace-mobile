@@ -6,6 +6,7 @@ import { trigger, transition, useAnimation } from '@angular/animations';
 import { bounceIn, slideInDown, slideOutDown } from 'ng-animate';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 @Component({
   selector: 'app-missing-products',
@@ -38,8 +39,10 @@ export class MissingProductsPage implements OnInit {
   showOverlaySelectQuantity = false;
   showOverlayRefundResponse = false;
   refundRequestReceived = false;
+  eventContext: 'Missing Products';
 
   constructor(
+    private analyticsService: AnalyticsService,
     private modalCtrl: ModalController,
     private internationalizationService: InternationalizationService,
     private marketplaceService: MarketplaceService,
@@ -85,6 +88,7 @@ export class MissingProductsPage implements OnInit {
       this.selectedProduct = product;
       this.showOverlaySelectQuantity = true;
     }
+    this.analyticsService.logEvent('select_missing_product', { context: this.eventContext });
   }
 
   /**
@@ -142,8 +146,12 @@ export class MissingProductsPage implements OnInit {
     this.marketplaceService.postOrderRefund(this.orderId, this.totalRefund, products).subscribe((res: any) => {
       // console.log(res);
       this.showOverlayRefundResponse = true;
+      this.analyticsService.logEvent('send_refund_request', { context: this.eventContext });
       if (res.status === 'success') {
+        this.analyticsService.logEvent('refund_request_successfuly_sent', { context: this.eventContext });
         this.refundRequestReceived = true;
+      } else {
+        this.analyticsService.logEvent('refund_request_error', { context: this.eventContext });
       }
       this.loadingService.dismissLoading();
     });

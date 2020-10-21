@@ -64,8 +64,7 @@ export class AccountSettingsPage {
   }
 
   ionViewWillEnter() {
-    const eventParams = {};
-    this.analyticsService.logEvent('select_settings_page', eventParams);
+    this.analyticsService.logEvent('open_settings_page', {});
   }
 
   /**
@@ -117,8 +116,7 @@ export class AccountSettingsPage {
               this.loadingService.dismissLoading();
             }, 800);
             this.setAccountLanguage(data);
-            const eventParams = { context: this.eventContext, user_code: this.referralCode, language: data };
-            this.analyticsService.logEvent('change_language', eventParams);
+            this.analyticsService.logEvent('change_language', { context: this.eventContext });
           },
           cssClass: 'alert_btn_action'
         }
@@ -148,8 +146,7 @@ export class AccountSettingsPage {
    * @param email
    */
   resetPassword() {
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('reset_password', eventParams);
+    this.analyticsService.logEvent('reset_password', { context: this.eventContext });
     const country = localStorage.getItem('country');
     this.authenticationService.recoverPassword(country, this.emailAddress).subscribe(res => {
       console.log(res);
@@ -170,8 +167,7 @@ export class AccountSettingsPage {
     localStorage.clear();
     localStorage.setItem('language', language);
     this.navCtrl.navigateRoot('welcome');
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('account_settings_page', eventParams);
+    this.analyticsService.logEvent('logout', { context: this.eventContext });
   }
 
   /**
@@ -194,8 +190,7 @@ export class AccountSettingsPage {
       this.showInfoStoredData = false;
     } else {
       this.showInfoStoredData = true;
-      const eventParams = { context: this.eventContext, user_code: this.referralCode };
-      this.analyticsService.logEvent('show_info_about_stored_data', eventParams);
+      this.analyticsService.logEvent('show_info_about_stored_data', { context: this.eventContext });
     }
   }
 
@@ -213,16 +208,14 @@ export class AccountSettingsPage {
         this.requestResponse = data;
         this.onAccountManagementRequestSuccesfull();
       }, () => this.loadingService.dismissLoading());
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('request_stored_data', eventParams);
+    this.analyticsService.logEvent('request_stored_data', { context: this.eventContext });
   }
 
   /**
    * *** REQUEST DELETE PERSONAL DATA ***
    */
   requestDeleteData() {
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('request_delete_stored_data', eventParams);
+    this.analyticsService.logEvent('request_delete_stored_data', { context: this.eventContext });
     this.loadingService.presentLoading();
     this.requestDescription = 'Solicită ștergerea datelor personale';
     this.requestType = 'delete data';
@@ -265,8 +258,7 @@ export class AccountSettingsPage {
    * *** REQUEST DELETE ACCOUNT ***
    */
   requestDeleteAccount(removeAccountReason?: string) {
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('request_delete_account', eventParams);
+    this.analyticsService.logEvent('request_delete_account', { context: this.eventContext });
     this.loadingService.dismissLoading();
     this.requestDescription = 'Solicită ștergere cont use-beez.com';
     this.requestType = 'delete account';
@@ -308,8 +300,7 @@ export class AccountSettingsPage {
     }
 
     Browser.open({ url: pageUrl, windowName: '_blank' });
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('open_' + pageUrl, eventParams);
+    this.analyticsService.logEvent('open_' + pageUrl, { context: this.eventContext });
   }
 
   /**
@@ -318,8 +309,7 @@ export class AccountSettingsPage {
    */
   openPage(pageName: string) {
     this.navCtrl.navigateForward('/' + pageName);
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('open_' + pageName, eventParams);
+    this.analyticsService.logEvent('open_' + pageName, { context: this.eventContext });
   }
 
   /**
@@ -343,8 +333,7 @@ export class AccountSettingsPage {
   openTermsOfUse() {
     const termsOfUseUrl = 'https://use-beez.com/Terms';
     Browser.open({ url: termsOfUseUrl, windowName: '_blank' });
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('open_termsOfUse_page', eventParams);
+    this.analyticsService.logEvent('open_termsOfUse_page', { context: this.eventContext });
   }
 
   /**
@@ -354,7 +343,6 @@ export class AccountSettingsPage {
   openPrivacyPolicies() {
     const privacyPoliciesUrl = 'https://use-beez.com/Privacy';
     Browser.open({ url: privacyPoliciesUrl, windowName: '_blank' });
-    const eventParams = { context: this.eventContext, user_code: this.referralCode };
-    this.analyticsService.logEvent('open_privacy_policies_page', eventParams);
+    this.analyticsService.logEvent('open_privacy_policies_page', { context: this.eventContext });
   }
 }

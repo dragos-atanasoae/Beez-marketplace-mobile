@@ -5,6 +5,7 @@ import { ModalController, AlertController, ToastController } from '@ionic/angula
 import { UserService } from 'src/app/services/user.service';
 import { DeliveryAddressService } from 'src/app/services/delivery-address.service';
 import { EditDeliveryAddressPage } from '../../edit-delivery-address/edit-delivery-address.page';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 @Component({
   selector: 'app-manage-addresses',
@@ -16,8 +17,10 @@ export class ManageAddressesPage implements OnInit {
   listOfDeliveryAddresses: any = [];
   contactAddress = null;
   action = '';
+  eventContext: 'Manage Addresses';
 
   constructor(
+    private analyticsService: AnalyticsService,
     private loadingService: LoadingService,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
@@ -67,6 +70,7 @@ export class ManageAddressesPage implements OnInit {
       }
     });
     await modal.present();
+    this.analyticsService.logEvent('open_edit_address_page', { context: this.eventContext });
     modal.onDidDismiss().then((data) => {
       console.log(data);
       if (data.data === 'add' || data.data === 'edit') {
@@ -101,6 +105,7 @@ export class ManageAddressesPage implements OnInit {
             this.deliveryAddressService.deleteDeliveryAddress(data).subscribe((res: any) => {
               console.log(res);
               if (res.status === 'success') {
+                this.analyticsService.logEvent('delete_address', { context: this.eventContext });
                 this.presentToast(this.translate.instant('pages.manageAddresses.toastMessages.onDeleteSuccess'));
                 this.getProfileInfo();
               } else {

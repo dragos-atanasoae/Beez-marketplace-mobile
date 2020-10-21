@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 @Component({
   selector: 'app-marketplace-categories',
   templateUrl: './marketplace-categories.page.html',
@@ -32,6 +33,7 @@ import { animate, query, stagger, style, transition, trigger } from '@angular/an
 export class MarketplaceCategoriesPage implements OnInit, OnDestroy {
   localeData: any;
   categories = [];
+  eventContext = 'Categories';
   private unsubscribe$: Subject<boolean> = new Subject();
   selectedCategory = null;
   products: any;
@@ -45,6 +47,7 @@ export class MarketplaceCategoriesPage implements OnInit, OnDestroy {
   statusOfFollowingVendor = true;
 
   constructor(
+    private analyticsService: AnalyticsService,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private translate: TranslateService,
@@ -128,6 +131,7 @@ export class MarketplaceCategoriesPage implements OnInit, OnDestroy {
         city: this.city
       }
     });
+    this.analyticsService.logEvent('open_products_page', { context: this.eventContext });
     modal.present();
   }
 
@@ -142,6 +146,7 @@ export class MarketplaceCategoriesPage implements OnInit, OnDestroy {
         city: this.city
       }
     });
+    this.analyticsService.logEvent('open_shopping_cart', { context: this.eventContext });
     modal.present();
   }
 

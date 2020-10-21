@@ -34,7 +34,6 @@ export class TabsPage implements OnInit, AfterViewInit {
   notificationsCount: number;
   isKeyboardActive = false;
   heightOfTabsBar = 50;
-  eventContext = 'Tabs Page';
   isVIPMember = true;
 
   constructor(
@@ -138,11 +137,10 @@ export class TabsPage implements OnInit, AfterViewInit {
   /**
    * @name analyticsRegisterWithPromoCode
    * @description Save the event(Register with promo code) to analytics if on the register is added a valid promo code
-   * @param analyticsPlatform
    */
-  analyticsRegisterWithPromoCode(analyticsPlatform: string) {
+  analyticsRegisterWithPromoCode() {
     if (this.promoCodeOnRegister !== undefined || this.promoCodeOnRegister !== null) {
-      const eventParams = { context: this.eventContext, promo_code_on_register: this.promoCodeOnRegister };
+      const eventParams = { promo_code_on_register: this.promoCodeOnRegister };
       this.analyticsService.logEvent('register_with_promo_code', eventParams);
     }
   }
@@ -225,11 +223,11 @@ export class TabsPage implements OnInit, AfterViewInit {
     this.activeTab = this.ionTabs.getSelected();
     this.backActionService.listenForBackEvent();
     // get number of unread notifications
-    if (this.activeTab === 'tab-profile') {
+    if (this.activeTab === 'profile') {
       // this.notificationService.unreadNotifications();
     }
-    const eventParams = { context: this.eventContext, active_tab: this.activeTab };
-    this.analyticsService.logEvent('select_tab', eventParams);
+    const eventParams = { active_tab: this.activeTab };
+    this.analyticsService.logEvent('select_tab_' + this.activeTab, eventParams);
   }
 
   /**

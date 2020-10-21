@@ -53,7 +53,7 @@ export class MarketplacePage implements OnInit {
 
   referralCode = localStorage.getItem('referralCode');
   localeData = new LocaleDataModel();
-
+  eventContext = 'Marketplace Tab';
   city: any = JSON.parse(localStorage.getItem('city'));
   county: any = JSON.parse(localStorage.getItem('county'));
 
@@ -79,13 +79,13 @@ export class MarketplacePage implements OnInit {
   searchedKeyword = null;
 
   constructor(
-    private loadingService: LoadingService,
-    private modalCtrl: ModalController,
-    private translate: TranslateService,
     private analyticsService: AnalyticsService,
     private deliveryAddressService: DeliveryAddressService,
+    private internationalizationService: InternationalizationService,
+    private loadingService: LoadingService,
     private marketplaceService: MarketplaceService,
-    private internationalizationService: InternationalizationService
+    private modalCtrl: ModalController,
+    private translate: TranslateService,
   ) {
     // Initialize locale context
     this.internationalizationService.initializeCountry().subscribe(res => {
@@ -156,8 +156,8 @@ export class MarketplacePage implements OnInit {
    * @description Enable/Disable notifications for new vendor on selected location/city
    */
   async toggleNewVendorNotifications() {
-    this.marketplaceService.postNewVendorNotificationsStatus(this.city.id, this.newVendorNotificationsStatus).subscribe(res => console.log(res)
-    );
+    this.analyticsService.logEvent('toggle_new_vendor_notifications', {context: this.eventContext, city: this.city, status: this.newVendorNotificationsStatus});
+    this.marketplaceService.postNewVendorNotificationsStatus(this.city.id, this.newVendorNotificationsStatus).subscribe(res => console.log(res));
   }
 
   searchInProperty(value: any, keyword: any) {
@@ -188,6 +188,7 @@ export class MarketplacePage implements OnInit {
           const filteredVendorsList = this.copyList.filter(item => filteredIds.includes(item.id.toString()));
           console.log(filteredVendorsList);
           this.vendorsList = filteredVendorsList;
+          this.analyticsService.logEvent('search_on_marketplace', {context: this.eventContext, search: keyword});
         }
         this.loadingService.dismissLoading();
       });
@@ -212,6 +213,7 @@ export class MarketplacePage implements OnInit {
   selectVendor(vendor: any) {
     this.selectedVendor = vendor;
     console.log(this.selectedVendor);
+    this.analyticsService.logEvent('select_vendor', {context: this.eventContext, city: this.city, vendor: this.selectVendor});
     if (this.searchResult) {
       this.getCategories();
     } else {

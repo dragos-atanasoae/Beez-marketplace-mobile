@@ -501,9 +501,6 @@ export class EditDeliveryAddressPage implements OnInit, OnDestroy {
 
   async closeModal(action: string) {
     this.modalCtrl.dismiss(action);
-    if (this.donationContext) {
-      this.logAnalyticsEvents('donation_cancel_add_contact_information');
-    }
   }
 
   sendAddressToAddCard() {

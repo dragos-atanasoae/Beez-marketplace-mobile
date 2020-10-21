@@ -9,6 +9,7 @@ import { ToastController } from '@ionic/angular';
 import { PhoneValidator } from 'src/app/validators/phone.validator';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { shake } from 'ng-animate';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 @Component({
   selector: 'app-phone-verification',
@@ -67,8 +68,10 @@ export class PhoneVerificationComponent implements OnInit {
   };
   helloUserName = '';
   email = '';
+  eventContext = 'Phone Validation';
 
   constructor(
+    private analyticsService: AnalyticsService,
     private loadingService: LoadingService,
     private toastCtrl: ToastController,
     private accountValidationService: AccountValidationService,
@@ -182,6 +185,7 @@ export class PhoneVerificationComponent implements OnInit {
     this.phoneNumber = this.selectedCountry.code + formatedPhoneNumber;
 
     if (this.countResendCodeAction <= 3) {
+      this.analyticsService.logEvent('send_phone_number', { context: this.eventContext });
       this.accountValidationService.verifyNumber(this.phoneNumber)
         .subscribe((response) => {
           // "TagIsNull", "CreatedAndSent", "NumberAlreadyUsed", "phoneNumber Is To Short"
@@ -231,6 +235,7 @@ export class PhoneVerificationComponent implements OnInit {
    */
   verifyCode() {
     this.loadingService.presentLoading();
+    this.analyticsService.logEvent('send_validation_code', { context: this.eventContext });
     this.accountValidationService.verifyCode(this.validationCode.value, this.phoneNumber)
       .subscribe((response) => {
         switch (response) {
@@ -241,6 +246,7 @@ export class PhoneVerificationComponent implements OnInit {
             this.existentPhoneNumber = this.phoneNumber;
             this.waitingForConfirmationCode = false;
             this.countryPhoneGroup.disable();
+            this.analyticsService.logEvent('phone_validated', { context: this.eventContext });
             break;
           case 'AnErrorOcurred':
             this.invalidCodeMsg = this.translate.instant('components.accountValidation.invalidCodeMsg');
@@ -248,6 +254,7 @@ export class PhoneVerificationComponent implements OnInit {
               this.countdownBeforeResendCode = this.countdownBeforeResendCode + 10 * this.countResendCodeAction;
             }
             this.codeIsValid = false;
+            this.analyticsService.logEvent('phone_validation_error', { context: this.eventContext, error: response });
             break;
           default:
             console.log('Error on verify the validation code');

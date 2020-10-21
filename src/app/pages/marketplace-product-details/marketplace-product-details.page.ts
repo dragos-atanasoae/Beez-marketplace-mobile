@@ -5,6 +5,7 @@ import { InternationalizationService } from 'src/app/services/internationalizati
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { ImageViewerOptionsModel } from 'src/app/models/imageViewerOptions.model';
 import { ImageViewerPage } from '../image-viewer/image-viewer.page';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 @Component({
   selector: 'app-marketplace-product-details',
@@ -19,10 +20,14 @@ export class MarketplaceProductDetailsPage implements OnInit {
   quantity = 0;
   isDisabled = false;
   localeData = new LocaleDataModel();
+  eventContext = 'Product Details';
 
-  constructor(private modalCtrl: ModalController,
-              private internationalizationService: InternationalizationService,
-              private marketplaceService: MarketplaceService) { }
+  constructor(
+    private analyticsService: AnalyticsService,
+    private modalCtrl: ModalController,
+    private internationalizationService: InternationalizationService,
+    private marketplaceService: MarketplaceService
+  ) { }
 
   ngOnInit() {
     // Initialize quantity by context
@@ -50,10 +55,12 @@ export class MarketplaceProductDetailsPage implements OnInit {
 
   addProductToCart() {
     this.isDisabled = true;
+    this.analyticsService.logEvent('add_product_to_cart', { context: this.eventContext });
     this.marketplaceService.addProductToCart(this.productDetails.id, this.quantity, this.vendor.id, this.city.Id);
   }
 
   editProductFromCart() {
+    this.analyticsService.logEvent('edit_product_quantity', { context: this.eventContext });
     this.marketplaceService.editProductFromCart(this.productDetails.productReferenceId, this.quantity, this.vendor.id, this.city.Id);
   }
 
@@ -80,7 +87,7 @@ export class MarketplaceProductDetailsPage implements OnInit {
       cssClass: 'modal_image_viewer',
       animated: false
     });
-
+    this.analyticsService.logEvent('open_product_image', { context: this.eventContext });
     imageViewer.present();
   }
 

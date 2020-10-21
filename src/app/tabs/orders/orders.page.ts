@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { fadeOut, slideInDown } from 'ng-animate';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { OrderDetailsPage } from 'src/app/pages/order-details/order-details.page';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
 
@@ -36,7 +37,7 @@ export class OrdersPage implements OnInit {
 
   localeData = new LocaleDataModel();
   today = new Date();
-
+  eventContext = 'Orders Page';
   activeOrdersList = [];
   ordersHistory = [];
   btnordersHistory = 'View history';
@@ -49,6 +50,7 @@ export class OrdersPage implements OnInit {
   };
 
   constructor(
+    private analyticsService: AnalyticsService,
     private loadingService: LoadingService,
     private marketplaceService: MarketplaceService,
     private modalCtrl: ModalController,
@@ -111,7 +113,7 @@ export class OrdersPage implements OnInit {
       component: OrderDetailsPage,
       componentProps: {order}
     });
-
+    this.analyticsService.logEvent('open_order_details_page', {context: this.eventContext});
     modal.present();
     modal.onWillDismiss().then(() => this.getOrdersList());
   }
@@ -248,6 +250,7 @@ export class OrdersPage implements OnInit {
 
   navigateToPath(finalPath: string) {
     console.log(finalPath);
+    this.analyticsService.logEvent('select_tab_marketplace', {context: this.eventContext});
     this.zone.run(() => this.router.navigateByUrl(finalPath)).then();
   }
 

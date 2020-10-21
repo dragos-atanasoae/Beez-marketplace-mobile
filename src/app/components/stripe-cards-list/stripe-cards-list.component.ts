@@ -7,6 +7,7 @@ import { ToastController, AlertController } from '@ionic/angular';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { zoomIn, zoomOut } from 'ng-animate';
 import { TranslateService } from '@ngx-translate/core';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 
 
 @Component({
@@ -35,13 +36,15 @@ export class StripeCardsListComponent implements OnInit, OnDestroy {
   editCardId: any;
   selectedCard: any;
   editCard = false;
+  eventContext = 'Cards List';
 
   constructor(
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private translate: TranslateService,
     private loadingService: LoadingService,
-    private stripePaymentService: StripePaymentService
+    private stripePaymentService: StripePaymentService,
+    private analyticsService: AnalyticsService
   ) { }
 
   ngOnInit() {
@@ -62,6 +65,7 @@ export class StripeCardsListComponent implements OnInit, OnDestroy {
 
   updatePaymentMethodName(id: number, name: string) {
     this.loadingService.presentLoading();
+    this.analyticsService.logEvent('edit_card_name', { context: this.eventContext });
     this.stripePaymentService.postPaymentMethodName(id, name).subscribe((res: any) => {
       if (res.status === 'success') {
         this.loadingService.dismissLoading();
@@ -88,9 +92,7 @@ export class StripeCardsListComponent implements OnInit, OnDestroy {
       buttons: [
         {
           text: this.translate.instant('buttons.buttonCancel'),
-          handler: () => {
-            // this.logAnalyticsEvents('cancel_delete_card');
-          },
+          handler: () => {},
           cssClass: 'alert_btn_cancel'
         },
         {
@@ -102,12 +104,13 @@ export class StripeCardsListComponent implements OnInit, OnDestroy {
                 this.stripePaymentService.getPaymentMethods('initialize');
                 this.loadingService.dismissLoading();
                 this.presentToast(res.data.userMessage);
+                this.analyticsService.logEvent('remove_card', { context: this.eventContext });
               } else {
                 this.presentToast(res.data.userMessage);
                 this.loadingService.dismissLoading();
+                this.analyticsService.logEvent('remove_card_failed', { context: this.eventContext });
               }
             });
-            // this.logAnalyticsEvents('delete_card');
           },
           cssClass: 'alert_btn_action'
         },
