@@ -1,9 +1,75 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>notifications-center</ion-title>
+    <ion-buttons slot="start" class="close_notifications_page">
+      <ion-back-button color="primary" text="" icon="chevron-back-outline" routerDirection="backward"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="label_page_title">{{'pages.notificationCenter.titlePage' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary" [routerLink]="['/notifications-settings']">
+        <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
+<!-- List of notifications -->
 <ion-content>
-
+  <ion-grid id="grid_notification" *ngIf="notificationsList !=  'empty'">
+    <ion-row class="ion-justify-content-center">
+      <ion-col class="grid_column" size-xl="4" size-lg="6" size-md="6" size-xs="12"
+        *ngFor="let notification of notificationsList">
+        <ion-row class="row_notification ion-align-items-center" (click)="openNotificationDetails(notification)">
+          <ion-col size="3" class="wrap_notification_icon">
+            <img
+              [src]="notification.Seen ? './assets/icon/notification-center/Notification_Icon_Read.svg' : './assets/icon/notification-center/Notification_Icon_Unread.svg'">
+          </ion-col>
+          <ion-col size="9">
+            <p class="notification_subject" [ngClass]="{active_text : !notification.Seen}">
+              {{notification.Subject}}</p>
+            <p class="notification_date">{{notification.Date | date: 'hh:mm a/ dd.MM.yyyy'}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-infinite-scroll [disabled]="noRecords" (ionInfinite)="loadMoreNotification($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-grid>
+  <ion-row class="ion-align-items-center" id="row_no_notifications" *ngIf="notificationsList == 'empty'">
+    <ion-col size="12">
+      <img src="./assets/icon/notification-center/Notification_Icon_Read.svg" alt="">
+      {{'pages.notificationCenter.emptyNotificationsList' | translate}}
+    </ion-col>
+  </ion-row>
 </ion-content>
+
+<!-- Notification details overlay -->
+<div class="overlay_notification_details" *ngIf="showOverlayDetails">
+  <div class="modal">
+    <div class="modal_body">
+      <ion-button fill="clear" shape="round" class="close_btn" (click)="closeNotificationDetails()">
+        <ion-icon name="close-circle">
+        </ion-icon>
+      </ion-button>
+      <div class="modal_content">
+        <ion-row class="wrap_bell">
+          <img class="notification_bell"
+            [src]="!selectedNotification.Seen ? './assets/icon/notification-center/Notification_Icon_Unread.svg' : './assets/icon/notification-center/Notification_Icon_Read.svg'">
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <p
+              [ngClass]="{'active_text' : !selectedNotification.Seen, 'seen_notification' : selectedNotification.Seen }">
+              {{ selectedNotification.Subject}} </p>
+            <p class="notification_date"> {{selectedNotification.Date | date:'hh:mm a/ dd.MM.yyyy'}} </p>
+            <p class="notification_content">{{selectedNotification.Content}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-button id="btn_action" fill="solid" shape="round" size="small" (click)="closeNotificationDetails('goTo')">
+          {{getTextBtn()}}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</div>

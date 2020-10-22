@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { NotificationsCenterPageRoutingModule } from './notifications-center-routing.module';
 
 import { NotificationsCenterPage } from './notifications-center.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    TranslateModule,
     NotificationsCenterPageRoutingModule
   ],
   declarations: [NotificationsCenterPage]

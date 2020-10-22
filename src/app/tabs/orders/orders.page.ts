@@ -7,6 +7,7 @@ import { fadeOut, slideInDown } from 'ng-animate';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { OrderDetailsPage } from 'src/app/pages/order-details/order-details.page';
 import { AnalyticsService } from 'src/app/services/analytics.service';
+import { InternationalizationService } from 'src/app/services/internationalization.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
 
@@ -56,10 +57,15 @@ export class OrdersPage implements OnInit {
     private modalCtrl: ModalController,
     private router: Router,
     private translate: TranslateService,
+    private internationalizationService: InternationalizationService,
     private zone: NgZone,
   ) { }
 
   ngOnInit() {
+    // Initialize locale context
+    this.internationalizationService.initializeCountry().subscribe(res => {
+      this.localeData = res;
+    });
     this.getOrdersList();
   }
 
@@ -88,15 +94,16 @@ export class OrdersPage implements OnInit {
    * @param filter
    */
   getFilteredOrders(orders: any, filter: string) {
-    let filteredOrders: [] = [];
-    switch (filter) {
-      case 'active':
-        filteredOrders = orders.filter((el: any) => el.category === 'ShoppingOrder' && (el.value - el.paidValue !== 0 || (el.status.status !== 'Delivered' && el.status.status !== 'Paid')));
-        break;
-      case 'history':
-        filteredOrders = orders.filter((el: any) => el.category === 'ShoppingOrder' && el.value - el.paidValue === 0 && (el.status.status === 'Delivered' || el.status.status === 'Paid'));
-        break;
-    }
+    let filteredOrders: [] = orders;
+    filteredOrders = orders.filter((el: any) => el.category === 'ShoppingOrder');
+    // switch (filter) {
+    //   case 'active':
+    //     filteredOrders = orders.filter((el: any) => el.category === 'ShoppingOrder' && (el.value - el.paidValue !== 0 || (el.status.status !== 'Delivered' && el.status.status !== 'Paid')));
+    //     break;
+    //   case 'history':
+    //     filteredOrders = orders.filter((el: any) => el.category === 'ShoppingOrder' && el.value - el.paidValue === 0 && (el.status.status === 'Delivered' || el.status.status === 'Paid'));
+    //     break;
+    // }
     // Order the list of orders by creation date
     filteredOrders.sort((a: any, b: any) => {
       return (Date.parse(b.creationDate) - Date.parse(a.creationDate));
@@ -111,9 +118,9 @@ export class OrdersPage implements OnInit {
   async openOrderDetailsPage(order: any) {
     const modal = await this.modalCtrl.create({
       component: OrderDetailsPage,
-      componentProps: {order}
+      componentProps: { order }
     });
-    this.analyticsService.logEvent('open_order_details_page', {context: this.eventContext});
+    this.analyticsService.logEvent('open_order_details_page', { context: this.eventContext });
     modal.present();
     modal.onWillDismiss().then(() => this.getOrdersList());
   }
@@ -250,7 +257,7 @@ export class OrdersPage implements OnInit {
 
   navigateToPath(finalPath: string) {
     console.log(finalPath);
-    this.analyticsService.logEvent('select_tab_marketplace', {context: this.eventContext});
+    this.analyticsService.logEvent('select_tab_marketplace', { context: this.eventContext });
     this.zone.run(() => this.router.navigateByUrl(finalPath)).then();
   }
 

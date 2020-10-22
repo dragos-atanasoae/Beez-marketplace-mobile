@@ -1,6 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <img src="./assets/icon/icon_food_marketplace.svg" alt="Beez">
+    <div>
+      <ion-row class="row_foodmarketplace_title">
+        <ion-col size="auto">
+          <ion-icon id="icon_section" src="./assets/icon/logo_beez_foodmarketplace.svg"></ion-icon>
+        </ion-col>
+        <ion-col>
+          <p id="lable_section_name">Food Marketplace</p>
+        </ion-col>
+      </ion-row>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -48,29 +57,29 @@
       *ngIf="(activeOrdersList != null || ordersHistory != null) && (activeOrdersList.length > 0 || ordersHistory.length > 0)">
       <ion-row *ngFor="let order of activeOrdersList" class="row_orders_list row_orders ion-align-items-center"
         (click)="openOrderDetailsPage(order)" #sectionActiveOrders>
-        <!-- <ion-col class="col_order_status">
+        <ion-col class="col_order_status">
           <p class="label_order_status">
             <ion-icon [src]="getOrderStatus(order).status.icon"></ion-icon>
             {{getOrderStatus(order).status.text}}
           </p>
         </ion-col>
         <ion-col class="col_category_tag" size="auto">
-          <div class="wrap_category_tag">
+          <!-- <div class="wrap_category_tag">
             <ion-icon slot="start" [src]="'./assets/icon/icon_food_marketplace_dark.svg'"></ion-icon>
             <p class="label_order_category">{{('pages.beezPayTab.orderCategories.label'+ order.category) | translate}}
             </p>
-          </div>
-        </ion-col> -->
+          </div> -->
+        </ion-col>
         <ng-container *ngTemplateOutlet="orderDetails; context: {order: order}"></ng-container>
       </ion-row>
 
       <!-- Toggle orders history -->
-      <ion-col size="12" *ngIf="ordersHistory.length > 0 && activeOrdersList.length !== 0" class="centered_content">
+      <!-- <ion-col size="12" *ngIf="ordersHistory.length > 0 && activeOrdersList.length !== 0" class="centered_content">
         <ion-button (click)="toggleordersHistory()" fill="outline" shape="round" size="small" color="tertiary"
           class="btn_orders_history">
           {{btnordersHistory}}
         </ion-button>
-      </ion-col>
+      </ion-col> -->
 
       <!-- orders history -->
       <div #sectionHistory>

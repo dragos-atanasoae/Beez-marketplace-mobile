@@ -58,7 +58,7 @@ export class StripeCardsListComponent implements OnInit, OnDestroy {
 
   getPaymentMethods() {
     this.stripePaymentService.paymentMethodsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
-      this.paymentMethods = res.reverse();
+      // this.paymentMethods = res.reverse();
     });
     console.log('List of cards from Stripe: ', this.paymentMethods);
   }

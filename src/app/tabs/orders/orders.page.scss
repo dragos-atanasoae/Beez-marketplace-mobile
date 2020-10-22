@@ -1,11 +1,28 @@
 // Toolbar details
 ion-toolbar {
-    img {
-        height: 1.5em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    .row_foodmarketplace_title {
+        width: fit-content;
+        height: 3rem;
+        margin: 0;
+
+        ion-col {
+            height: 100%;
+            padding: 0;
+        }
+
+        #icon_section {
+            font-size: 1.8rem;
+            margin-top: 0.8rem;
+            margin-left: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        #lable_section_name {
+            margin-left: 0.5em;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--ion-color-tertiary);
+        }
     }
 }
 

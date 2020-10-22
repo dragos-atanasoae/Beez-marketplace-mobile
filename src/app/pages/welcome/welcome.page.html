@@ -7,17 +7,15 @@
       <!-- GENERAL INFO -->
       <img id="beez_logo" src="./assets/imgs/logo/logo_beez.svg" *ngIf="productFromExternalLink === null">
       <div class="wrap_general_info" *ngIf="productFromExternalLink === null">
-        <p class="number_general_info">{{(generalInfo?.totalCommissions / 4.9) | currency:'EUR':'symbol-narrow':'.0-1':'ro'}} <img
-            src="./assets/imgs/loading.svg" class="loading_data_sum" *ngIf="generalInfo == null" />
+        <p class="number_general_info">{{(generalInfo?.totalCommissions / 4.9) | currency:'EUR':'symbol-narrow':'.0-1':'ro'}} 
+          <ion-spinner name="bubbles" color="medium" *ngIf="generalInfo == null"></ion-spinner>
         </p>
         <p class="general_info_title">{{'pages.welcome.labelTotalCashback' | translate}}</p>
 
-        <p class="number_general_info"> {{generalInfo?.totalUsers}} <img src="./assets/imgs/loading.svg"
-            class="loading_data_sum" *ngIf="generalInfo == null" /> </p>
+        <p class="number_general_info"> {{generalInfo?.totalUsers}} <ion-spinner name="bubbles" color="medium" *ngIf="generalInfo == null"></ion-spinner> </p>
         <p class="general_info_title">{{'pages.welcome.labelUsers' | translate}}</p>
 
-        <p class="number_general_info"> {{generalInfo?.totalShops}} <img src="./assets/imgs/loading.svg"
-            class="loading_data_sum" *ngIf="generalInfo == null" /> </p>
+        <p class="number_general_info"> {{generalInfo?.totalShops}} <ion-spinner name="bubbles" color="medium" *ngIf="generalInfo == null"></ion-spinner> </p>
         <p class="general_info_title">{{'pages.welcome.labelShops' | translate}}</p>
       </div>
 
