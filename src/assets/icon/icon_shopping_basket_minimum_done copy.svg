@@ -1,0 +1,15 @@
+<svg id="ic_shopping_basket" data-name="ic shopping basket" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <rect id="Rectangle_2218" data-name="Rectangle 2218" width="28" height="28" transform="translate(0 2)" fill="#fff" opacity="0"/>
+  <g id="noun_basket_3082044" transform="translate(2.561 7.054)">
+    <path id="Path_3819" data-name="Path 3819" d="M22.288,17.914,17.838,12.3,16.2,13.691l3.361,4.247H7.92l3.361-4.247L9.648,12.324,5.2,17.939H2.5v2.172H4.488l.781,8.3a2.5,2.5,0,0,0,2.462,2.319H19.755a2.5,2.5,0,0,0,2.462-2.319l.781-8.3h1.988V17.939h-2.7ZM10.453,27.385H8.346V21.234h2.107Zm4.332,0H12.678V21.234h2.107Zm4.355,0H17.033V21.234H19.14Z" transform="translate(-2.5 -12.3)" fill="#636363"/>
+  </g>
+  <g id="Ic_checked" transform="translate(13.826)">
+    <g id="CheckBox_Checked" transform="translate(0)">
+      <g id="Ellipse_2" data-name="Ellipse 2" transform="translate(0.174)" fill="#f0a622" stroke="#f2f2f2" stroke-width="1">
+        <ellipse cx="8" cy="8.5" rx="8" ry="8.5" stroke="none"/>
+        <ellipse cx="8" cy="8.5" rx="7.5" ry="8" fill="none"/>
+      </g>
+    </g>
+    <path id="Path_3326" data-name="Path 3326" d="M247.445,4875.13l2.008,2.071,4.756-4.905" transform="translate(-242.702 -4866.311)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  </g>
+</svg>
