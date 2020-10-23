@@ -3,10 +3,20 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Plugins } from '@capacitor/core';
 import { Mixpanel } from '@ionic-native/mixpanel/ngx';
+import Analytics from 'analytics';
+import segmentPlugin from '@analytics/segment';
 
+const analytics = Analytics({
+  app: 'awesome-app',
+  plugins: [
+    segmentPlugin({
+      writeKey: environment.segmentKey
+    })
+  ]
+});
 const { Device } = Plugins;
-// Segment analytics
-declare var analytics;
+// // Segment analytics
+// declare var analytics;
 
 @Injectable({
   providedIn: 'root'
@@ -32,22 +42,38 @@ export class AnalyticsService {
       this.mixpanelLogEvents(event, eventParams);
       this.firebaseLogEvents(event, eventParams);
       this.facebookLogEvents(event, eventParams);
-      if (this.baseURL === '-prod-api.use-beez.com/') {
-        this.segmentLogEvents(event, eventParams);
-      }
+      this.segmentLogEvents(event, eventParams);
     } else {
       console.log('Skip analytics');
     }
   }
 
   /**
-   * @description Segment Analytics - log events
+   * @description Identify visitors and send details to Segment
+   */
+  async segmentIdentify() {
+    const info = await Device.getInfo();
+    analytics.identify(localStorage.getItem('userExternalId'), {
+      email: localStorage.getItem('userName'),
+      country: localStorage.getItem('country'),
+      deviceInfo: {
+        appVersion: info.appVersion,
+        platform: info.platform,
+        osVersion: info.osVersion,
+        deviceManufacturer: info.manufacturer,
+        deviceModel: info.model
+      },
+      appVersion: info.appVersion
+    });
+  }
+
+  /**
+   * @description Track custom events and send to Segment
    * @param event
    * @param eventParams
    */
   async segmentLogEvents(event: string, eventParams: any) {
     const info = await Device.getInfo();
-
     eventParams.deviceInfo = {
       appVersion: info.appVersion,
       platform: info.platform,
@@ -55,14 +81,6 @@ export class AnalyticsService {
       deviceManufacturer: info.manufacturer,
       deviceModel: info.model
     };
-
-    analytics.identify(localStorage.getItem('userExternalId'), {
-      email: localStorage.getItem('userName'),
-      country: localStorage.getItem('country'),
-      deviceInfo: eventParams.deviceInfo,
-      appVersion: info.appVersion
-    });
-
     eventParams.country = localStorage.getItem('country');
     analytics.track(event, eventParams);
   }
@@ -120,8 +138,8 @@ export class AnalyticsService {
    */
   initializeMixpanel() {
     this.mixpanel.init(environment.mixpanelToken)
-            .then(() => { console.log('Mixpanel init Success!'); })
-            .catch(() => { console.log('Mixpanel init Error!'); });
+      .then(() => { console.log('Mixpanel init Success!'); })
+      .catch(() => { console.log('Mixpanel init Error!'); });
   }
 
 }

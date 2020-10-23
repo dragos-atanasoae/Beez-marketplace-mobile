@@ -161,6 +161,8 @@ export class LoginPage implements OnInit {
     localStorage.setItem('userName', userName);
     localStorage.setItem('jwtToken', token);
     this.getProfileInfo(userName);
+    this.analyticsService.segmentIdentify();
+    this.analyticsService.logEvent('login', {});
     this.navCtrl.navigateRoot('/tabs');
   }
 

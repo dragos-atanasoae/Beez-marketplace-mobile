@@ -9,6 +9,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 // import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { ManageAccountService } from 'src/app/services/manage-account.service';
 import { Plugins } from '@capacitor/core';
+import { AnalyticsService } from 'src/app/services/analytics.service';
 // import { ResponseSignInWithApplePlugin } from '@capacitor-community/apple-sign-in';
 
 const { Browser } = Plugins;
@@ -60,6 +61,7 @@ export class RegisterPage implements OnInit {
   };
 
   constructor(
+    private analyticsService: AnalyticsService,
     public navCtrl: NavController,
     public translate: TranslateService,
     public platform: Platform,
@@ -170,6 +172,9 @@ export class RegisterPage implements OnInit {
     if (this.registerData.promoCode !== 'NuAre') {
       localStorage.setItem('promoCodeOnRegister', this.registerData.promoCode);
     }
+    localStorage.setItem('userName', this.userEmail);
+    this.analyticsService.segmentIdentify();
+    this.analyticsService.logEvent('register', {email: this.userEmail, promo_code: this.registerData.promoCode});
     this.login(country);
     const toastMessage = this.translate.instant('pages.register.toastMessages.registerSuccessfully');
     this.presentToast(toastMessage);
@@ -210,6 +215,8 @@ export class RegisterPage implements OnInit {
     localStorage.setItem('userName', userEmail);
     localStorage.setItem('jwtToken', jwtToken);
     this.setAccountLanguage();
+    this.analyticsService.segmentIdentify();
+    this.analyticsService.logEvent('login', {});
   }
 
   async displayErrorLogin() {

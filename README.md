@@ -1,5 +1,5 @@
 # Introduction 
-## Beez Marketplace v0.0.1
+## Beez Marketplace v1.0
 Beez mobile app for Android si iOS devices developed with Ionic Framework v5, Angular 9 and Capacitor 2.4.2
 
 # Getting Started
@@ -40,6 +40,6 @@ Note: After making updates to the native portion of the code (such as adding a n
 ## Build Status
 | __Platform__            | __Dev__    | __Release__ |
 |:-----------------------:|:----------:|:-----------:|
-| __Android GooglePlay__  | v0.0.1     | [--]() |
-| __Android Huawei__      | v0.0.1     | [--]() |
-| __iOS__                 | v4.1.8     | [--]() |
+| __Android GooglePlay__  | v1.0     | [1.0]() |
+| __Android Huawei__      | v1.0     | [1.0]() |
+| __iOS__                 | v1.0     | [1.0]() |

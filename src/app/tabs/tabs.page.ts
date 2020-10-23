@@ -57,6 +57,7 @@ export class TabsPage implements OnInit, AfterViewInit {
     if (!this.platform.is('desktop')) {
       // console.log('Platform mobile, get the device token', !this.platform.is('desktop'));
       this.analyticsService.initializeMixpanel();
+      this.analyticsService.segmentIdentify();
       this.initializeDeviceToken();
     } else {
       // console.log('Skip initialization of push notifications');

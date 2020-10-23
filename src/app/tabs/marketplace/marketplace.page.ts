@@ -156,7 +156,7 @@ export class MarketplacePage implements OnInit {
    * @description Enable/Disable notifications for new vendor on selected location/city
    */
   async toggleNewVendorNotifications() {
-    this.analyticsService.logEvent('toggle_new_vendor_notifications', {context: this.eventContext, city: this.city, status: this.newVendorNotificationsStatus});
+    this.analyticsService.logEvent(this.newVendorNotificationsStatus ? 'turn_on_new_vendor_notifications' : 'turn_off_new_vendor_notifications', {context: this.eventContext, city: this.city, status: this.newVendorNotificationsStatus});
     this.marketplaceService.postNewVendorNotificationsStatus(this.city.id, this.newVendorNotificationsStatus).subscribe(res => console.log(res));
   }
 
