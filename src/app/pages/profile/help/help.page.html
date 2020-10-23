@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button color="primary" slot="icon-only" icon="chevron-back-outline" text="" routerDirection="backward"></ion-back-button>
+        </ion-buttons>
+    <ion-title>{{ 'pages.help.title' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div id="wrap_content">
+        <!-- <ion-card class="card_how_to">
+          <ion-row class="ion-align-items-center ion-justify-content-center" (click)="openTutorials()">
+            <ion-col size="2">
+                <img id="icon_how_to" src="./assets/imgs/ereader.svg" alt="">
+            </ion-col>
+            <ion-col size="10">
+              <p id="how_to_message">{{'pages.help.cardInfoHelpText' | translate}}</p>
+              <ion-button shape="round" fill="clear" size="small" expand="block" id="btn_show_how_to">{{'pages.help.buttonShowInfo' | translate}}</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-card> -->
+    
+        <ion-card class="card_contact">
+          <ion-row>
+            <p class="card_title">{{'pages.help.cardContactTitle' | translate}}</p>
+          </ion-row>
+          <p class="contact_title_text">{{'pages.help.cardContactText' | translate}}</p>
+          <ion-row id="row_icon_contact" class="ion-align-items-center ion-justify-content-center">
+            <ion-col size="4">
+              <ion-icon class="icon_contact" id="icon_phone" name="call" (click)="callBeez()"></ion-icon>
+            </ion-col>
+            <ion-col size="4">
+              <a href="#" (click)="openWhatsapp()">
+                <ion-icon class="icon_contact" id="icon_whatsapp" name="logo-whatsapp"></ion-icon>
+              </a>
+            </ion-col>
+            <ion-col size="4">
+              <a href="#" (click)="openFacebookMessenger()">
+                <img src="./assets/icon/icon_facebook_messenger.svg" id="icon_fb_messenger" alt="facebook">
+              </a>
+            </ion-col>
+          </ion-row>
+          <ion-row class="row_tag_contact ion-align-items-center ion-justify-content-center">
+            <ion-col size="4">
+              <p>{{'pages.help.cardContactPhoneLabel' | translate}}</p>
+            </ion-col>
+            <ion-col size="4">
+              <p>Whatsapp</p>
+            </ion-col>
+            <ion-col size="4">
+              <p>Facebook</p>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+
+        <!-- Form write email -->
+        <ion-card class="card_email">
+          <ion-row>
+            <p class="card_title">Email</p>
+          </ion-row>
+          <p class="contact_title_text">{{'pages.help.cardEmailContactText' | translate}}</p>
+          <ion-row class="row_compose_email">
+            <ion-card class="contact_drop_down_list">
+              <ion-list>
+                <ion-item lines="none">
+                  <ion-label position="floating">{{'pages.help.selectEmailSubjectLabel' | translate}}</ion-label>
+                  <ion-select [(ngModel)]="emailSubject" [interface]="currentPlatform == 'android'? 'popover' : 'action-sheet'">
+                    <ion-select-option lines="none" value="{{'pages.help.emailSubjectOption1' | translate}}">{{'pages.help.emailSubjectOption1' | translate}}</ion-select-option>
+                    <!-- <ion-select-option lines="none" value="{{'pages.help.emailSubjectOption2' | translate}}">{{'pages.help.emailSubjectOption2' | translate}}</ion-select-option> -->
+                    <ion-select-option value="{{'pages.help.emailSubjectOption3' | translate}}">{{'pages.help.emailSubjectOption3' | translate}}</ion-select-option>
+                    <!-- <ion-select-option value="{{'pages.help.emailSubjectOption4' | translate}}">{{'pages.help.emailSubjectOption4' | translate}}</ion-select-option> -->
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+            </ion-card>
+    
+            <ion-card class="contact_card_textarea">
+              <textarea [(ngModel)]="emailBody" class="contact_message_text_box" data-role="none" id="Description" name="Description"
+                placeholder="{{'pages.help.emailWritePlaceholder' | translate}}"></textarea>
+            </ion-card>
+          </ion-row>
+          <ion-row>
+            <ion-button shape="round" size="small" class="btn_submit_contact_form" (click)="sendEmail()">{{'pages.help.buttonSendEmail' | translate}}</ion-button>
+          </ion-row>
+        </ion-card>
+      </div>
+</ion-content>

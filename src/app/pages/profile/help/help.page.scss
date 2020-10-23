@@ -1,0 +1,169 @@
+#wrap_content {
+    max-width: 576px;
+    margin: 0.5em auto;
+}
+.card_how_to {
+    padding: 0px 8px 0px 12px;
+    background: #fff;
+    box-shadow: var(--beez-box-shadow);
+    border-radius: var(--beez-border-radius);
+    ion-col {
+        padding: 0;
+    }
+    #icon_how_to {
+        height: 6em;
+        width: 6em;
+    }
+    #how_to_title {
+        text-align: center;
+        font-size: 1em;
+        font-weight: 500;
+        margin-bottom: 4px;
+        color:rgb(243, 165, 39);
+    }
+    #how_to_message, .label_checkbox {
+        color: rgba(109, 109, 109, 0.849);
+    }
+    #how_to_message {
+        text-align: center;
+        font-size: 0.8em;
+    }
+    #btn_show_how_to {
+        margin-top: 8px;
+        text-transform: none;
+    }
+}
+.card_contact {
+    padding: 8px;
+    background: none;
+    box-shadow: var(--beez-box-shadow);
+    border-radius: var(--beez-border-radius);
+    
+    .card_title {
+        font-size: 1em;
+        font-weight: 400;
+        color: rgba(61, 61, 61, 0.849);
+    }
+    .row_tag_contact {
+        text-align: center;
+        p {
+            font-size: 0.8em;
+            color: rgba(155, 155, 155, 0.849);
+        } 
+    }
+    #row_icon_contact {
+        margin-top: 12px;
+        text-align: center;
+    }
+    .icon_contact {
+        font-size: 32px;
+
+    }
+    #icon_phone {
+        color: #38A7FF;
+    }
+    #icon_whatsapp {
+        color: #00AD6D;
+    }
+    #icon_email {
+        color: #F3A527;
+    }
+
+    #icon_fb_messenger {
+        height: 30px;
+        width: 30px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.card_tutorials {
+    padding: 1em;
+    box-shadow: var(--beez-box-shadow);
+    border-radius: var(--beez-border-radius);
+    .card_title {
+        font-size: 1em;
+        font-weight: 400;
+        color: rgba(61, 61, 61, 0.849);
+    }
+}
+
+.card_email {
+    .input-wrapper {
+        font-size: 0.8em;
+        color: rgba(61, 61, 61, 0.849);
+    } 
+    padding: 1px;
+    background: none;
+    box-shadow: var(--beez-box-shadow);
+    border-radius: var(--beez-border-radius);
+    .card_title {
+        font-size: 1em;
+        font-weight: 400;
+        color: rgba(61, 61, 61, 0.849);
+        margin-top: 8px;
+        margin-left: 8px;
+    }
+}
+
+.contact_title_text {
+    font-size: 1em;
+    color: rgba(109, 109, 109, 0.949);
+    text-align: center;
+    margin: 12px auto;
+    width: 94%;
+}
+
+.row_compose_email {
+    margin: 0;
+    border-radius: var(--beez-border-radius);
+}
+
+.contact_drop_down_list {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: var(--beez-border-radius);
+    border-bottom: 1px solid rgb(240, 240, 240);
+    box-shadow: none;
+    .list-md {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+.contact_item_select {
+    font-size: 1.2em!important;
+    padding: 8px;
+    background: none;
+}
+
+.drop-down-list-contact {
+    padding: 8px;
+}
+.contact_card_textarea {
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-radius: var(--beez-border-radius);
+    box-shadow: none;
+}
+.contact_message_text_box {
+    width: 100%;
+    height: 20em;
+    margin: 5px auto;
+    padding: 0.5em;
+    border: 1px solid rgb(240, 240, 240);
+    border-radius: var(--beez-border-radius);
+    background: rgba(219, 219, 219, 0.089);
+}
+.btn_submit_contact_form {
+    width: 50%;
+    margin: 20px auto;
+    color: #fff;
+    font-size: 1em;
+    text-transform: none;
+    box-shadow: none;
+}

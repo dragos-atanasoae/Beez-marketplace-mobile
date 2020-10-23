@@ -22,6 +22,7 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
 import { CustomAlertModule } from './components/custom-alert/custom-alert.module';
 import { Mixpanel, MixpanelPeople } from '@ionic-native/mixpanel/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 registerLocaleData(localeRo, 'ro');
 registerLocaleData(localeEnGB, 'en-GB');
 
@@ -53,6 +54,7 @@ export function createTranslateLoader(http: HttpClient) {
     CallNumber,
     CurrencyPipe,
     DatePipe,
+    EmailComposer,
     InAppBrowser,
     LoadingService,
     Mixpanel,

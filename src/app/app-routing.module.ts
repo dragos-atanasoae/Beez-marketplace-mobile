@@ -92,6 +92,10 @@ const routes: Routes = [
     path: 'transactions-list',
     loadChildren: () => import('./pages/transactions-list/transactions-list.module').then( m => m.TransactionsListPageModule)
   },
+  {
+    path: 'help',
+    loadChildren: () => import('./pages/profile/help/help.module').then( m => m.HelpPageModule)
+  },
 ];
 @NgModule({
   imports: [
