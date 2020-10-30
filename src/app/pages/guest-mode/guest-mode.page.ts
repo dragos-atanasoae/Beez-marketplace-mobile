@@ -157,6 +157,8 @@ export class GuestModePage implements OnInit {
       setTimeout(() => {
         this.nextSlide();
       }, 500);
+      this.marketplaceService.selectedCategoryFromGuestMode$.next(this.selectedCategory.id);
+      localStorage.setItem('selectedCategoryFromGuestMode', this.selectedCategory.id);
       this.loadingService.dismissLoading();
     });
   }
@@ -168,7 +170,7 @@ export class GuestModePage implements OnInit {
     this.selectedCategory = category;
     this.context = null;
     this.getProductsForCategories();
-    this.analyticsService.logEvent('update_selected_category', { context: this.eventContext });
+    // this.analyticsService.logEvent('update_selected_category', { context: this.eventContext });
   }
 
   /**
@@ -234,6 +236,8 @@ export class GuestModePage implements OnInit {
     console.log(vendor);
     this.selectedVendor = vendor;
     this.getCategories();
+    this.marketplaceService.selectedVendorFromGuestMode$.next(vendor.id);
+    localStorage.setItem('selectedVendorFromGuestMode', vendor.id);
   }
 
   nextSlide() {
@@ -280,7 +284,9 @@ export class GuestModePage implements OnInit {
       },
       cssClass: 'overlay_tutorial'
     });
-    this.analyticsService.logEvent('open_product_details', { context: this.eventContext });
+    this.marketplaceService.selectedProductFromGuestMode$.next(productDetails.id);
+    localStorage.setItem('selectedProductFromGuestMode', productDetails.id);
+    // this.analyticsService.logEvent('open_product_details', { context: this.eventContext });
     modal.present();
     modal.onDidDismiss().then((data: any) => {
       if (data.data === 'successfullyAddedToCart') {

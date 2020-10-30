@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { slideInUp, slideOutUp, slideInRight } from 'ng-animate';
+import { take } from 'rxjs/operators';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { MarketplaceCategoriesPage } from 'src/app/pages/marketplace-categories/marketplace-categories.page';
 import { MarketplaceLocationsPage } from 'src/app/pages/marketplace-locations/marketplace-locations.page';
@@ -113,6 +114,13 @@ export class MarketplacePage implements OnInit {
         this.metacategories = res.activeMetaCategories;
         this.vendorsList = res.vendors;
         this.copyList = this.vendorsList;
+        console.log('Buffered vendor ', localStorage.getItem('selectedVendorFromGuestMode'));
+        if (localStorage.getItem('selectedVendorFromGuestMode')) {
+          console.log('Test');
+          const vendor = res.vendors.find((el: any) => el.id.toString() === localStorage.getItem('selectedVendorFromGuestMode'));
+          console.log('Selected Vendor', vendor);
+          this.openMarketplaceVendor(vendor).then(() => localStorage.removeItem('selectedVendorFromGuestMode'));
+        }
         // when switch to another location
         if (this.searchedKeyword) {
           this.onSearchChange(this.searchedKeyword);
@@ -156,7 +164,7 @@ export class MarketplacePage implements OnInit {
    * @description Enable/Disable notifications for new vendor on selected location/city
    */
   async toggleNewVendorNotifications() {
-    this.analyticsService.logEvent(this.newVendorNotificationsStatus ? 'turn_on_new_vendor_notifications' : 'turn_off_new_vendor_notifications', {context: this.eventContext, city: this.city, status: this.newVendorNotificationsStatus});
+    this.analyticsService.logEvent(this.newVendorNotificationsStatus ? 'turn_on_new_vendor_notifications' : 'turn_off_new_vendor_notifications', { context: this.eventContext, city: this.city, status: this.newVendorNotificationsStatus });
     this.marketplaceService.postNewVendorNotificationsStatus(this.city.id, this.newVendorNotificationsStatus).subscribe(res => console.log(res));
   }
 
@@ -188,7 +196,7 @@ export class MarketplacePage implements OnInit {
           const filteredVendorsList = this.copyList.filter(item => filteredIds.includes(item.id.toString()));
           console.log(filteredVendorsList);
           this.vendorsList = filteredVendorsList;
-          this.analyticsService.logEvent('search_on_marketplace', {context: this.eventContext, search: keyword});
+          this.analyticsService.logEvent('search_on_marketplace', { context: this.eventContext, search: keyword });
         }
         this.loadingService.dismissLoading();
       });
@@ -213,7 +221,7 @@ export class MarketplacePage implements OnInit {
   selectVendor(vendor: any) {
     this.selectedVendor = vendor;
     console.log(this.selectedVendor);
-    this.analyticsService.logEvent('select_vendor', {context: this.eventContext, city: this.city, vendor: this.selectVendor});
+    this.analyticsService.logEvent('select_vendor', { context: this.eventContext, city: this.city, vendor: this.selectVendor });
     if (this.searchResult) {
       this.getCategories();
     } else {
