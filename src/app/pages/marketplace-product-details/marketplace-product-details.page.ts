@@ -6,6 +6,7 @@ import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { ImageViewerOptionsModel } from 'src/app/models/imageViewerOptions.model';
 import { ImageViewerPage } from '../image-viewer/image-viewer.page';
 import { AnalyticsService } from 'src/app/services/analytics.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-marketplace-product-details',
@@ -17,6 +18,7 @@ export class MarketplaceProductDetailsPage implements OnInit {
   @Input() context: string;
   @Input() city: any;
   @Input() vendor: any;
+  token = localStorage.getItem('currentUserToken');
   quantity = 0;
   isDisabled = false;
   localeData = new LocaleDataModel();
@@ -24,9 +26,10 @@ export class MarketplaceProductDetailsPage implements OnInit {
 
   constructor(
     private analyticsService: AnalyticsService,
-    private modalCtrl: ModalController,
     private internationalizationService: InternationalizationService,
-    private marketplaceService: MarketplaceService
+    private marketplaceService: MarketplaceService,
+    private modalCtrl: ModalController,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -55,8 +58,13 @@ export class MarketplaceProductDetailsPage implements OnInit {
 
   addProductToCart() {
     this.isDisabled = true;
-    this.analyticsService.logEvent('add_product_to_cart', { context: this.eventContext });
-    this.marketplaceService.addProductToCart(this.productDetails.id, this.quantity, this.vendor.id, this.city.Id);
+    if (this.token) {
+      this.analyticsService.logEvent('add_product_to_cart', { context: this.eventContext });
+      this.marketplaceService.addProductToCart(this.productDetails.id, this.quantity, this.vendor.id, this.city.Id);
+    } else {
+      this.modalCtrl.dismiss();
+      this.router.navigateByUrl('login');
+    }
   }
 
   editProductFromCart() {

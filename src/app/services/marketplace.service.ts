@@ -16,6 +16,7 @@ export class MarketplaceService {
   private apiURL = environment.apiURL;
   private prefixUrlByCountry: string;
   headers: any;
+  guestHeader: any;
 
   shoppingCartList$ = new BehaviorSubject([]);
   // shoppingCartList = this.shoppingCartList$.asObservable();
@@ -40,12 +41,13 @@ export class MarketplaceService {
       .set('Authorization', 'Bearer ' + this.token)
       .set('X-Token', this.jwtToken)
       .set('Cache-Control', 'no-cache');
+    this.guestHeader = new HttpHeaders().set('Content-Type', 'application/json').set('Cache-Control', 'no-cache');
   }
 
   getVendorsList(selectedCity: number) {
     this.prepareHeaderForRequest();
     const url = this.prefixUrlByCountry + this.apiURL + 'api/user/GetOnlineVendors?preselectedCityId=' + selectedCity;
-    return this.httpClient.get(url, { headers: this.headers });
+    return this.httpClient.get(url, { headers: this.token ? this.headers : this.guestHeader });
   }
 
   /**
@@ -57,7 +59,7 @@ export class MarketplaceService {
   getCategories(vendorId: number, selectedCity: number) {
     this.prepareHeaderForRequest();
     const url = this.prefixUrlByCountry + this.apiURL + 'api/Products/GetCategories?vendorId=' + vendorId + '&preselectedCityId=' + selectedCity;
-    return this.httpClient.get(url, { headers: this.headers });
+    return this.httpClient.get(url, { headers: this.token ? this.headers : this.guestHeader });
   }
 
   /**
@@ -70,7 +72,7 @@ export class MarketplaceService {
   getProductsForCategory(categoryId: string, vendorId: number, selectedCity: number) {
     this.prepareHeaderForRequest();
     const url = this.prefixUrlByCountry + this.apiURL + 'api/Products/GetProductsForCategory?categoryId=' + categoryId + '&vendorId=' + vendorId + '&preselectedCityId=' + selectedCity;
-    return this.httpClient.get(url, { headers: this.headers });
+    return this.httpClient.get(url, { headers: this.token ? this.headers : this.guestHeader });
   }
 
   /**
@@ -329,7 +331,7 @@ export class MarketplaceService {
   foodMarketplaceSearch(cityId: number, keyword: string) {
     this.prepareHeaderForRequest();
     const url = this.prefixUrlByCountry + this.apiURL + 'api/FoodMarketplaceSearch?cityId=' + cityId + '&keyword=' + keyword;
-    return this.httpClient.get(url, {headers: this.headers});
+    return this.httpClient.get(url, {headers: this.token ? this.headers : this.guestHeader});
   }
 
   /**

@@ -1,0 +1,280 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>guest-mode</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<div id="wrap_guest_page">
+  <ion-slides id="marketplace_guest_slides" mode="ios" [options]="slideOpts" #marketplaceSlides>
+    <!-- SLIDE VENDORS LIST -->
+    <ion-slide id="slide_vendors">
+      <ion-content>
+        <ion-item-divider sticky="true">
+          <div>
+            <ion-row id="row_searchbar" class="ion-align-items-center">
+              <!-- <ion-col id="wrap_searchbar">
+              <ion-searchbar placeholder="" inputmode="text" type="text" mode="ios" [debounce]="250"
+                showCancelButton="never" (ionChange)="onSearchChange($event.target.value)"></ion-searchbar>
+            </ion-col> -->
+              <ion-col size="12" id="wrap_options">
+                <div>
+                  <ion-row class="row_select_option ion-align-items-center" (click)="openMarketplaceLocations()">
+                    <ion-col size="auto">
+                      <ion-icon class="icon_pin" name="location-sharp"></ion-icon>
+                    </ion-col>
+                    <ion-col>
+                      <p id="label_location">{{city?.Name}}, {{county?.Name}}</p>
+                    </ion-col>
+                    <ion-col>
+                      <p id="label_change_location">
+                        {{'components.marketplaceVendorsList.labelChangeLocation' | translate}}</p>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row id="row_select_category" class="ion-align-items-center"
+              (click)="categoriesDropdownIsActive = !categoriesDropdownIsActive">
+              <ion-col size="auto">
+                <img class="logo_metacategory"
+                  [src]="activeCategory !== null ? activeCategory.imgUrl : '../../../assets/icon/icon_food_marketplace.svg'"
+                  alt="category">
+              </ion-col>
+              <ion-col>
+                <div>
+                  <p id="label_select_category" *ngIf="activeCategory == null">
+                    {{'components.marketplaceVendorsList.labelSelectCategory' | translate}}</p>
+                  <p id="label_select_category" class="active_selection" *ngIf="activeCategory !== null">
+                    {{activeCategory.name}}</p>
+                </div>
+                <!-- <p class="label_selected_category"></p> -->
+              </ion-col>
+              <ion-col size="1">
+                <ion-icon [name]="categoriesDropdownIsActive ? 'chevron-up-outline' : 'chevron-down-outline'">
+                </ion-icon>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-item-divider>
+        <div class="container">
+          <p class="label_searched_keyword" *ngIf="searchedKeyword">{{this.vendorsList?.length}}
+            {{'components.marketplaceVendorsList.labelVendor' | translate}}
+            <strong>"{{searchedKeyword}}"</strong></p>
+          <div id="wrap_categories_list" *ngIf="categoriesDropdownIsActive">
+            <ion-list [@listAnimation]="metacategories.length">
+              <ion-item button detail="false" lines="none" *ngFor="let category of metacategories"
+                (click)="activeCategory = category; categoriesDropdownIsActive = false">
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="auto"><img class="logo_metacategory"
+                      [src]="category.imgUrl !== null ? category.imgUrl : '../../../assets/icon/icon_food_marketplace.svg'"
+                      alt=""></ion-col>
+                  <ion-col>
+                    <p class="label_category_name"
+                      [ngClass]="activeCategory?.name == category.name ? 'active_selection' : 'label_category_name'">
+                      {{category.name}}</p>
+                  </ion-col>
+                </ion-row>
+              </ion-item>
+              <ion-item button detail="false" lines="none"
+                (click)="activeCategory = null; categoriesDropdownIsActive = false">
+                <ion-row class="ion-align-items-center">
+                  <ion-col size="auto"><img class="logo_metacategory" src="./assets/icon/icon_food_marketplace.svg"
+                      alt=""></ion-col>
+                  <ion-col>
+                    <p class="label_category_name"
+                      [ngClass]="activeCategory == null  ? 'active_selection' : 'label_category_name'">
+                      Toate</p>
+                  </ion-col>
+                </ion-row>
+              </ion-item>
+            </ion-list>
+          </div>
+          <ion-grid fixed id="grid_shops_list" *ngIf="!categoriesDropdownIsActive">
+            <!-- Loading Shops - View Skeleton -->
+            <ion-row justify-content-center id="loading_shops_list" *ngIf='vendorsList == null'>
+              <ion-col class="grid_column" size-xl="4" size-lg="6" size-md="6" size-xs="12"
+                *ngFor="let skeleton of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13]">
+                <ion-card class="vendor_cardview vendor_skeleton">
+                  <ion-row align-items-center>
+                    <ion-col size="auto" class="col_vendor_logo">
+                      <img class="skeleton_vendor_logo" src="./assets/icon/icon_placeholder_marketplace.svg"
+                        alt="shop-image">
+                    </ion-col>
+                    <ion-col class="col_shop_info">
+                      <ion-skeleton-text animated class="skeleton_vendor_title"></ion-skeleton-text>
+                      <ion-skeleton-text animated class="skeleton_vendor_products_list"></ion-skeleton-text>
+                      <ion-skeleton-text animated class="skeleton_vendor_products_list"></ion-skeleton-text>
+                      <ion-skeleton-text animated class="skeleton_vendor_products_list"></ion-skeleton-text>
+                    </ion-col>
+                  </ion-row>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+            <!-- View Vendors List -->
+            <ion-row justify-content-center *ngIf="vendorsList as vendors">
+              <!-- Vendor Cardview -->
+              <ion-col class="grid_column" size-xl="4" size-lg="6" size-md="6" size-xs="12"
+                *ngFor="let vendor of vendors | filterByMetacategory: activeCategory; let i = index">
+                <ion-card class="vendor_cardview" #shopCardview (click)="selectVendor(vendor)">
+                  <ion-row class="row_logo_and_commission ion-align-items-center">
+                    <ion-col size="3" class="col_vendor_logo">
+                      <img class="shop_logo"
+                        onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'"
+                        [src]="vendor.imageUrl" alt="shop-image">
+                    </ion-col>
+                    <ion-col size="9">
+                      <p class="label_title">
+                        {{vendor.title}}
+                      </p>
+                      <p class="label_vendor_name">{{vendor.name}}</p>
+                      <p class="label_vendor_details">
+                        {{vendor.description ? (vendor.description | replaceComma) : vendor.description}}</p>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="row_vendor_details">
+                    <ion-col size="4">
+                      <ng-container *ngTemplateOutlet="cashback; context: {vendor:vendor}"></ng-container>
+                    </ion-col>
+                    <ion-col size="4">
+                      <ng-container *ngTemplateOutlet="stock; context: {vendor:vendor}"></ng-container>
+                    </ion-col>
+                    <ion-col size="4">
+                      <ng-container *ngTemplateOutlet="minOrder; context: {vendor:vendor}"></ng-container>
+                    </ion-col>
+                  </ion-row>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </ion-content>
+    </ion-slide>
+
+    <!-- SLIDE PRODUCTS LIST -->
+    <ion-slide id="slide_products" *ngIf="productsList">
+      <ion-content #ionContent>
+        <ion-item-divider lines="none" sticky="true">
+          <!-- PAGE HEADER -->
+          <ion-row class="row_page_header ion-align-items-center">
+            <!-- Back button -->
+            <ion-col size="12" id="custom_header">
+              <ion-row class="ion-align-items-center">
+                <ion-col size="2">
+                  <ion-button fill="clear" shape="round" color="primary" (click)="previousSlide()">
+                    <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </ion-col>
+                <!-- Vendor Logo -->
+                <ion-col size="8">
+                  <img id="vendor_logo_navbar" [src]="selectedVendor.imageUrl"
+                    onerror="this.onerror==null;this.src='./assets/icon/icon_food_marketplace.svg'" />
+                </ion-col>
+                <!-- Shopping cart -->
+                <ion-col size="2">
+                  <ion-icon id="icon_shopping_cart" src="./assets/icon/icon_shopping_basket.svg"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <!-- Searchbar -->
+            <ion-col size="12" id="wrap_searchbar">
+              <ion-searchbar
+                placeholder="{{'pages.marketplace.marketplaceCategories.labelSearchTheProduct' | translate}}"
+                inputmode="text" type="text" (ionChange)="searchProduct($event.target.value)"
+                (ionClear)="cancelSearch()" [debounce]="1000" mode="ios" showCancelButton="never"></ion-searchbar>
+            </ion-col>
+            <ion-col size="12">
+              <!-- CATEGORIES HORIZONTAL LIST -->
+              <div id="row_switch_category" *ngIf="categories?.length > 1">
+                <div id="list_of_categories" scrollX="true">
+                  <ion-card button mode="md"
+                    [ngClass]="{'active_category': category.name === selectedCategory.name && context !== 'search'}"
+                    *ngFor="let category of categories" (click)="updateActiveCategory(category)">
+                    <ion-row class="ion-align-items-center">
+                      <ion-col size="auto">
+                        <div class="wrap_category_image">
+                          <img
+                            [src]="selectedCategory.imgUrl != null ? ('https://static.use-beez.com' + category.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+                            onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" />
+                        </div>
+                      </ion-col>
+                      <ion-col>
+                        <p class="label_category_name">{{category.name}}</p>
+                      </ion-col>
+                    </ion-row>
+                  </ion-card>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-item-divider>
+        <!-- Products list -->
+        <ion-row *ngFor="let product of productsList" class="row_products_list"
+          (click)="openMarketplaceProductsDetails(product)">
+          <!-- Product image -->
+          <ion-col size="3" class="centered_content">
+            <!-- Product image -->
+            <ion-row class="row_product_image">
+              <ion-col size="12" class="centered_content">
+                <img class="product_image"
+                  [src]="product.imgUrl != null ? ('https://static.use-beez.com' + product.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+                  onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" alt="">
+              </ion-col>
+            </ion-row>
+          </ion-col>
+          <!-- Product details -->
+          <ion-col size="7">
+            <p class="label_product_name">{{product.name | titlecase}}</p>
+            <p class="label_product_details" [innerHTML]="product.weightInKG"></p>
+            <p class="label_product_price">
+              <span>{{'pages.marketplace.marketplaceProducts.labelYouPay' | translate}}</span>
+              {{product?.unitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+              <span class="label_unit_type">&nbsp;/{{product.unitType | lowercase}}</span>
+            </p>
+            <p class="label_cashback">
+              {{'pages.marketplace.marketplaceProducts.labelCashbackPercent' | translate}}&nbsp;<span>
+                {{selectedVendor.cashback}}</span></p>
+          </ion-col>
+          <!-- Button add -->
+          <ion-col size="2" class="centered_content">
+            <ion-button fill="clear" shape="round" size="small">
+              <ion-icon name="add-circle" class="icon_add_to_cart"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+        <!-- No products -->
+        <div id="wrap_empty_list" *ngIf="productsList.length < 1">
+          <!-- <p id="_title_empty_list"></p> -->
+          <img src="./assets/imgs/bee-characters/icon_pending_bee.svg" alt="">
+        </div>
+      </ion-content>
+    </ion-slide>
+  </ion-slides>
+</div>
+
+<ng-template #cashback let-vendor="vendor">
+  <p class="label_details">
+    <span>
+      {{vendor.cashback}}
+    </span>
+    cashback
+  </p>
+</ng-template>
+
+<ng-template #stock let-vendor="vendor">
+  <p class="label_details">
+    <span>
+      {{vendor.productsInStock}} {{'components.marketplaceVendorsList.labelProducts' | translate}}
+    </span>
+    {{'components.marketplaceVendorsList.labelInStock' | translate}}
+  </p>
+</ng-template>
+
+<ng-template #minOrder let-vendor="vendor">
+  <p class="label_details">
+    {{'components.marketplaceVendorsList.labelMinimumOrderValue' | translate}}
+    <span>
+      {{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+    </span>
+  </p>
+</ng-template>

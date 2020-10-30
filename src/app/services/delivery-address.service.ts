@@ -13,6 +13,7 @@ export class DeliveryAddressService {
   username: string;
   prefixUrlByCountry: string;
   headers: any;
+  guestHeader: any;
   apiURL = environment.apiURL;
 
   public listOfCounties = [
@@ -43,6 +44,8 @@ export class DeliveryAddressService {
       .set('Authorization', 'Bearer ' + this.token)
       .set('X-Token', this.jwtToken)
       .set('Cache-Control', 'no-cache');
+
+    this.guestHeader = new HttpHeaders().set('Content-Type', 'application/json').set('Cache-Control', 'no-cache');
   }
 
   /**
@@ -103,7 +106,7 @@ export class DeliveryAddressService {
     if (countyId) {
       apiUrl += '&countyId=' + countyId;
     }
-    return this.httpClient.get(apiUrl, { headers: this.headers });
+    return this.httpClient.get(apiUrl, { headers: this.token ? this.headers : this.guestHeader });
   }
 
   /**

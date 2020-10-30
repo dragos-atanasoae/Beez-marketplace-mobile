@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { LanguageService } from './services/language.service';
 import { Plugins } from '@capacitor/core';
+import { environment } from 'src/environments/environment';
 
 const { SplashScreen } = Plugins;
 
@@ -13,6 +14,7 @@ const { SplashScreen } = Plugins;
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  devEnvironment = !environment.production;
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,

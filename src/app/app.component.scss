@@ -2,3 +2,22 @@
     font-family: "Helvetica Neue";
   --ion-font-family: "Helvetica Neue";
 }
+#tag_test {
+  width: fit-content;
+  padding: 0 0.5rem;
+  margin-left: 50%;
+  background-color: rgba(255, 0, 0, 0.7);
+  position: absolute;
+  z-index: 99999;
+  top: 0;
+  box-shadow: var(--beez-box-shadow);
+  border-bottom-right-radius: 0.4rem;
+  border-bottom-left-radius: 0.4rem;
+  transform: translateX(-50%);
+  p {
+    line-height: 0;
+    font-size: 0.5rem;
+    font-weight: 500;
+    color: #fff;
+  }
+}
