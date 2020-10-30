@@ -19,6 +19,23 @@
     }
 }
 .register_content {
+    .form_register {
+        .page_title {
+            margin-top: 0;
+            text-align: center;
+            color: var(--ion-color-dark-tint);
+        }
+
+        .page_subtitle {
+            text-align: center;
+            color: var(--ion-color-medium);
+        }
+
+        .label_email {
+            text-align: center;
+            color: var(--ion-color-dark-tint);
+        }
+    }
     .auth_logo {
         max-height: 3.5em;
         width: auto;
@@ -57,9 +74,9 @@
                 padding: 0.5em;
                 color: var(--ion-color-danger);
                 font-size: 0.8em;
-                background: #FFF5F5;
+                background: #fff5f5;
                 border-radius: 2px;
-                
+
                 ion-icon {
                     margin-right: 0.2em;
                     font-size: 1.5em;
@@ -95,6 +112,28 @@
                 height: 100%;
             }
         }
+        .row_select_country {
+            margin-top: 1em;
+            .btn_select_country {
+                width: 100%;
+                height: 3em;
+                display: block;
+                --padding-start: 0em;
+                --padding-end: 0em;
+                --background: #fff;
+                --background-activated: #ddd;
+                --background-hover: #ddd;
+                font-size: 1em;
+                color: var(--ion-color-secondary-tint);
+                filter: grayscale(100%);
+                opacity: 0.5;
+            }
+            .btn_select_laguage_active {
+                --background: var(--beez-background-color);
+                filter: grayscale(0%);
+                opacity: 1;
+            }
+        }
         .btn_register {
             width: 100%;
             height: 3em;
@@ -106,16 +145,16 @@
             text-transform: none;
         }
         #label_or {
-            width: 100%; 
-            text-align: center; 
+            width: 100%;
+            text-align: center;
             text-transform: uppercase;
             color: var(--ion-color-medium);
-            border-bottom: 1px solid var(--ion-color-light-shade); 
+            border-bottom: 1px solid var(--ion-color-light-shade);
             line-height: 0.1em;
-            margin: 1em 0em 1em;
-            span { 
-                background:#fff; 
-                padding:0 10px; 
+            margin: 2em 0em 1em;
+            span {
+                background: #fff;
+                padding: 0 10px;
             }
         }
         .btn_facebook_login {
@@ -187,4 +226,4 @@
     margin-bottom: 1%;
     margin-left: auto;
     margin-right: auto;
-} 
+}

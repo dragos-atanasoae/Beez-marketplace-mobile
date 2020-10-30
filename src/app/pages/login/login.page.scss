@@ -4,6 +4,10 @@
 }
 
 .login_content {
+    height: 100%;
+    width: 100%;
+    padding-top: 6vh;
+
     .auth_logo {
         max-height: 3.5em;
         width: auto;
@@ -11,13 +15,37 @@
         margin: 0.5em auto;
     }
     .card_auth_form {
-        width: 90vw;
-        max-width: 480px;
-        margin: 0 auto;
-        background: rgba(255, 255, 255, 0.164);
-        border-radius: 8px;
-        padding: 12px;
-        box-shadow: none;
+        width: 100%;
+        display: block;
+        margin: auto 0;
+
+        form {
+            width: 90%;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .row_select_country {
+            margin-top: 1em;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .step1,
+        .step2 {
+            text-align: center;
+        }
+        .page_title {
+            color: var(--ion-color-dark-tint);
+        }
+        .label_email {
+            color: var(--ion-color-medium);
+        }
+        .label_enter_pass {
+            color: var(--ion-color-dark-tint);
+        }
+        .text_dark {
+            color: var(--ion-color-dark);
+        }
         ion-input {
             margin-left: 1em;
             color: var(--ion-color-secondary);
@@ -65,6 +93,25 @@
             width: 100%;
             height: 100%;
         }
+    }
+    .btn_select_country {
+        width: 100%;
+        height: 2em;
+        display: block;
+        --padding-start: 0em;
+        --padding-end: 0em;
+        --background: #fff;
+        --background-activated: #ddd;
+        --background-hover: #ddd;
+        font-size: 0.8em;
+        color: var(--ion-color-secondary-tint);
+        filter: grayscale(100%);
+        opacity: 0.5;
+    }
+    .btn_select_laguage_active {
+        --background: var(--beez-background-color);
+        filter: grayscale(0%);
+        opacity: 1;
     }
     .btn_login {
         width: 100%;
@@ -126,62 +173,51 @@
             text-decoration: underline;
         }
     }
-} 
-// SCREEN LOADING
-#custom-overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100000;
-    width: 100%;
-    background-color: rgba(243, 165, 39, 0.39);
 }
-.flb {
-    background-color: rgb(243, 165, 39);
-    height: 100%;
-    width: 100%;
-    animation: pulse 1s linear forwards;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.Aligner-item {
-    max-width: 50%;
-}
-.Aligner-item--top {
-    align-self: flex-start;
-}
-.Aligner-item--bottom {
-    align-self: flex-end;
-}
-#loading_splash {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 30%;
-    height: auto;
-    animation: animation 2100ms linear infinite both;
-    animation-delay: 1.5s;
-    position: absolute;
-}
-#logo_splash {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: -15%;
-    width: 40%;
-    height: auto;
-    animation: animation 2100ms linear infinite both;
-    animation-delay: 1.5s;
-    position: absolute;
-}
-@keyframes pulse {
-    0% {
-        opacity: 0;
+
+#wrap_guest_preview_product {
+    max-width: 420px;
+    margin: 0 auto;
+    text-align: center;
+    #wrap_product_image {
+        width: 8em;
+        height: auto;
+        margin: 0 auto;
+        position: relative;
+        border-radius: 1.5em;
+        overflow: hidden;
+        #wrap_logo {
+            width: fit-content;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            padding: 0.2em 3em 0 3em;
+            position: absolute;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), #fff, rgba(255, 255, 255, 0.5));
+            img {
+                z-index: 99;
+                width: 2rem;
+                height: auto;
+            }
+        }
     }
-    100% {
-        opacity: 1;
+    #product_title {
+        font-size: 1em;
+        line-height: 0;
+        font-weight: 500;
+        color: var(--ion-color-tertiary);
+    }
+    #product_value{
+        margin-top: 1.5em;
+        font-size: 1.2em;
+        line-height: 0;
+        font-weight: 600;
+        color: var(--ion-color-primary);
+    }
+
+    #info_preview_product {
+        font-size: 0.8em;
+        color: var(--ion-color-tertiary);
+        text-align: center;
     }
 }

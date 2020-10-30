@@ -102,7 +102,7 @@
                 margin: 0 auto;
 
                 #wrap_searchbar {
-                    padding-top: 0.2em;
+                    padding-top: 0.8em;
 
                     ion-searchbar {
                         padding-top: 0;
@@ -110,6 +110,43 @@
 
                     .sc-ion-searchbar-ios-h {
                         height: 46px !important;
+                    }
+                }
+
+                #col_authentication {
+                    padding-top: 0;
+                    ion-card {
+                        margin: 0 1em 0 0;
+                        padding: 0;
+                        width: 2.4rem;
+                        height: 2.4rem;
+                        border-radius: 50%;
+                        background: none;
+                        box-shadow: none;
+                        // box-shadow: var(--beez-box-shadow);
+                        border: 1px solid rgba(240, 164, 34, 0.356);
+                        div {
+                            margin: auto 0;
+                            padding: 0.1em;
+                            overflow: visible;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: middle;
+                            position: absolute;
+                            left: 50%;
+                            top: 50%;
+                            transform: translate(-50%, -50%);
+                            ion-icon {
+                                margin: 0 auto;
+                                font-size: 1rem;
+                                color: var(--ion-color-primary);
+                            }
+                            span {
+                                font-size: 0.4rem;
+                                color: var(--ion-color-primary);
+                                text-align: center;
+                            }
+                        }
                     }
                 }
 
@@ -251,6 +288,16 @@
             }
         }
 
+        .label_searched_keyword {
+            font-size: 0.8rem;
+            text-align: center;
+            color: var(--ion-color-tertiary);
+            span {
+                font-size: 1.2em;
+                font-weight: 600;
+                color: var(--ion-color-primary);
+            }
+        }
         // New UI with grid
         #grid_shops_list {
             padding: 0em 0.5em 1em;
@@ -383,17 +430,20 @@
             #custom_header {
                 padding: 0.5rem 0 0 0;
                 background: #fff;
+
                 #vendor_logo_navbar {
                     max-height: 2em;
                     max-width: 3em;
                     margin: 0 auto;
                     display: block;
                 }
+
                 #icon_shopping_cart {
                     margin-top: 0.4rem;
                     margin-bottom: 0;
                     font-size: 2rem;
                 }
+
                 ion-button {
                     --padding-start: 0.5em;
                     --padding-end: 0.5em;
@@ -402,12 +452,13 @@
 
             #wrap_searchbar {
                 padding: 0.2em 1em 0 1em;
+
                 ion-searchbar {
                     width: 95%;
                     max-width: 480px;
                     margin: 0 auto;
                     padding: 0 4px !important;
-    
+
                     &.searchbar-has-focus {
                         --background: #fff !important;
                         --icon-color: var(--ion-color-primary);

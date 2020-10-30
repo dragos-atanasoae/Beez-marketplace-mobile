@@ -23,8 +23,25 @@ export class AuthenticationService {
   constructor(public httpClient: HttpClient) { }
 
   /**
-   * @Name login
-   * @Param credentials
+   * @name checkIfHasAccountCreated
+   * @description Check if user has account created with given email address
+   * @param email
+   */
+  checkIfHasAccountCreated(email: string) {
+    const country = localStorage.getItem('country');
+    const header = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Cache-Control', 'no-cache');
+    const apiUrl = 'https://' + country + this.baseURL + 'api/AccountApi/Created?email=' + email;
+    return this.httpClient.get(apiUrl, { headers: header });
+  }
+
+
+  /**
+   * @name login
+   * @description Login user by sending credentials and country
+   * @param country
+   * @param credentials
    */
   login(country: string, credentials: LoginModel) {
     const loginUrl = 'https://' + country + this.baseURL + 'token';

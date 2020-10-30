@@ -63,6 +63,8 @@ export class MarketplaceProductDetailsPage implements OnInit {
       this.marketplaceService.addProductToCart(this.productDetails.id, this.quantity, this.vendor.id, this.city.Id);
     } else {
       this.modalCtrl.dismiss();
+      localStorage.setItem('guestPreviewProduct', JSON.stringify(this.productDetails));
+      this.analyticsService.logEvent('redirect_guest_to_login', { context: this.eventContext });
       this.router.navigateByUrl('login');
     }
   }

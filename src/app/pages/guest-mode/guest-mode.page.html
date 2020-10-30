@@ -12,10 +12,21 @@
         <ion-item-divider sticky="true">
           <div>
             <ion-row id="row_searchbar" class="ion-align-items-center">
-              <!-- <ion-col id="wrap_searchbar">
-              <ion-searchbar placeholder="" inputmode="text" type="text" mode="ios" [debounce]="250"
-                showCancelButton="never" (ionChange)="onSearchChange($event.target.value)"></ion-searchbar>
-            </ion-col> -->
+              <ion-col id="wrap_searchbar">
+                <ion-searchbar placeholder="{{'components.marketplaceVendorsList.labelSearchTheProduct' | translate}}"
+                  inputmode="text" type="text" (ionChange)="onSearchChange($event.target.value)" [debounce]="1000"
+                  mode="ios" showCancelButton="never" @fadeIn></ion-searchbar>
+                <!-- <ion-searchbar placeholder="" inputmode="text" type="text" mode="ios" [debounce]="250"
+                showCancelButton="never" (ionChange)="onSearchChange($event.target.value)"></ion-searchbar> -->
+              </ion-col>
+              <ion-col size="auto" id="col_authentication">
+                <ion-card button [routerLink]="'/login'">
+                  <div>
+                    <ion-icon src="./assets/icon/tabs_icons/profileTabActive.svg"></ion-icon>
+                    <span>Log in</span>
+                  </div>
+                </ion-card>
+              </ion-col>
               <ion-col size="12" id="wrap_options">
                 <div>
                   <ion-row class="row_select_option ion-align-items-center" (click)="openMarketplaceLocations()">
@@ -57,9 +68,9 @@
           </div>
         </ion-item-divider>
         <div class="container">
-          <p class="label_searched_keyword" *ngIf="searchedKeyword">{{this.vendorsList?.length}}
+          <p class="label_searched_keyword" *ngIf="searchedKeyword"><span>{{this.vendorsList?.length}}</span>
             {{'components.marketplaceVendorsList.labelVendor' | translate}}
-            <strong>"{{searchedKeyword}}"</strong></p>
+            <span>"{{searchedKeyword}}"</span></p>
           <div id="wrap_categories_list" *ngIf="categoriesDropdownIsActive">
             <ion-list [@listAnimation]="metacategories.length">
               <ion-item button detail="false" lines="none" *ngFor="let category of metacategories"
