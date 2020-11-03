@@ -295,4 +295,8 @@ export class GuestModePage implements OnInit {
     });
   }
 
+  resetPreviewProduct() {
+    localStorage.removeItem('guestPreviewProduct');
+  }
+
 }

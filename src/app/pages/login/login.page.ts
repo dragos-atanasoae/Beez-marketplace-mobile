@@ -106,7 +106,8 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getDeviceLocaleData();
+    this.selectedCountry = 'ro';
+    // this.getDeviceLocaleData();
     this.guestPreviewProduct = JSON.parse(localStorage.getItem('guestPreviewProduct'));
     console.log(this.guestPreviewProduct);
   }

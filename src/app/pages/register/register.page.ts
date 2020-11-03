@@ -99,8 +99,9 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getDeviceLocaleData();
+    this.selectedCountry = 'ro';
     this.initializeValidationMessages();
+    this.registerForm.controls.email.setValue(this.email);
   }
 
   getDeviceLocaleData() {

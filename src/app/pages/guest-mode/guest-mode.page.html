@@ -20,7 +20,7 @@
                 showCancelButton="never" (ionChange)="onSearchChange($event.target.value)"></ion-searchbar> -->
               </ion-col>
               <ion-col size="auto" id="col_authentication">
-                <ion-card button [routerLink]="'/login'">
+                <ion-card button [routerLink]="'/login'" (click)="resetPreviewProduct()">
                   <div>
                     <ion-icon src="./assets/icon/tabs_icons/profileTabActive.svg"></ion-icon>
                     <span>Log in</span>
