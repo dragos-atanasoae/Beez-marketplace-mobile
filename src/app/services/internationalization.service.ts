@@ -49,10 +49,10 @@ export class InternationalizationService implements TranslateLoader {
         this.localeData.currency = 'RON';
         this.localeData.localeID = 'ro';
         break;
-      case 'uk':
-        this.localeData.currency = '£';
-        this.localeData.localeID = 'en-GB';
-        break;
+      // case 'uk':
+      //   this.localeData.currency = '£';
+      //   this.localeData.localeID = 'en-GB';
+      //   break;
       default:
         this.localeData.currency = 'RON';
         this.localeData.localeID = 'ro';

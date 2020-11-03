@@ -15,6 +15,7 @@ ion-toolbar {
             margin-top: 0.8rem;
             margin-left: 1rem;
             margin-right: 0.5rem;
+            border-radius: 0.2em;
         }
 
         #lable_section_name {
@@ -426,10 +427,12 @@ ion-content {
         }
     }
 }
+
 .wrap_payment_progress {
     padding-left: 0;
     padding-right: 0;
 }
+
 .row-progress-bar {
     padding-top: 0em;
 

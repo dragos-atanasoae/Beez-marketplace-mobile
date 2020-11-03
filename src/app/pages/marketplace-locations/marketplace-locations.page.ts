@@ -23,6 +23,7 @@ export class MarketplaceLocationsPage implements OnInit {
   country = localStorage.getItem('country');
   language = localStorage.getItem('language');
   referralCode = localStorage.getItem('referralCode');
+  token = localStorage.getItem('currentUserToken');
   eventContext = 'Marketplace locations page';
   isKeyboardActive = false;
   localeData = new LocaleDataModel();
@@ -83,7 +84,9 @@ export class MarketplaceLocationsPage implements OnInit {
     this.internationalizationService.initializeCountry().subscribe(res => {
       this.localeData = res;
     });
-    this.getLocationsHistory();
+    if (this.token) {
+      this.getLocationsHistory();
+    }
   }
 
   async openMarketplace() {
@@ -140,19 +143,25 @@ export class MarketplaceLocationsPage implements OnInit {
   }
 
   postSelectedCity(city: any) {
-    console.log(city.name + ', ' + 'Romania');
+    console.log(city.name + ', ' + 'Romania', city);
     const label = city.name + ', ' + 'Romania';
-    this.userService.postUserProfileLocations(city.id, label)
-      .subscribe((res: any) => {
-        if (res.status === 'success') {
-          this.getLocationsHistory();
-          this.selectLocations(res.userProfileLocation);
-        } else if (res.status === 'error') {
-          this.showAddressInput = false;
-          this.presentToast(res.message);
-        }
-        console.log(res);
-      });
+    if (this.token) {
+      this.userService.postUserProfileLocations(city.id, label)
+        .subscribe((res: any) => {
+          if (res.status === 'success') {
+            this.getLocationsHistory();
+            this.selectLocations(res.userProfileLocation);
+          } else if (res.status === 'error') {
+            this.showAddressInput = false;
+            this.presentToast(res.message);
+          }
+          console.log(res);
+        });
+    } else {
+      this.selectedCounty = this.deliveryAddressService.listOfCounties.find((county: any) => county.Id === city.countyId);
+      console.log(this.selectedCounty);
+      this.selectedCity = {Id: city.id, Name: city.name.split(' (')[0]};
+    }
   }
 
   confirmLocation() {

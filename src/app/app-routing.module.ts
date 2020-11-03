@@ -96,6 +96,10 @@ const routes: Routes = [
     path: 'help',
     loadChildren: () => import('./pages/profile/help/help.module').then( m => m.HelpPageModule)
   },
+  {
+    path: 'guest-mode',
+    loadChildren: () => import('./pages/guest-mode/guest-mode.module').then( m => m.GuestModePageModule)
+  },
 ];
 @NgModule({
   imports: [

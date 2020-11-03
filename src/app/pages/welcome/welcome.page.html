@@ -5,7 +5,7 @@
   <ion-row id="wrap_info" class="ion-align-items-center">
     <ion-col size="12">
       <!-- GENERAL INFO -->
-      <img id="beez_logo" src="./assets/imgs/logo/logo_beez.svg" *ngIf="productFromExternalLink === null">
+      <img id="beez_logo" src="./assets/imgs/logo/logo_food_marketplace.svg" *ngIf="productFromExternalLink === null">
       <div class="wrap_general_info" *ngIf="productFromExternalLink === null">
         <p class="number_general_info">{{(generalInfo?.totalCommissions / 4.9) | currency:'EUR':'symbol-narrow':'.0-1':'ro'}} 
           <ion-spinner name="bubbles" color="medium" *ngIf="generalInfo == null"></ion-spinner>

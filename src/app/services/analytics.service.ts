@@ -7,7 +7,7 @@ import Analytics from 'analytics';
 import segmentPlugin from '@analytics/segment';
 
 const analytics = Analytics({
-  app: 'awesome-app',
+  app: 'food-marketplace-by-beez',
   plugins: [
     segmentPlugin({
       writeKey: environment.segmentKey

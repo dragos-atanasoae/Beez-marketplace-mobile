@@ -15,6 +15,9 @@ import { ManageAccountService } from 'src/app/services/manage-account.service';
 import { Plugins } from '@capacitor/core';
 // import { ResponseSignInWithApplePlugin } from '@capacitor-community/apple-sign-in';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { LocaleDataModel } from 'src/app/models/localeData.model';
+import { InternationalizationService } from 'src/app/services/internationalization.service';
 
 
 @Component({
@@ -25,6 +28,7 @@ import { Subscription } from 'rxjs';
 export class LoginPage implements OnInit {
 
   language: string;
+  localeData = new LocaleDataModel();
   currentYear = new Date().getFullYear();
   passwordType = 'password';
   passwordIcon = 'eye-off';
@@ -53,6 +57,9 @@ export class LoginPage implements OnInit {
   };
   eventContext = 'LoginPage';
   showAppleSignIn = false;
+  selectedCountry = localStorage.getItem('country') ? localStorage.getItem('country') : 'ro';
+  step = 1;
+  guestPreviewProduct = null;
 
   constructor(
     public modalCtrl: ModalController,
@@ -63,11 +70,17 @@ export class LoginPage implements OnInit {
     public loadingService: LoadingService,
     private toastCtrl: ToastController,
     private authenticationService: AuthenticationService,
+    private internationalizationService: InternationalizationService,
     private manageAccountService: ManageAccountService,
     private navCtrl: NavController,
     private analyticsService: AnalyticsService,
+    private router: Router,
     // private facebook: Facebook,
   ) {
+    // Initialize locale context
+    this.internationalizationService.initializeCountry().subscribe(res => {
+      this.localeData = res;
+    });
 
     if (this.platform.is('ios')) {
       this.showAppleSignIn = true;
@@ -93,11 +106,39 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedCountry = 'ro';
+    // this.getDeviceLocaleData();
+    this.guestPreviewProduct = JSON.parse(localStorage.getItem('guestPreviewProduct'));
+    console.log(this.guestPreviewProduct);
   }
 
   ionViewDidLoad() {
     localStorage.removeItem('currentUserToken');
     localStorage.removeItem('userName');
+  }
+
+  getDeviceLocaleData() {
+    const deviceCountry = navigator.language.split('-')[1];
+
+    console.log('Device country is: ', deviceCountry);
+    if (deviceCountry === 'RO' || deviceCountry === 'GB') {
+      console.log('Preselected country: ', deviceCountry);
+      localStorage.setItem('country', deviceCountry === 'GB' ? 'uk' : deviceCountry.toLowerCase());
+      this.selectedCountry = deviceCountry === 'GB' ? 'uk' : deviceCountry.toLowerCase();
+    } else {
+      console.log('The device country is not UK or RO. Please select your country');
+      localStorage.setItem('country', 'ro');
+      this.selectedCountry = 'ro';
+    }
+  }
+
+  selectLanguage(country: string, language: string) {
+    this.language = language;
+    localStorage.setItem('country', country);
+    localStorage.setItem('language', language);
+    this.translate.setDefaultLang(this.language);
+    this.translate.use(this.language);
+    this.selectedCountry = country;
   }
 
   /**
@@ -114,7 +155,7 @@ export class LoginPage implements OnInit {
    * @param context login type Beez/Faceebook/Apple account
    */
   selectAccountType(context: string) {
-    const country  = localStorage.getItem('country');
+    const country = localStorage.getItem('country');
     switch (context) {
       case 'login':
         this.login(country);
@@ -164,6 +205,9 @@ export class LoginPage implements OnInit {
     this.analyticsService.segmentIdentify();
     this.analyticsService.logEvent('login', {});
     this.navCtrl.navigateRoot('/tabs');
+    if (localStorage.getItem('guestPreviewProduct')) {
+      localStorage.removeItem('guestPreviewProduct');
+    }
   }
 
   /**
@@ -475,6 +519,30 @@ export class LoginPage implements OnInit {
     //   .catch((error) => {
     //     console.log(error);
     //   });
+  }
+
+  goToNextStep() {
+    const email = this.loginForm.get('email').value;
+    this.authenticationService.checkIfHasAccountCreated(email)
+      .subscribe((res: any) => {
+        if (res.status === 'success') {
+          if (res.hasCreatedAccount) {
+            this.step = 2;
+            console.log(this.loginForm.value);
+          } else {
+            localStorage.setItem('userName', email);
+            this.router.navigateByUrl('/register');
+          }
+        }
+      });
+  }
+
+  goBack() {
+    if (this.step === 2) {
+      this.step--;
+    } else {
+      this.navCtrl.navigateBack('/welcome');
+    }
   }
 
 

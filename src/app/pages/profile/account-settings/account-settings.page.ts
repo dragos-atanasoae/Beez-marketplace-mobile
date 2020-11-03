@@ -163,10 +163,14 @@ export class AccountSettingsPage {
     this.deleteDeviceToken();
     console.log('Logout from Account Settings Page');
     const language = localStorage.getItem('language');
+    const city = localStorage.getItem('city');
+    const county = localStorage.getItem('county');
     // remove user from local storage to log user out
     localStorage.clear();
     localStorage.setItem('language', language);
-    this.navCtrl.navigateRoot('welcome');
+    localStorage.setItem('city', city);
+    localStorage.setItem('county', county);
+    this.navCtrl.navigateRoot('guest-mode');
     this.analyticsService.logEvent('logout', { context: this.eventContext });
   }
 

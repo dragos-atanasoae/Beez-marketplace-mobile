@@ -7,6 +7,7 @@ import { fadeOut, slideInDown } from 'ng-animate';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { OrderDetailsPage } from 'src/app/pages/order-details/order-details.page';
 import { AnalyticsService } from 'src/app/services/analytics.service';
+import { EventsService } from 'src/app/services/events.service';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
@@ -52,6 +53,7 @@ export class OrdersPage implements OnInit {
 
   constructor(
     private analyticsService: AnalyticsService,
+    private eventsService: EventsService,
     private loadingService: LoadingService,
     private marketplaceService: MarketplaceService,
     private modalCtrl: ModalController,
@@ -66,8 +68,19 @@ export class OrdersPage implements OnInit {
     this.internationalizationService.initializeCountry().subscribe(res => {
       this.localeData = res;
     });
+    // * Listen updateBeezPayProductList event
+    this.eventsService.event$.subscribe((res) => {
+      if (res === 'payment:success') {
+        this.getOrdersList();
+      }
+    });
+  }
+
+  ionViewWillEnter() {
     this.getOrdersList();
   }
+
+
 
   /**
    * @name getOrdersList

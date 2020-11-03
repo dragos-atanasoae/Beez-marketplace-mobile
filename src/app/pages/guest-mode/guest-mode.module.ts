@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LoginPageRoutingModule } from './login-routing.module';
+import { GuestModePageRoutingModule } from './guest-mode-routing.module';
 
-import { LoginPage } from './login.page';
+import { GuestModePage } from './guest-mode.page';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 
@@ -16,10 +16,9 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     FormsModule,
     IonicModule,
     PipesModule,
-    ReactiveFormsModule,
     TranslateModule,
-    LoginPageRoutingModule
+    GuestModePageRoutingModule
   ],
-  declarations: [LoginPage]
+  declarations: [GuestModePage]
 })
-export class LoginPageModule {}
+export class GuestModePageModule {}

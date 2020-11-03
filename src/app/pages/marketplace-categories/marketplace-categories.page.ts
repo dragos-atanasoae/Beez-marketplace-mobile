@@ -111,6 +111,12 @@ export class MarketplaceCategoriesPage implements OnInit, OnDestroy {
     this.marketplaceService.getCategories(this.vendor.id, this.city.Id).subscribe((res: any) => {
       if (res.requestStatus === 'Success') {
         this.categories = res.requestData;
+        if (localStorage.getItem('selectedCategoryFromGuestMode')) {
+          console.log('Test');
+          const category = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedCategoryFromGuestMode'));
+          console.log('Selected Category', category);
+          this.openMarketplaceProducts(category).then(() => localStorage.removeItem('selectedCategoryFromGuestMode'));
+        }
       }
       console.log(res.requestData);
       setTimeout(() => {

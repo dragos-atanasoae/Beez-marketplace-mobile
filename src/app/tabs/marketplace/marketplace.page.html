@@ -78,7 +78,7 @@
   </ion-item-divider>
 
   <div class="container">
-    <p class="label_searched_keyword" *ngIf="searchedKeyword">{{this.vendorsList?.length}}
+    <p class="label_searched_keyword" *ngIf="searchedKeyword && activeCategory == null">{{this.vendorsList?.length}}
       {{'components.marketplaceVendorsList.labelVendor' | translate}}
       <strong>"{{searchedKeyword}}"</strong></p>
     <div id="wrap_categories_list" *ngIf="categoriesDropdownIsActive">

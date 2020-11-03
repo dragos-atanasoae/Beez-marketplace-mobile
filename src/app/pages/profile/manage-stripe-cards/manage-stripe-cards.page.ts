@@ -29,6 +29,7 @@ export class ManageStripeCardsPage implements OnInit {
   }
 
   getPaymentMethods() {
+    this.stripePaymentService.getPaymentMethods('initialize');
     this.stripePaymentService.paymentMethodsList$.pipe(takeUntil(this.unsubscribe$)).subscribe(res => this.paymentMethods = res);
     console.log('List of cards from Stripe: ', this.paymentMethods);
     if (this.paymentMethods.length > 0) {

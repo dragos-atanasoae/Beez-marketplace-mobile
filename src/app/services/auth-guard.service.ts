@@ -18,6 +18,6 @@ export class AuthGuardService {
       if (localStorage.getItem('currentUserToken')) {
         return true;
       }
-      this.navCtrl.navigateRoot('/welcome');
+      this.navCtrl.navigateRoot('/guest-mode');
     }
 }

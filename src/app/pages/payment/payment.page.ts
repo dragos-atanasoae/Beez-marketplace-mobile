@@ -195,7 +195,7 @@ export class PaymentPage implements OnInit, OnDestroy {
           this.analyticsService.logEvent('payment_successful', { context: this.eventContext });
           this.switchTransactionType('payment');
           // this.modalCtrl.dismiss();
-          // this.eventsService.publishEvent('payment:success');
+          this.eventsService.publishEvent('payment:success');
           // this.loadingService.dismissLoading();
         }, 5000);
       }
@@ -218,7 +218,7 @@ export class PaymentPage implements OnInit, OnDestroy {
           // The payment is complete!
           this.switchTransactionType('payment');
           // this.modalCtrl.dismiss();
-          // this.eventsService.publishEvent('payment:success');
+          this.eventsService.publishEvent('payment:success');
         }
       }
     });

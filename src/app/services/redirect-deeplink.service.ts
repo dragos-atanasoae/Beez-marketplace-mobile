@@ -43,7 +43,7 @@ export class RedirectDeeplinkService {
         break;
       case 'marketplace-products':
         console.log('redirect to food marketplace products');
-        this.switchFoodMarketplaceVendor();
+        this.switchFoodMarketplaceVendor(pathComponents);
         break;
       default:
         this.navigateToPath('tabs/search/null');
@@ -105,9 +105,12 @@ export class RedirectDeeplinkService {
     }
   }
 
-  switchFoodMarketplaceVendor() {
+  switchFoodMarketplaceVendor(pathComponents: any) {
     console.log('Redirect to vendor');
-    this.navigateToPath('tabs/search/marketplace');
+    localStorage.setItem('selectedVendorFromGuestMode', pathComponents[2]);
+    localStorage.setItem('selectedCategoryFromGuestMode', pathComponents[4]);
+    localStorage.setItem('selectedProductFromGuestMode', pathComponents[6]);
+    this.navigateToPath('tabs/marketplace');
   }
 
   navigateToPath(finalPath: string) {

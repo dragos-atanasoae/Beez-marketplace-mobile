@@ -4,8 +4,10 @@ import { Platform } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { LanguageService } from './services/language.service';
 import { Plugins } from '@capacitor/core';
-
-const { SplashScreen } = Plugins;
+import { environment } from 'src/environments/environment';
+import { RedirectDeeplinkService } from './services/redirect-deeplink.service';
+import { BranchInitEvent } from 'capacitor-branch-deep-links';
+const { SplashScreen, BranchDeepLinks } = Plugins;
 
 @Component({
   selector: 'app-root',
@@ -13,10 +15,12 @@ const { SplashScreen } = Plugins;
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  devEnvironment = !environment.production;
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private redirectDeeplinkService: RedirectDeeplinkService
   ) {
     this.initializeApp();
   }
@@ -30,6 +34,25 @@ export class AppComponent {
         fadeOutDuration: 500
       });
       this.languageService.setInitialAppLanguage();
+    });
+  }
+
+  /**
+   * @name receiveDeepLinkData
+   * @description Receive data from branch deeplinks
+   */
+  async receiveDeepLinkData() {
+    BranchDeepLinks.addListener('init', (event: BranchInitEvent) => {
+      // Retrieve deeplink keys from 'referringParams' and evaluate the values to determine where to route the user
+      // Check '+clicked_branch_link' before deciding whether to use your Branch routing logic
+      console.log(event.referringParams);
+      if (event.referringParams['+clicked_branch_link']) {
+        this.redirectDeeplinkService.managePathRedirect(event.referringParams.$deeplink_path);
+      }
+    });
+
+    BranchDeepLinks.addListener('initError', (error: any) => {
+      console.error(error);
     });
   }
 }
