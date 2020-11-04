@@ -89,6 +89,7 @@ export class TabsPage implements OnInit, AfterViewInit {
         // console.log(this.userExternalId);
         if (!this.platform.is('desktop')) {
           this.intializeMixpanelUserProfile();
+          this.analyticsService.firebaseIdentifyUser(res.externalId);
         }
       } else if (res.status === 'unauthorized') {
         this.logout();

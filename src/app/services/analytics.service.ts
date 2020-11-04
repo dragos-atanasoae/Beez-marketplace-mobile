@@ -1,11 +1,13 @@
 import { Platform } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Plugins } from '@capacitor/core';
 import { Mixpanel } from '@ionic-native/mixpanel/ngx';
 import Analytics from 'analytics';
 import segmentPlugin from '@analytics/segment';
+import '@capacitor-community/firebase-analytics';
+import { Plugins } from '@capacitor/core';
 
+const { FirebaseAnalytics, Device } = Plugins;
 const analytics = Analytics({
   app: 'food-marketplace-by-beez',
   plugins: [
@@ -14,9 +16,6 @@ const analytics = Analytics({
     })
   ]
 });
-const { Device } = Plugins;
-// // Segment analytics
-// declare var analytics;
 
 @Injectable({
   providedIn: 'root'
@@ -100,18 +99,33 @@ export class AnalyticsService {
   }
 
   /**
+   * === FIREBASE ===
+   * ================
+   */
+
+   /**
+    * @name firebaseIdentifyUser
+    * @description Set user id to Firebase
+    * @param uid
+    */
+  async firebaseIdentifyUser(uid: string) {
+    FirebaseAnalytics.setUserId({ userId: uid});
+  }
+
+  /**
    * @name firebaseLogEvents
    * @description Firebase analytics LogEvents
    * @param event
    * @param params
    */
   firebaseLogEvents(event: string, params: any) {
-    // this.firebase.logEvent(event, params)
-    //   .then(res => {
-    //     console.log('Firebase log event: ' + res);
-    //   })
-    //   .catch(e => console.log(e));
+    FirebaseAnalytics.logEvent({ name: event, params })
+      .then(res => {
+        console.log('Firebase log event: ' + res);
+      })
+      .catch(e => console.log(e));
   }
+
 
   /**
    * === MIXPANEL ===
