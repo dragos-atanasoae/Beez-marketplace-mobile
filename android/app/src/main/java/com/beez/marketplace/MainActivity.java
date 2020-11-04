@@ -1,5 +1,6 @@
 package com.beez.marketplace;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.getcapacitor.BridgeActivity;
@@ -19,5 +20,11 @@ public class MainActivity extends BridgeActivity {
       // Ex: add(TotallyAwesomePlugin.class);
       add(BranchDeepLinks.class);
     }});
+  }
+
+  @Override
+  protected void onNewIntent(Intent intent) {
+    this.setIntent(intent);
+    super.onNewIntent(intent);
   }
 }

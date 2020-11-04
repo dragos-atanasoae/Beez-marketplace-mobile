@@ -116,7 +116,6 @@ export class MarketplacePage implements OnInit {
         this.copyList = this.vendorsList;
         console.log('Buffered vendor ', localStorage.getItem('selectedVendorFromGuestMode'));
         if (localStorage.getItem('selectedVendorFromGuestMode')) {
-          console.log('Test');
           const vendor = res.vendors.find((el: any) => el.id.toString() === localStorage.getItem('selectedVendorFromGuestMode'));
           console.log('Selected Vendor', vendor);
           this.openMarketplaceVendor(vendor).then(() => localStorage.removeItem('selectedVendorFromGuestMode'));

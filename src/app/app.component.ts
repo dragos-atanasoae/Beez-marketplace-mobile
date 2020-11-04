@@ -34,6 +34,7 @@ export class AppComponent {
         fadeOutDuration: 500
       });
       this.languageService.setInitialAppLanguage();
+      this.receiveDeepLinkData();
     });
   }
 
@@ -45,7 +46,7 @@ export class AppComponent {
     BranchDeepLinks.addListener('init', (event: BranchInitEvent) => {
       // Retrieve deeplink keys from 'referringParams' and evaluate the values to determine where to route the user
       // Check '+clicked_branch_link' before deciding whether to use your Branch routing logic
-      console.log(event.referringParams);
+      console.log('Deeplink received data: ', event.referringParams);
       if (event.referringParams['+clicked_branch_link']) {
         this.redirectDeeplinkService.managePathRedirect(event.referringParams.$deeplink_path);
       }

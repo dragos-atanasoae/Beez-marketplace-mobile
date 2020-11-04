@@ -3,6 +3,7 @@ import Capacitor
 import FirebaseCore
 import FirebaseInstanceID // Add this line after import FirebaseCore
 import FirebaseMessaging
+import Branch
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,6 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
     FirebaseApp.configure()
+    Branch.setUseTestBranchKey(false) // if you are using the TEST key
+    Branch.getInstance().initSession(launchOptions: launchOptions)
     return true
   }
 
@@ -41,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
     // Called when the app was launched with a url. Feel free to add additional processing here,
     // but if you want the App API to support tracking app url opens, make sure to keep this call
+    Branch.getInstance().application(app, open: url, options: options)
     return CAPBridge.handleOpenUrl(url, options)
   }
   
@@ -48,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Called when the app was launched with an activity, including Universal Links.
     // Feel free to add additional processing here, but if you want the App API to support
     // tracking app url opens, make sure to keep this call
+    Branch.getInstance().continue(userActivity)
     return CAPBridge.handleContinueActivity(userActivity, restorationHandler)
   }
 
@@ -74,6 +79,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 NotificationCenter.default.post(name: Notification.Name(CAPNotifications.DidRegisterForRemoteNotificationsWithDeviceToken.name()), object: result.token)
             }
         }
+  }
+  
+  func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+      Branch.getInstance().handlePushNotification(userInfo)
   }
 
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

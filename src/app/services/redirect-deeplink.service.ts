@@ -29,6 +29,7 @@ export class RedirectDeeplinkService {
       this.switchMainRoute(pathComponents);
     } else {
       this.$pathComponents.next(pathComponents);
+      this.switchFoodMarketplaceVendor(pathComponents);
     }
   }
 
@@ -39,7 +40,7 @@ export class RedirectDeeplinkService {
         break;
       case 'food-marketplace':
         console.log('redirect to food marketplace section');
-        this.switchShopsListSection('foodMarketplace');
+        this.switchFoodMarketplaceVendor(pathComponents);
         break;
       case 'marketplace-products':
         console.log('redirect to food marketplace products');
@@ -107,10 +108,18 @@ export class RedirectDeeplinkService {
 
   switchFoodMarketplaceVendor(pathComponents: any) {
     console.log('Redirect to vendor');
-    localStorage.setItem('selectedVendorFromGuestMode', pathComponents[2]);
-    localStorage.setItem('selectedCategoryFromGuestMode', pathComponents[4]);
-    localStorage.setItem('selectedProductFromGuestMode', pathComponents[6]);
-    this.navigateToPath('tabs/marketplace');
+    if (pathComponents[2]) {
+      localStorage.setItem('selectedVendorFromGuestMode', pathComponents[2]);
+    }
+    if (pathComponents[4]) {
+      localStorage.setItem('selectedCategoryFromGuestMode', pathComponents[4]);
+    }
+    if (pathComponents[6]) {
+      localStorage.setItem('selectedProductFromGuestMode', pathComponents[6]);
+    }
+    if (localStorage.getItem('currentUserToken')) {
+      this.navigateToPath('tabs/marketplace');
+    }
   }
 
   navigateToPath(finalPath: string) {
