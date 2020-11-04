@@ -29,6 +29,7 @@ export class RedirectDeeplinkService {
       this.switchMainRoute(pathComponents);
     } else {
       this.$pathComponents.next(pathComponents);
+      this.switchFoodMarketplaceVendor(pathComponents);
     }
   }
 
@@ -39,14 +40,14 @@ export class RedirectDeeplinkService {
         break;
       case 'food-marketplace':
         console.log('redirect to food marketplace section');
-        this.switchShopsListSection('foodMarketplace');
+        this.switchFoodMarketplaceVendor(pathComponents);
         break;
       case 'marketplace-products':
         console.log('redirect to food marketplace products');
         this.switchFoodMarketplaceVendor(pathComponents);
         break;
       default:
-        this.navigateToPath('tabs/search/null');
+        this.navigateToPath('tabs/marketplace');
         break;
     }
   }
@@ -55,62 +56,41 @@ export class RedirectDeeplinkService {
     switch (pathComponents[1]) {
       case 'home-page':
         console.log('redirect to shops no selection');
-        this.navigateToPath('tabs/search/null');
+        this.navigateToPath('tabs/marketplace');
         break;
-      case 'sweet_deals':
-        console.log('redirect to deals feed tab');
-        this.navigateToPath('tabs/deals-feed');
-        break;
-      case 'beez-pay':
+      case 'orders':
         console.log('redirect to BeezPay tab');
-        this.navigateToPath('tabs/beez-pay');
+        localStorage.setItem('selectedOrder', pathComponents[2]);
+        this.navigateToPath('tabs/orders');
         break;
       case 'profile':
         console.log('redirect to profile tab');
         this.navigateToPath('tabs/profile');
         break;
-      case 'donations':
-        console.log('redirect to donations tab');
-        this.navigateToPath('tabs/donations');
-        break;
       case 'shops':
         console.log('Shop section: ', pathComponents[3]);
-        this.switchShopsListSection(pathComponents[3]);
         break;
       default:
         console.log('redirect to search default');
-        this.navigateToPath('tabs/search/null');
-        break;
-    }
-  }
-
-  switchShopsListSection(subPath: string) {
-    switch (subPath) {
-      case 'beezPayShopsList':
-        console.log('BeezPay Shops List');
-        this.navigateToPath('tabs/search/beezPay');
-        break;
-      case 'cashbackShopsList':
-        console.log('Cashback Shops List');
-        this.navigateToPath('tabs/search/cashback');
-        break;
-      case 'foodMarketplace':
-        console.log('Marketplace vendors list');
-        this.navigateToPath('tabs/search/marketplace');
-        break;
-      case 'vouchersShopsList':
-        console.log('Vouchers Shops List');
-        this.navigateToPath('tabs/search/vouchers');
+        this.navigateToPath('tabs/marketplace');
         break;
     }
   }
 
   switchFoodMarketplaceVendor(pathComponents: any) {
     console.log('Redirect to vendor');
-    localStorage.setItem('selectedVendorFromGuestMode', pathComponents[2]);
-    localStorage.setItem('selectedCategoryFromGuestMode', pathComponents[4]);
-    localStorage.setItem('selectedProductFromGuestMode', pathComponents[6]);
-    this.navigateToPath('tabs/marketplace');
+    if (pathComponents[2]) {
+      localStorage.setItem('selectedVendorFromGuestMode', pathComponents[2]);
+    }
+    if (pathComponents[4]) {
+      localStorage.setItem('selectedCategoryFromGuestMode', pathComponents[4]);
+    }
+    if (pathComponents[6]) {
+      localStorage.setItem('selectedProductFromGuestMode', pathComponents[6]);
+    }
+    if (localStorage.getItem('currentUserToken')) {
+      this.navigateToPath('tabs/marketplace');
+    }
   }
 
   navigateToPath(finalPath: string) {

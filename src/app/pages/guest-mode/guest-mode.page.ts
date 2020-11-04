@@ -127,6 +127,13 @@ export class GuestModePage implements OnInit {
         if (this.searchedKeyword) {
           this.onSearchChange(this.searchedKeyword);
         }
+        setTimeout(() => {
+          if (localStorage.getItem('selectedVendorFromGuestMode')) {
+            this.selectedVendor = res.vendors.find((el: any) => el.id.toString() === localStorage.getItem('selectedVendorFromGuestMode'));
+            console.log('pre-selected vendor: ', this.selectedCategory);
+            this.getCategories();
+          }
+        }, 500);
       }
     });
   }
@@ -136,11 +143,17 @@ export class GuestModePage implements OnInit {
    * @description Get the list of products categories for the selected vendor
    */
   getCategories() {
+    console.log('Get categories');
     this.loadingService.presentLoading();
     this.marketplaceService.getCategories(this.selectedVendor.id, this.city.Id).subscribe((res: any) => {
       if (res.requestStatus === 'Success') {
         this.categories = res.requestData;
-        this.selectedCategory = this.categories[0];
+        if (localStorage.getItem('selectedCategoryFromGuestMode')) {
+          this.selectedCategory = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedCategoryFromGuestMode'));
+        } else {
+          this.selectedCategory = this.categories[0];
+        }
+        console.log('Selected Category', this.selectedCategory);
         this.getProductsForCategories();
         console.log('Product categories: ', this.categories);
       }
@@ -157,8 +170,14 @@ export class GuestModePage implements OnInit {
       setTimeout(() => {
         this.nextSlide();
       }, 500);
-      this.marketplaceService.selectedCategoryFromGuestMode$.next(this.selectedCategory.id);
-      localStorage.setItem('selectedCategoryFromGuestMode', this.selectedCategory.id);
+      if (localStorage.getItem('selectedProductFromGuestMode')) {
+        const product = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedProductFromGuestMode'));
+        console.log('Selected Product', product);
+        this.openMarketplaceProductsDetails(product);
+      } else {
+        this.marketplaceService.selectedCategoryFromGuestMode$.next(this.selectedCategory.id);
+        localStorage.setItem('selectedCategoryFromGuestMode', this.selectedCategory.id);
+      }
       this.loadingService.dismissLoading();
     });
   }

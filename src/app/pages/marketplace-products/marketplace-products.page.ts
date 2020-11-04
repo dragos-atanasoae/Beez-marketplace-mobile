@@ -106,9 +106,8 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
       if (res.requestStatus === 'Success') {
         this.productsList = res.requestData;
         if (localStorage.getItem('selectedProductFromGuestMode')) {
-          console.log('Test');
           const product = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedProductFromGuestMode'));
-          console.log('Selected Category', product);
+          console.log('Selected Product', product);
           this.openMarketplaceProductsDetails(product).then(() => localStorage.removeItem('selectedProductFromGuestMode'));
         }
       }

@@ -30,6 +30,15 @@
                 <data android:scheme="@string/custom_url_scheme" />
             </intent-filter>
 
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/custom_url_scheme" android:host="feedme.use-beez.com" />
+                <data android:scheme="https" android:host="9pved-alternate.app.link" />
+                <data android:scheme="@string/custom_url_scheme" android:host="9pved.test-app.link" />
+                <data android:scheme="https" android:host="9pved-alternate.test-app.link" />
+            </intent-filter>
         </activity>
 
         <provider

@@ -1,6 +1,6 @@
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeOut, slideInDown } from 'ng-animate';
@@ -52,6 +52,7 @@ export class OrdersPage implements OnInit {
   };
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private analyticsService: AnalyticsService,
     private eventsService: EventsService,
     private loadingService: LoadingService,
@@ -95,6 +96,13 @@ export class OrdersPage implements OnInit {
           this.showFirstOrderTemplate = response.items.length >= 1 ? false : true;
           this.activeOrdersList = this.getFilteredOrders(response.items, 'active');
           this.ordersHistory = this.getFilteredOrders(response.items, 'history');
+          if (localStorage.getItem('selectedOrder')) {
+            const orderFromRoute = response.items.find((el: any) => el.id.toString() === localStorage.getItem('selectedOrder'));
+            console.log('Open Order: ', orderFromRoute);
+            if (orderFromRoute) {
+              this.openOrderDetailsPage(orderFromRoute).then(() => localStorage.removeItem('selectedOrder'));
+            }
+          }
         }
         this.loadingService.dismissLoading();
         this.showLoadingSkeleton = false;
