@@ -47,7 +47,7 @@ export class RedirectDeeplinkService {
         this.switchFoodMarketplaceVendor(pathComponents);
         break;
       default:
-        this.navigateToPath('tabs/search/null');
+        this.navigateToPath('tabs/marketplace');
         break;
     }
   }
@@ -56,52 +56,23 @@ export class RedirectDeeplinkService {
     switch (pathComponents[1]) {
       case 'home-page':
         console.log('redirect to shops no selection');
-        this.navigateToPath('tabs/search/null');
+        this.navigateToPath('tabs/marketplace');
         break;
-      case 'sweet_deals':
-        console.log('redirect to deals feed tab');
-        this.navigateToPath('tabs/deals-feed');
-        break;
-      case 'beez-pay':
+      case 'orders':
         console.log('redirect to BeezPay tab');
-        this.navigateToPath('tabs/beez-pay');
+        localStorage.setItem('selectedOrder', pathComponents[2]);
+        this.navigateToPath('tabs/orders');
         break;
       case 'profile':
         console.log('redirect to profile tab');
         this.navigateToPath('tabs/profile');
         break;
-      case 'donations':
-        console.log('redirect to donations tab');
-        this.navigateToPath('tabs/donations');
-        break;
       case 'shops':
         console.log('Shop section: ', pathComponents[3]);
-        this.switchShopsListSection(pathComponents[3]);
         break;
       default:
         console.log('redirect to search default');
-        this.navigateToPath('tabs/search/null');
-        break;
-    }
-  }
-
-  switchShopsListSection(subPath: string) {
-    switch (subPath) {
-      case 'beezPayShopsList':
-        console.log('BeezPay Shops List');
-        this.navigateToPath('tabs/search/beezPay');
-        break;
-      case 'cashbackShopsList':
-        console.log('Cashback Shops List');
-        this.navigateToPath('tabs/search/cashback');
-        break;
-      case 'foodMarketplace':
-        console.log('Marketplace vendors list');
-        this.navigateToPath('tabs/search/marketplace');
-        break;
-      case 'vouchersShopsList':
-        console.log('Vouchers Shops List');
-        this.navigateToPath('tabs/search/vouchers');
+        this.navigateToPath('tabs/marketplace');
         break;
     }
   }
