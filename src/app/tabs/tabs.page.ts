@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { IonTabs, NavController, Platform, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, IonTabs, ModalController, NavController, Platform, PopoverController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AnalyticsService } from '../services/analytics.service';
 import { ManageAccountService } from '../services/manage-account.service';
@@ -13,6 +13,7 @@ import {
 import { Mixpanel, MixpanelPeople } from '@ionic-native/mixpanel/ngx';
 import { BackButtonActionService } from '../services/back-button-action.service';
 import { WalletService } from '../services/wallet.service';
+import { Router } from '@angular/router';
 
 const { PushNotifications, Keyboard } = Plugins;
 
@@ -24,6 +25,11 @@ const { PushNotifications, Keyboard } = Plugins;
 export class TabsPage implements OnInit, AfterViewInit {
   @ViewChild('ionTabs', { static: true }) ionTabs: IonTabs;
   @ViewChild('tabsBar', { read: ElementRef }) tabsBar: ElementRef;
+
+  // set up hardware back button event.
+  lastTimeBackPress = 0;
+  timePeriodToExit = 2000;
+  toastExit: any;
 
   country: string;
   activeTab: any;
@@ -41,14 +47,18 @@ export class TabsPage implements OnInit, AfterViewInit {
     private navCtrl: NavController,
     public zone: NgZone,
     private toastCtrl: ToastController,
+    private modalCtrl: ModalController,
     private translate: TranslateService,
     private analyticsService: AnalyticsService,
     private managerAccountService: ManageAccountService,
     private mixpanel: Mixpanel,
     private mixpanelPeople: MixpanelPeople,
     private stripePaymentService: StripePaymentService,
-    private backActionService: BackButtonActionService,
     private walletService: WalletService,
+    private actionSheetCtrl: ActionSheetController,
+    private alertCtrl: AlertController,
+    private popoverCtrl: PopoverController,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -66,7 +76,7 @@ export class TabsPage implements OnInit, AfterViewInit {
     this.getVipDetails();
     this.stripePaymentService.getPaymentProcessor();
     this.stripePaymentService.getPaymentMethods('initialize');
-    this.backActionService.listenForBackEvent();
+    this.listenForBackEvent();
   }
 
   ngAfterViewInit(): void {
@@ -183,11 +193,11 @@ export class TabsPage implements OnInit, AfterViewInit {
     );
 
     PushNotifications.addListener('pushNotificationActionPerformed',
-    (notification: PushNotificationActionPerformed) => {
-      console.log('Action performed: ', notification);
-      // alert('Push action performed: ' + JSON.stringify(notification));
-    }
-  );
+      (notification: PushNotificationActionPerformed) => {
+        console.log('Action performed: ', notification);
+        // alert('Push action performed: ' + JSON.stringify(notification));
+      }
+    );
 
     setTimeout(() => {
       this.intializeMixpanelUserProfile();
@@ -223,7 +233,7 @@ export class TabsPage implements OnInit, AfterViewInit {
    */
   getSelectedTab() {
     this.activeTab = this.ionTabs.getSelected();
-    this.backActionService.listenForBackEvent();
+    this.listenForBackEvent();
     // get number of unread notifications
     if (this.activeTab === 'profile') {
       // this.notificationService.unreadNotifications();
@@ -261,6 +271,82 @@ export class TabsPage implements OnInit, AfterViewInit {
       cssClass: 'custom_toast'
     });
     toast.present();
+  }
+
+/**
+ * @description Overwrite back button for android platform(back and exit)
+ */
+  listenForBackEvent() {
+    this.platform.backButton.subscribe(async () => {
+      const url = this.router.url;
+
+      // close action sheet
+      try {
+        const element = await this.actionSheetCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (error) { }
+
+      // close popover
+      try {
+        const element = await this.popoverCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (error) { }
+
+      // close modal
+      try {
+        const element = await this.modalCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (error) { }
+
+      // close alert
+      try {
+        const element = await this.alertCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (err) { }
+
+      if (url.indexOf('tabs') > -1) {
+        if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
+          // tslint:disable-next-line: no-string-literal
+          navigator['app'].exitApp();
+        } else {
+          this.presentToastExit();
+        }
+      }
+    });
+  }
+
+  /**
+   * @description Show toast message to confirm close app
+   */
+  async presentToastExit() {
+    this.toastExit = await this.toastCtrl.create({
+      message: this.translate.instant('backButtonExitAppToastMessage'),
+      buttons: [
+        {
+          text: 'Exit',
+          handler: () => {
+            // tslint:disable-next-line:no-string-literal
+            navigator['app'].exitApp();
+          }
+        }
+      ],
+      cssClass: 'custom_toast',
+      duration: 2000
+    });
+    this.toastExit.present();
+    this.lastTimeBackPress = new Date().getTime();
   }
 
 }

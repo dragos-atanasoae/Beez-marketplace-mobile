@@ -79,6 +79,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 	<key>branch_key</key>
 	<string>key_live_mjN47aidNzcc7UlhEPCT6lgiwrleQNue</string>
 	<key>branch_universal_link_domains</key>
@@ -88,7 +90,5 @@
 		<string>9pved.test-app.link</string>
 		<string>9pved-alternate.test-app.link</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
 </dict>
 </plist>

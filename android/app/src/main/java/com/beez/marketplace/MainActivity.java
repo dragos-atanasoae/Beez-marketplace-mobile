@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.Plugin;
+import com.getcapacitor.community.firebaseanalytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import co.boundstate.BranchDeepLinks;

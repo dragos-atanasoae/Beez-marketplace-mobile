@@ -1,5 +1,5 @@
 import { Component, EventEmitter, NgZone, OnInit, Output, ViewChild } from '@angular/core';
-import { IonContent, IonSlides, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, IonContent, IonSlides, ModalController, Platform, PopoverController, ToastController } from '@ionic/angular';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { AnalyticsService } from 'src/app/services/analytics.service';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
@@ -10,6 +10,8 @@ import { trigger, transition, useAnimation, query, style, stagger, animate } fro
 import { slideInRight, slideInUp, slideOutUp } from 'ng-animate';
 import { MarketplaceProductDetailsPage } from '../marketplace-product-details/marketplace-product-details.page';
 import { BackButtonActionService } from 'src/app/services/back-button-action.service';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-guest-mode',
   templateUrl: './guest-mode.page.html',
@@ -50,6 +52,11 @@ export class GuestModePage implements OnInit {
   @ViewChild('marketplaceSlides') marketplaceSlides: IonSlides;
   @ViewChild('ionContent') ionContent: IonContent;
 
+  // set up hardware back button event.
+  lastTimeBackPress = 0;
+  timePeriodToExit = 2000;
+  toastExit: any;
+
   slideOpts = {
     initialSlide: 0,
     speed: 400
@@ -71,9 +78,9 @@ export class GuestModePage implements OnInit {
   productsList: any = null;
 
   // Metacategories
-    metacategories = [
-      { id: 0, name: 'Bacanie', imgUrl: 'bacanie' },
-    ];
+  metacategories = [
+    { id: 0, name: 'Bacanie', imgUrl: 'bacanie' },
+  ];
   categoriesDropdownIsActive = false;
   activeCategory = null;
 
@@ -85,11 +92,17 @@ export class GuestModePage implements OnInit {
 
   constructor(
     private analyticsService: AnalyticsService,
-    private backActionService: BackButtonActionService,
     private loadingService: LoadingService,
     private internationalizationService: InternationalizationService,
     private marketplaceService: MarketplaceService,
     private modalCtrl: ModalController,
+    private actionSheetCtrl: ActionSheetController,
+    private alertCtrl: AlertController,
+    public platform: Platform,
+    private popoverCtrl: PopoverController,
+    private router: Router,
+    private toastCtrl: ToastController,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -107,10 +120,8 @@ export class GuestModePage implements OnInit {
   ionViewDidEnter() {
     setTimeout(() => {
       this.marketplaceSlides.lockSwipes(true);
+      this.listenForBackEvent();
     }, 500);
-    if (this.marketplaceSlides.isBeginning) {
-      this.backActionService.listenForBackEvent();
-    }
   }
 
   getVendorsList() {
@@ -162,24 +173,24 @@ export class GuestModePage implements OnInit {
 
   getProductsForCategories() {
     this.marketplaceService.getProductsForCategory(this.selectedCategory.id, this.selectedVendor.id, this.city.Id)
-    .subscribe((res: any) => {
-      if (res.requestStatus === 'Success') {
-        this.productsList = res.requestData;
-        console.log('Products list: ', this.productsList);
-      }
-      setTimeout(() => {
-        this.nextSlide();
-      }, 500);
-      if (localStorage.getItem('selectedProductFromGuestMode')) {
-        const product = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedProductFromGuestMode'));
-        console.log('Selected Product', product);
-        this.openMarketplaceProductsDetails(product);
-      } else {
-        this.marketplaceService.selectedCategoryFromGuestMode$.next(this.selectedCategory.id);
-        localStorage.setItem('selectedCategoryFromGuestMode', this.selectedCategory.id);
-      }
-      this.loadingService.dismissLoading();
-    });
+      .subscribe((res: any) => {
+        if (res.requestStatus === 'Success') {
+          this.productsList = res.requestData;
+          console.log('Products list: ', this.productsList);
+        }
+        setTimeout(() => {
+          this.nextSlide();
+        }, 500);
+        if (localStorage.getItem('selectedProductFromGuestMode')) {
+          const product = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedProductFromGuestMode'));
+          console.log('Selected Product', product);
+          this.openMarketplaceProductsDetails(product);
+        } else {
+          this.marketplaceService.selectedCategoryFromGuestMode$.next(this.selectedCategory.id);
+          localStorage.setItem('selectedCategoryFromGuestMode', this.selectedCategory.id);
+        }
+        this.loadingService.dismissLoading();
+      });
   }
 
   updateActiveCategory(category: any) {
@@ -316,6 +327,82 @@ export class GuestModePage implements OnInit {
 
   resetPreviewProduct() {
     localStorage.removeItem('guestPreviewProduct');
+  }
+
+/**
+ * @description Overwrite back button for android platform(back and exit)
+ */
+  listenForBackEvent() {
+    this.platform.backButton.subscribe(async () => {
+      const url = this.router.url;
+
+      // close action sheet
+      try {
+        const element = await this.actionSheetCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (error) { }
+
+      // close popover
+      try {
+        const element = await this.popoverCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (error) { }
+
+      // close modal
+      try {
+        const element = await this.modalCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (error) { }
+
+      // close alert
+      try {
+        const element = await this.alertCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (err) { }
+
+      if (url.indexOf('tabs') > -1) {
+        if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
+          // tslint:disable-next-line: no-string-literal
+          navigator['app'].exitApp();
+        } else {
+          this.presentToastExit();
+        }
+      }
+    });
+  }
+
+  /**
+   * @description Show toast message to confirm close app
+   */
+  async presentToastExit() {
+    this.toastExit = await this.toastCtrl.create({
+      message: this.translate.instant('backButtonExitAppToastMessage'),
+      buttons: [
+        {
+          text: 'Exit',
+          handler: () => {
+            // tslint:disable-next-line:no-string-literal
+            navigator['app'].exitApp();
+          }
+        }
+      ],
+      cssClass: 'custom_toast',
+      duration: 2000
+    });
+    this.toastExit.present();
+    this.lastTimeBackPress = new Date().getTime();
   }
 
 }

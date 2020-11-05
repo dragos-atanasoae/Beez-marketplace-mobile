@@ -62,7 +62,7 @@
 
         <meta-data android:name="io.branch.sdk.BranchKey" android:value="@string/branch_key" />
         <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="@string/branch_test_key" />
-        <meta-data android:name="io.branch.sdk.TestMode" android:value="true" /> <!-- Set to true to use test key -->
+        <meta-data android:name="io.branch.sdk.TestMode" android:value="false" /> <!-- Set to true to use test key -->
     </application>
 
     <!-- Permissions -->
