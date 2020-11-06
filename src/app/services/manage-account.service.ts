@@ -135,7 +135,8 @@ export class ManageAccountService {
     const body = {
       Tag: this.username,
       Token: deviceToken,
-      Platform: localStorage.getItem('platform')
+      Platform: localStorage.getItem('platform'),
+      Application: 'com.beez.marketplace'
     };
     return this.httpClient.post(urlApiPostDeviceToken, body, { headers: this.header });
   }
@@ -151,6 +152,7 @@ export class ManageAccountService {
     const body = {
       Tag: this.username,
       Token: deviceToken,
+      Application: 'com.beez.marketplace'
     };
     return this.httpClient.post(url, body, { headers: this.header });
   }
