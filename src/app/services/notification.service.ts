@@ -45,9 +45,9 @@ export class NotificationService {
    */
   getNotificationsHistory(page: number, pageSize: number) {
     this.prepareHeaderForRequest();
-    const url = this.prefixUrlByCountry + this.apiURL + 'api/user/NotificationsHistory';
+    const url = this.prefixUrlByCountry + this.apiURL + 'api/user/AppNotificationsHistory';
     return this.httpClient.get(url + '?tag=' + this.username + '&page=' + page + '&pageSize='
-      + pageSize + '&orderBy=' + 'date' + '&ascending=' + true, { headers: this.header });
+      + pageSize + '&orderBy=' + 'date' + '&ascending=' + true + '&application=com.beez.marketplace', { headers: this.header });
   }
 
   /**
