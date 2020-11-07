@@ -10,6 +10,11 @@
     <param name="android-package" value="de.appplant.cordova.emailcomposer.EmailComposer"/>
   </feature>
 
+  <feature name="FacebookConnectPlugin">
+    <param name="android-package" value="org.apache.cordova.facebook.ConnectPlugin"/>
+    <param name="onload" value="true"/>
+  </feature>
+
   <feature name="InAppBrowser">
     <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser"/>
   </feature>

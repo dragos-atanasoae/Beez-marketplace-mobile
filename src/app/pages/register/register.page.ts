@@ -6,11 +6,11 @@ import { FacebookProfileModel } from 'src/app/models/facebookProfile.model';
 import { NavController, Platform, ToastController, ModalController, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-// import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { ManageAccountService } from 'src/app/services/manage-account.service';
 import { Plugins } from '@capacitor/core';
 import { AnalyticsService } from 'src/app/services/analytics.service';
-// import { ResponseSignInWithApplePlugin } from '@capacitor-community/apple-sign-in';
+import { ResponseSignInWithApplePlugin } from '@capacitor-community/apple-sign-in';
 
 const { Browser } = Plugins;
 @Component({
@@ -75,7 +75,7 @@ export class RegisterPage implements OnInit {
     // public events: Events,
     private authenticationService: AuthenticationService,
     private manageAccountService: ManageAccountService,
-    // private facebook: Facebook
+    private facebook: Facebook
     ) {
     this.language = localStorage.getItem('language');
     this.translate.setDefaultLang(this.language);
@@ -278,39 +278,39 @@ export class RegisterPage implements OnInit {
   // *** 2.1 FACEBOOK LOGIN ***
   // ===================================
   facebookLogin(country: string) {
-    // this.facebookLogEvents('Register with Facebook', { context: 'Register Page' });
-    // this.facebook.login(['public_profile', 'email'])
-    //   .then((res: FacebookLoginResponse) => {
-    //     this.facebookAuthData = res;
-    //     this.getFacebookData(country);
-    //     // console.log('Logged into Facebook!', res);
-    //     // console.log(this.facebookAuthData);
-    //   })
-    //   .catch(e => console.log('Error logging into Facebook', e));
+    this.facebookLogEvents('Register with Facebook', { context: 'Register Page' });
+    this.facebook.login(['public_profile', 'email'])
+      .then((res: FacebookLoginResponse) => {
+        this.facebookAuthData = res;
+        this.getFacebookData(country);
+        // console.log('Logged into Facebook!', res);
+        // console.log(this.facebookAuthData);
+      })
+      .catch(e => console.log('Error logging into Facebook', e));
   }
   // *** 2.2 GET DATA FROM FACEBOOK ***
   // ==================================
   getFacebookData(country: string) {
-    // this.facebook.api('/me?fields=id,first_name,last_name,email,picture.type(large)', ['public_profile', 'email'])
-    //   .then(data => {
-    //     this.facebookProfileData.facebookID = data.id;
-    //     this.facebookProfileData.firstName = data.first_name;
-    //     this.facebookProfileData.lastName = data.last_name;
-    //     this.facebookProfileData.facebookEmail = data.email;
-    //     this.facebookProfileData.profilePicture = data.picture.data.url;
+    this.facebook.api('/me?fields=id,first_name,last_name,email,picture.type(large)', ['public_profile', 'email'])
+      .then(data => {
+        this.facebookProfileData.facebookID = data.id;
+        this.facebookProfileData.firstName = data.first_name;
+        this.facebookProfileData.lastName = data.last_name;
+        this.facebookProfileData.facebookEmail = data.email;
+        this.facebookProfileData.profilePicture = data.picture.data.url;
 
-    //     if (this.facebookProfileData !== null) {
-    //       this.modifiedProfilePictureUrl = this.facebookProfileData.profilePicture.replace(/&/g, '(AND)');
-    //       if (this.facebookProfileData.facebookEmail !== null || this.facebookProfileData.facebookEmail !== undefined) {
-    //         this.postUserData('facebook', country, '', data.id, data.email, data.first_name, data.last_name, this.modifiedProfilePictureUrl, '', '');
-    //       } else {
-    //         this.postUserData('facebook', country, '', data.id, 'inexistent', data.first_name, data.last_name, this.modifiedProfilePictureUrl, '', '');
-    //       }
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
+        if (this.facebookProfileData !== null) {
+          this.modifiedProfilePictureUrl = this.facebookProfileData.profilePicture.replace(/&/g, '(AND)');
+          if (this.facebookProfileData.facebookEmail !== null || this.facebookProfileData.facebookEmail !== undefined) {
+            this.postUserData('facebook', country, '', data.id, data.email, data.first_name, data.last_name, this.modifiedProfilePictureUrl, '', '');
+          } else {
+            this.postUserData('facebook', country, '', data.id, 'inexistent', data.first_name, data.last_name, this.modifiedProfilePictureUrl, '', '');
+          }
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
   // *** 2.3 SAVE FACEBOOK PROFILE INFO TO LOCAL STORAGE ***
   // =======================================================
@@ -501,31 +501,31 @@ export class RegisterPage implements OnInit {
    * @param country
    */
   openAppleSignIn(country: string) {
-    console.log(country);
-    // const { SignInWithApple } = Plugins;
-    // SignInWithApple.Authorize()
-    //   .then(async (res: ResponseSignInWithApplePlugin) => {
-    //     if (res.response && res.response.identityToken) {
-    //       console.log(res);
-    //       this.facebookProfileData.facebookID = res.response.user;
-    //       this.facebookProfileData.firstName = res.response.givenName;
-    //       this.facebookProfileData.lastName = res.response.familyName;
-    //       this.facebookProfileData.facebookEmail = res.response.email !== null ? res.response.email : 'inexistent';
-    //       this.facebookProfileData.profilePicture = '';
-    //       this.postUserData(
-    //         'apple', country, '',
-    //         this.facebookProfileData.facebookID,
-    //         this.facebookProfileData.facebookEmail,
-    //         this.facebookProfileData.firstName,
-    //         this.facebookProfileData.lastName,
-    //         this.modifiedProfilePictureUrl, '', '');
-    //     } else {
-    //       console.log('error');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    // console.log(country);
+    const { SignInWithApple } = Plugins;
+    SignInWithApple.Authorize()
+      .then(async (res: ResponseSignInWithApplePlugin) => {
+        if (res.response && res.response.identityToken) {
+          console.log(res);
+          this.facebookProfileData.facebookID = res.response.user;
+          this.facebookProfileData.firstName = res.response.givenName;
+          this.facebookProfileData.lastName = res.response.familyName;
+          this.facebookProfileData.facebookEmail = res.response.email !== null ? res.response.email : 'inexistent';
+          this.facebookProfileData.profilePicture = '';
+          this.postUserData(
+            'apple', country, '',
+            this.facebookProfileData.facebookID,
+            this.facebookProfileData.facebookEmail,
+            this.facebookProfileData.firstName,
+            this.facebookProfileData.lastName,
+            this.modifiedProfilePictureUrl, '', '');
+        } else {
+          console.log('error');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   async presentToast(msg: string) {
