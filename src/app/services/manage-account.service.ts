@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Platform } from '@ionic/angular';
 // import { Mixpanel } from '@ionic-native/mixpanel/ngx';
 
 @Injectable({
@@ -30,6 +31,7 @@ export class ManageAccountService {
 
   constructor(
     private httpClient: HttpClient,
+    private platform: Platform,
     // private mixpanel: Mixpanel,
   ) {
     this.prefixUrlByCountry = 'https://' + localStorage.getItem('country');
@@ -135,7 +137,7 @@ export class ManageAccountService {
     const body = {
       Tag: this.username,
       Token: deviceToken,
-      Platform: localStorage.getItem('platform'),
+      Platform: this.platform.is('ios') ? 'ios' : this.platform.is('android') ? 'android' : 'unknown',
       Application: 'com.beez.marketplace'
     };
     return this.httpClient.post(urlApiPostDeviceToken, body, { headers: this.header });

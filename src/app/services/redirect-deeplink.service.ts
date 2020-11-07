@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { EventsService } from './events.service';
 import { LoadingService } from './loading.service';
 
 @Injectable({
@@ -10,14 +11,18 @@ import { LoadingService } from './loading.service';
 })
 export class RedirectDeeplinkService {
 
-  $productFromExternalLink = new BehaviorSubject({ url: null, product: null });
   $pathComponents = new BehaviorSubject([]);
+
+  selectedVendorFromGuestMode$ = new BehaviorSubject(null);
+  selectedCategoryFromGuestMode$ = new BehaviorSubject(null);
+  selectedProductFromGuestMode$ = new BehaviorSubject(null);
 
   constructor(
     private httpClient: HttpClient,
     private loadingService: LoadingService,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private eventsService: EventsService
   ) { }
 
   managePathRedirect(path: string) {
@@ -79,18 +84,21 @@ export class RedirectDeeplinkService {
 
   switchFoodMarketplaceVendor(pathComponents: any) {
     console.log('Redirect to vendor');
-    if (pathComponents[2]) {
-      localStorage.setItem('selectedVendorFromGuestMode', pathComponents[2]);
-    }
-    if (pathComponents[4]) {
-      localStorage.setItem('selectedCategoryFromGuestMode', pathComponents[4]);
-    }
-    if (pathComponents[6]) {
-      localStorage.setItem('selectedProductFromGuestMode', pathComponents[6]);
+    if (localStorage.getItem('currentUserToken')) {
+      if (pathComponents[2]) { localStorage.setItem('selectedVendorFromGuestMode', pathComponents[2]); }
+      if (pathComponents[4]) { localStorage.setItem('selectedCategoryFromGuestMode', pathComponents[4]); }
+      if (pathComponents[6]) { localStorage.setItem('selectedProductFromGuestMode', pathComponents[6]); }
+    } else {
+      if (pathComponents[2]) { this.selectedVendorFromGuestMode$.next(pathComponents[2]); }
+      if (pathComponents[4]) { this.selectedCategoryFromGuestMode$.next(pathComponents[4]); }
+      if (pathComponents[6]) { this.selectedProductFromGuestMode$.next(pathComponents[6]); }
     }
     if (localStorage.getItem('currentUserToken')) {
       this.navigateToPath('tabs/marketplace');
     }
+    setTimeout(() => {
+      this.eventsService.publishEvent('refreshVendorsList');
+    }, 500);
   }
 
   navigateToPath(finalPath: string) {

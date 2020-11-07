@@ -27,10 +27,6 @@ export class MarketplaceService {
   shoppingCartId$ = new Subject<number>();
   shoppingCartId = this.shoppingCartId$.asObservable();
 
-  selectedVendorFromGuestMode$ = new Subject<number>();
-  selectedCategoryFromGuestMode$ = new Subject<number>();
-  selectedProductFromGuestMode$ = new Subject<number>();
-
   constructor(private httpClient: HttpClient,
               private loadingService: LoadingService,
               private modalController: ModalController) { }

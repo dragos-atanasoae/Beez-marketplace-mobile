@@ -1,4 +1,4 @@
-import { Component, EventEmitter, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, NgZone, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ActionSheetController, AlertController, IonContent, IonSlides, ModalController, Platform, PopoverController, ToastController } from '@ionic/angular';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { AnalyticsService } from 'src/app/services/analytics.service';
@@ -12,6 +12,10 @@ import { MarketplaceProductDetailsPage } from '../marketplace-product-details/ma
 import { BackButtonActionService } from 'src/app/services/back-button-action.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { RedirectDeeplinkService } from 'src/app/services/redirect-deeplink.service';
+import { take, takeUntil } from 'rxjs/operators';
+import { EventsService } from 'src/app/services/events.service';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-guest-mode',
   templateUrl: './guest-mode.page.html',
@@ -47,10 +51,11 @@ import { TranslateService } from '@ngx-translate/core';
     ])
   ]
 })
-export class GuestModePage implements OnInit {
+export class GuestModePage implements OnInit, OnDestroy {
   @Output() hideComponentEvent = new EventEmitter<boolean>();
   @ViewChild('marketplaceSlides') marketplaceSlides: IonSlides;
   @ViewChild('ionContent') ionContent: IonContent;
+  private unsubscribe$: Subject<boolean> = new Subject();
 
   // set up hardware back button event.
   lastTimeBackPress = 0;
@@ -102,8 +107,17 @@ export class GuestModePage implements OnInit {
     private popoverCtrl: PopoverController,
     private router: Router,
     private toastCtrl: ToastController,
-    private translate: TranslateService
-  ) { }
+    private translate: TranslateService,
+    private redirectDeeplinkService: RedirectDeeplinkService,
+    private eventsService: EventsService
+  ) {
+    this.eventsService.event$.pipe(takeUntil(this.unsubscribe$)).subscribe((res) => {
+      if (res === 'refreshVendorsList') {
+        console.log('Test refresh');
+        this.getVendorsList();
+      }
+    });
+  }
 
   ngOnInit() {
     // Initialize locale context
@@ -115,6 +129,11 @@ export class GuestModePage implements OnInit {
     } else {
       this.openMarketplaceLocations();
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
   }
 
   ionViewDidEnter() {
@@ -129,7 +148,7 @@ export class GuestModePage implements OnInit {
     this.county = JSON.parse(localStorage.getItem('county'));
     console.log(this.county, this.city);
     this.marketplaceService.getVendorsList(this.city.Id).subscribe((res: any) => {
-      console.log(res);
+      console.log('Vendors list', res);
       if (res.status === 'success') {
         this.metacategories = res.activeMetaCategories;
         this.vendorsList = res.vendors;
@@ -139,11 +158,13 @@ export class GuestModePage implements OnInit {
           this.onSearchChange(this.searchedKeyword);
         }
         setTimeout(() => {
-          if (localStorage.getItem('selectedVendorFromGuestMode')) {
-            this.selectedVendor = res.vendors.find((el: any) => el.id.toString() === localStorage.getItem('selectedVendorFromGuestMode'));
-            console.log('pre-selected vendor: ', this.selectedCategory);
-            this.getCategories();
-          }
+          this.redirectDeeplinkService.selectedVendorFromGuestMode$.pipe(take(1)).subscribe((vendorId: number) => {
+            if (vendorId) {
+              this.selectedVendor = res.vendors.find((el: any) => el.id.toString() === vendorId);
+              this.redirectDeeplinkService.selectedVendorFromGuestMode$.next(null);
+              this.getCategories();
+            }
+          });
         }, 500);
       }
     });
@@ -159,11 +180,15 @@ export class GuestModePage implements OnInit {
     this.marketplaceService.getCategories(this.selectedVendor.id, this.city.Id).subscribe((res: any) => {
       if (res.requestStatus === 'Success') {
         this.categories = res.requestData;
-        if (localStorage.getItem('selectedCategoryFromGuestMode')) {
-          this.selectedCategory = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedCategoryFromGuestMode'));
-        } else {
-          this.selectedCategory = this.categories[0];
-        }
+        this.redirectDeeplinkService.selectedCategoryFromGuestMode$.pipe(take(1)).subscribe((categoryId: number) => {
+          if (categoryId) {
+            this.selectedCategory = res.requestData.find((el: any) => el.id.toString() === categoryId);
+            this.redirectDeeplinkService.selectedCategoryFromGuestMode$.next(null);
+          } else {
+            this.selectedCategory = this.categories[0];
+          }
+          localStorage.setItem('selectedCategoryFromGuestMode', this.selectedCategory.id);
+        });
         console.log('Selected Category', this.selectedCategory);
         this.getProductsForCategories();
         console.log('Product categories: ', this.categories);
@@ -177,18 +202,21 @@ export class GuestModePage implements OnInit {
         if (res.requestStatus === 'Success') {
           this.productsList = res.requestData;
           console.log('Products list: ', this.productsList);
+          localStorage.removeItem('selectedProductFromGuestMode');
         }
         setTimeout(() => {
           this.nextSlide();
         }, 500);
-        if (localStorage.getItem('selectedProductFromGuestMode')) {
-          const product = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedProductFromGuestMode'));
-          console.log('Selected Product', product);
-          this.openMarketplaceProductsDetails(product);
-        } else {
-          this.marketplaceService.selectedCategoryFromGuestMode$.next(this.selectedCategory.id);
-          localStorage.setItem('selectedCategoryFromGuestMode', this.selectedCategory.id);
-        }
+        this.redirectDeeplinkService.selectedProductFromGuestMode$.pipe(take(1)).subscribe((productId: number) => {
+          if (productId) {
+            const product = res.requestData.find((el: any) => el.id.toString() === productId);
+            console.log('Selected Product', product);
+            this.redirectDeeplinkService.selectedProductFromGuestMode$.next(null);
+            this.openMarketplaceProductsDetails(product);
+          } else {
+            localStorage.setItem('selectedCategoryFromGuestMode', this.selectedCategory.id);
+          }
+        });
         this.loadingService.dismissLoading();
       });
   }
@@ -266,8 +294,9 @@ export class GuestModePage implements OnInit {
     console.log(vendor);
     this.selectedVendor = vendor;
     this.getCategories();
-    this.marketplaceService.selectedVendorFromGuestMode$.next(vendor.id);
     localStorage.setItem('selectedVendorFromGuestMode', vendor.id);
+    localStorage.removeItem('selectedCategoryFromGuestMode');
+    localStorage.removeItem('selectedProductFromGuestMode');
   }
 
   nextSlide() {
@@ -314,7 +343,6 @@ export class GuestModePage implements OnInit {
       },
       cssClass: 'overlay_tutorial'
     });
-    this.marketplaceService.selectedProductFromGuestMode$.next(productDetails.id);
     localStorage.setItem('selectedProductFromGuestMode', productDetails.id);
     // this.analyticsService.logEvent('open_product_details', { context: this.eventContext });
     modal.present();
