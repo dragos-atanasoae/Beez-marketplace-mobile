@@ -21,9 +21,9 @@ export const environment = {
 
   // headless cms url
   // test
-  // headlessCmsUrl: 'https://cdn-test-headless-cms.azureedge.net/',
+  headlessCmsUrl: 'https://cdn-test-headless-cms.azureedge.net/',
   // live
-  headlessCmsUrl: 'https://cdn-prod-headless-cms.azureedge.net/',
+  // headlessCmsUrl: 'https://cdn-prod-headless-cms.azureedge.net/',
   // update rate in milisecond for the sweet deal fund
   fundSweetDealUpdate: 10000
 };

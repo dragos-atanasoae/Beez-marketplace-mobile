@@ -6,7 +6,6 @@ import { slideInUp, slideOutUp, slideInRight } from 'ng-animate';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
-import { MarketplaceCategoriesPage } from 'src/app/pages/marketplace-categories/marketplace-categories.page';
 import { MarketplaceLocationsPage } from 'src/app/pages/marketplace-locations/marketplace-locations.page';
 import { MarketplaceProductsPage } from 'src/app/pages/marketplace-products/marketplace-products.page';
 import { AnalyticsService } from 'src/app/services/analytics.service';

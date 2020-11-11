@@ -113,7 +113,6 @@ export class ProfilePage implements OnInit, OnDestroy {
         Validators.required, Validators.minLength(4)])),
     });
     this.helloUserName = this.userEmail.substr(0, this.userEmail.indexOf('@'));
-    this.notificationService.notificationsCount.subscribe(r => this.notificationsCount = r);
   }
 
   ionViewWillEnter() {
@@ -134,6 +133,7 @@ export class ProfilePage implements OnInit, OnDestroy {
       this.getProfileInfo();
     }
     this.getUserInformation();
+    this.notificationService.notificationsCount$.pipe(takeUntil(this.unsubscribe$)).subscribe(r => this.notificationsCount = r);
   }
 
   ngOnDestroy() {

@@ -13,10 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/edit-delivery-address/edit-delivery-address.module').then( m => m.EditDeliveryAddressPageModule)
   },
   {
-    path: 'marketplace-categories',
-    loadChildren: () => import('./pages/marketplace-categories/marketplace-categories.module').then( m => m.MarketplaceCategoriesPageModule)
-  },
-  {
     path: 'marketplace-locations',
     loadChildren: () => import('./pages/marketplace-locations/marketplace-locations.module').then( m => m.MarketplaceLocationsPageModule)
   },

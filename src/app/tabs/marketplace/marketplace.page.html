@@ -12,7 +12,7 @@
               <ion-col>
                 <p id="lable_section_name" *ngIf="!searchIsActive">Food Marketplace</p>
                 <div id="wrap_searchbar">
-                  <ion-searchbar placeholder="{{'components.marketplaceVendorsList.labelSearchTheProduct' | translate}}" inputmode="text" type="text" (ionChange)="onSearchChange($event.target.value)" [debounce]="1000" mode="ios" showCancelButton="never" *ngIf="searchIsActive" @fadeIn></ion-searchbar>
+                  <ion-searchbar placeholder="{{'pages.marketplaceTab.labelSearchTheProduct' | translate}}" inputmode="text" type="text" (ionChange)="onSearchChange($event.target.value)" [debounce]="1000" mode="ios" showCancelButton="never" *ngIf="searchIsActive" @fadeIn></ion-searchbar>
                 </div>
               </ion-col>
               <ion-col size="auto">
@@ -39,7 +39,7 @@
                 <p id="label_location">{{city?.Name}}, {{county?.Name}}</p>
               </ion-col>
               <ion-col size="auto">
-                <p id="label_change_location">{{'components.marketplaceVendorsList.labelChangeLocation' | translate}}</p>
+                <p id="label_change_location">{{'pages.marketplaceTab.labelChangeLocation' | translate}}</p>
               </ion-col>
             </ion-row>
             <ion-row class="row_select_option ion-align-items-center" *ngIf="newVendorNotificationsStatus !== null">
@@ -47,7 +47,7 @@
                 <ion-icon class="icon_pin" name="notifications-sharp"></ion-icon>
               </ion-col>
               <ion-col>
-                <p id="label_notifications">{{'components.marketplaceVendorsList.labelInfoNotificationsNewVendor' | translate}}</p>
+                <p id="label_notifications">{{'pages.marketplaceTab.labelInfoNotificationsNewVendor' | translate}}</p>
               </ion-col>
               <ion-col size="auto">
                 <!-- <p id="label_activate_notifications">{{'buttons.buttonTurnOn' | translate}}</p> -->
@@ -64,7 +64,7 @@
         </ion-col>
         <ion-col>
           <div>
-            <p id="label_select_category" *ngIf="activeCategory == null">{{'components.marketplaceVendorsList.labelSelectCategory' | translate}}</p>
+            <p id="label_select_category" *ngIf="activeCategory == null">{{'pages.marketplaceTab.labelSelectCategory' | translate}}</p>
             <p id="label_select_category" class="active_selection" *ngIf="activeCategory !== null">
               {{activeCategory.name}}</p>
           </div>
@@ -79,7 +79,7 @@
 
   <div class="container">
     <p class="label_searched_keyword" *ngIf="searchedKeyword && activeCategory == null">{{this.vendorsList?.length}}
-      {{'components.marketplaceVendorsList.labelVendor' | translate}}
+      {{'pages.marketplaceTab.labelVendor' | translate}}
       <strong>"{{searchedKeyword}}"</strong></p>
     <div id="wrap_categories_list" *ngIf="categoriesDropdownIsActive">
       <ion-list [@listAnimation]="metacategories.length">
@@ -187,15 +187,15 @@
 <ng-template #stock let-vendor="vendor">
   <p class="label_details">
     <span>
-      {{vendor.productsInStock}} {{'components.marketplaceVendorsList.labelProducts' | translate}}
+      {{vendor.productsInStock}} {{'pages.marketplaceTab.labelProducts' | translate}}
     </span>
-    {{'components.marketplaceVendorsList.labelInStock' | translate}}
+    {{'pages.marketplaceTab.labelInStock' | translate}}
   </p>
 </ng-template>
 
 <ng-template #minOrder let-vendor="vendor">
   <p class="label_details">
-    {{'components.marketplaceVendorsList.labelMinimumOrderValue' | translate}}
+    {{'pages.marketplaceTab.labelMinimumOrderValue' | translate}}
     <span>
       {{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
     </span>

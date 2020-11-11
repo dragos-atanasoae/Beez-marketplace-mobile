@@ -14,6 +14,7 @@ import { Mixpanel, MixpanelPeople } from '@ionic-native/mixpanel/ngx';
 import { BackButtonActionService } from '../services/back-button-action.service';
 import { WalletService } from '../services/wallet.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../services/notification.service';
 
 const { PushNotifications, Keyboard } = Plugins;
 
@@ -59,6 +60,7 @@ export class TabsPage implements OnInit, AfterViewInit {
     private alertCtrl: AlertController,
     private popoverCtrl: PopoverController,
     private router: Router,
+    private notificationsService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -72,6 +74,7 @@ export class TabsPage implements OnInit, AfterViewInit {
     } else {
       // console.log('Skip initialization of push notifications');
     }
+    this.getNotificationsHistory();
     this.getUserExternalId();
     this.getVipDetails();
     this.stripePaymentService.getPaymentProcessor();
@@ -220,6 +223,20 @@ export class TabsPage implements OnInit, AfterViewInit {
         // console.log('Error: device token can\'t be saved: ' + res.message);
       }
     });
+  }
+
+  /**
+   * @name getNotificationsHistory
+   * @description get list of notifications
+   */
+  getNotificationsHistory() {
+    this.notificationsService.getNotificationsHistory(null, null)
+      .subscribe((response: any) => {
+        if (response.status === 'success') {
+          this.notificationsService.notificationsCount$.next(response.notifications.TotalNumberOfRecords);
+          this.notificationsCount = response.notifications.TotalNumberOfRecords;
+        }
+      });
   }
 
   /**

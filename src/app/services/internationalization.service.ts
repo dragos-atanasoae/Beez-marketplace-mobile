@@ -26,7 +26,7 @@ export class InternationalizationService implements TranslateLoader {
         .set('Cache-Control', 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0')
         .set('Pragma', 'no-cache')
         .set('Expires', '0');
-    return this.http.get(`${environment.headlessCmsUrl}api/DataGetter/${lang}/mobile`, { headers }).pipe(
+    return this.http.get(`${environment.headlessCmsUrl}api/DataGetter/${lang}/fmmobile`, { headers }).pipe(
       retry(2),
       catchError(() => {
         if (lang.toUpperCase() === 'RO') {
