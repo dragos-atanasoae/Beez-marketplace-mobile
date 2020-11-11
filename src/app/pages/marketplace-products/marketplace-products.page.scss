@@ -124,55 +124,18 @@ ion-toolbar {
         width: 100%;
         max-width: 576px;
         margin: 0em auto;
-  
-        ion-col {
-          .col_shop_logo {
-            ion-card {
-              --background: none;
-              box-shadow: none;
-              overflow: hidden;
-              margin-bottom: 0;
-  
-              img {
-                width: 3.5em;
-                border-radius: var(--beez-border-radius);
-              }
-            }
-  
-            .wrap_vendor_logo {
-              width: 4em;
-              height: 4em;
-              padding: .2em;
-              margin-left: 0.5em;
-              background-color: #fff;
-              border-radius: var(--beez-border-radius);
-              box-shadow: var(--beez-box-shadow);
-              overflow: hidden;
-  
-              img {
-                border-radius: var(--beez-border-radius);
-  
-              }
-            }
-  
+        padding: 0.5em;
+        ion-card {
+          margin: 0 auto 0.5em auto;
+          padding: 0.5em;
+          border-radius: var(--beez-border-radius);
+          box-shadow: var(--beez-box-shadow);
+        }
+        #row_preview_vendor {
+          #vendor_logo {
+            max-width: 4rem;
+            height: auto;
           }
-  
-          .wrap_vendor_logo {
-            width: 4em;
-            height: 4em;
-            padding: .2em;
-            margin-left: 0.5em;
-            background-color: #fff;
-            border-radius: var(--beez-border-radius);
-            box-shadow: var(--beez-box-shadow);
-            overflow: hidden;
-  
-            img {
-              border-radius: var(--beez-border-radius);
-  
-            }
-          }
-  
           .row_progress_minimum_order {
             width: 100%;
   
@@ -183,7 +146,7 @@ ion-toolbar {
             }
   
             .col_progress {
-              padding: 0 1em 0 0.2em;
+              padding: 0 0.2em;
   
               .progres_outer {
                 width: 100%;
@@ -232,6 +195,60 @@ ion-toolbar {
   
           }
         }
+
+        #row_toggle_notifications {
+          padding-left: 0.5em;
+          padding-right: 0.5em;
+
+          ion-col {
+              padding-top: 0.5em;
+              padding-bottom: 0.5em;
+          }
+
+          .icon_promo {
+              font-size: 1.2rem;
+          }
+
+          p {
+              margin-top: 0;
+              margin-bottom: 0;
+          }
+
+          #label_location {
+              font-size: 0.7rem;
+              font-weight: 500;
+              line-height: 1rem;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+          }
+
+          #label_notifications {
+              font-size: 0.7rem;
+              font-weight: 400;
+              line-height: 0.7rem;
+          }
+
+          #label_change_location,
+          #label_activate_notifications {
+              float: right;
+              font-weight: normal;
+              font-size: 0.7rem;
+              line-height: 0.7rem;
+              text-decoration: underline;
+              color: var(--ion-color-secondary-tint);
+          }
+
+          ion-toggle {
+              height: 1.6rem;
+              width: 3rem;
+              float: right;
+              --handle-width: 1.5rem;
+              --handle-height: 1.5rem;
+              --handle-background-checked: #fff url(/assets/icon/icon_notifications_bell_active.svg) no-repeat center / 60%;
+              --handle-background:#fff url(/assets/icon/icon_notifications_bell_inactive.svg) no-repeat center / 60%;
+          }
+      }
       }
   
       /** Horizontal list of Categories

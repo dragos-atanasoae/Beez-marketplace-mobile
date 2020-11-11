@@ -36,6 +36,7 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
   @ViewChild(IonContent) ionContent: IonContent;
 
   private unsubscribe$: Subject<boolean> = new Subject();
+  statusOfFollowingVendor = null;
   localeData: any;
   productsList = [];
   shoppingCartList: any = [];
@@ -61,6 +62,7 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
       console.log('Default products page');
       this.getProductsForCategories();
     }
+    this.getFollowingStatus();
     this.getShoppingCart();
     // Initialize locale context
     this.internationalizationService.initializeCountry().subscribe(res => {
@@ -194,6 +196,23 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
     });
     this.analyticsService.logEvent('open_product_image', { context: this.eventContext });
     imageViewer.present();
+  }
+
+  /**
+   * @name getFollowingStatus
+   * @description Get following status for the new promotions from the current vendor
+   */
+  getFollowingStatus() {
+    this.marketplaceService.getVendorFollowingStatus(this.city.Id, this.vendor.id).subscribe((res: any) => this.statusOfFollowingVendor = res.userData[0].isFollowing);
+  }
+
+  /**
+   * @name updateVendorFollowingStatus
+   * @description Post status of vendor following
+   * @param value boolean
+   */
+  updateVendorFollowingStatus(value: boolean) {
+    this.marketplaceService.postVendorFollowingStatus(this.city.Id, this.vendor.id, value).subscribe((res: any) => this.statusOfFollowingVendor = res.userData[0].isFollowing);
   }
 
 }
