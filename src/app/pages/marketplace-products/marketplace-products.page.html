@@ -7,13 +7,10 @@
     </ion-buttons>
     <!-- <ion-title>{{selectedCategory.name | titlecase}}</ion-title> -->
     <ion-row id="row_searchbar">
-      <ion-col size="auto">
-        <img id="vendor_logo_navbar" [src]="vendor.imageUrl"
-          onerror="this.onerror==null;this.src='./assets/icon/icon_food_marketplace.svg'" />
-      </ion-col>
       <ion-col>
-        <ion-searchbar placeholder="{{'pages.marketplace.marketplaceCategories.labelSearchTheProduct' | translate}}" inputmode="text" type="text" (ionChange)="searchProduct($event.target.value)"
-          (ionClear)="cancelSearch()" [debounce]="1000" mode="ios" showCancelButton="never"></ion-searchbar>
+        <ion-searchbar placeholder="{{'pages.marketplace.marketplaceCategories.labelSearchTheProduct' | translate}}"
+          inputmode="text" type="text" (ionChange)="searchProduct($event.target.value)" (ionClear)="cancelSearch()"
+          [debounce]="1000" mode="ios" showCancelButton="never"></ion-searchbar>
       </ion-col>
     </ion-row>
     <ion-buttons slot="end">
@@ -32,106 +29,92 @@
 <ion-content>
   <!-- Page header -->
   <ion-item-divider lines="none" sticky>
-
-    <!-- <ion-row id="row_banner_minimum_order" *ngIf="cartValue < vendor.minimumOrderValue">
-        <ion-col size="12">
-          <p id="label_minimum_value">{{'pages.marketplace.marketplaceProducts.labelMinimumOrder' | translate}}
-            <span>{{vendor.minimumOrderValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
-          </p>
-          <p id="label_required_value">{{'pages.marketplace.marketplaceProducts.labelRequiredMore' | translate}}
-            <span>{{vendor.minimumOrderValue  - cartValue | number : '0.2'}} lei</span></p>
-        </ion-col>
-      </ion-row> -->
-    <ion-row class="row_products_header ion-align-items-center" style="display: none;"
-      [ngClass]="{'header_margin_bottom': allCategories?.length > 1}">
-      <!-- Vendor logo -->
-      <ion-col size="4" class="col_shop_logo">
-        <ion-card>
-          <img src="./assets/icon/icon_food_marketplace.svg" />
-        </ion-card>
-      </ion-col>
-      <!-- Product category image -->
-      <ion-col size="4" class="col_category_image centered_content">
-        <div class="wrap_image" @bounceIn>
-          <img class="img_product"
-            [src]="selectedCategory.imgUrl != null ? ('https://static.use-beez.com' + selectedCategory.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
-            onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" />
-        </div>
-      </ion-col>
-      <!-- Shopping cart details -->
-      <ion-col size="4" class="col_shopping_cart">
-        <ion-card button mode="ios" class="btn_shopping_cart" (click)="openShoppingCart()">
-          <ion-badge color="primary">
-            {{shoppingCartList.length}}
-          </ion-badge>
-          <img src="./assets/icon/icon_shopping_basket.svg" alt="">
-        </ion-card>
-        <p class="label_total_cart">
-          {{cartValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
-      </ion-col>
-    </ion-row>
     <!-- PAGE HEADER -->
     <ion-row class="row_page_header ion-align-items-center">
-      <!-- Vendor logo -->
-      <!-- <ion-col size="3" class="col_shop_logo"> -->
-      <!-- <ion-card>
-            <img [src]="vendor.imageUrl"
-              onerror="this.onerror==null;this.src='./assets/icon/icon_food_marketplace.svg'" />
-          </ion-card> -->
-      <!-- <div class="wrap_vendor_logo">
-          <img [src]="vendor.imageUrl"
-            onerror="this.onerror==null;this.src='./assets/icon/icon_food_marketplace.svg'" />
-        </div>
-      </ion-col> -->
-      <!-- Minimum order progress -->
-      <ion-col [size]="vendor?.deliveryFeeThreshold !== null ? 6 : 12">
-        <ion-row class="row_progress_minimum_order ion-align-items-center">
-          <ion-col size="2">
-            <img
-              [src]="cartValue < vendor.minimumOrderValue ? './assets/icon/icon_shopping_basket.svg' : './assets/icon/icon_shopping_basket_minimum_done.svg'"
-              alt="">
-          </ion-col>
-          <ion-col size="10" class="col_progress">
-            <div>
-              <div class="progres_outer">
-                <div class="progres_inner" [style.max-width]="(cartValue * 100 / vendor.minimumOrderValue) + '%'"></div>
-              </div>
-              <div class="wrap_text">
-                <p><span class="label_progress">Minimum order </span>
-                  <span
-                    class="label_value_required">{{vendor.minimumOrderValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
-                </p>
-              </div>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-      <ion-col size="6">
-        <ion-row class="row_progress_minimum_order ion-align-items-center"
-          *ngIf="vendor?.deliveryFeeThreshold !== null">
-          <ion-col size="2">
-            <img
-              [src]="cartValue < vendor.deliveryFeeThreshold ? './assets/icon/icon_minimum_order_free_shipping_incomplete.svg' : './assets/icon/icon_minimum_order_free_shipping_done.svg'"
-              alt="">
-          </ion-col>
-          <ion-col size="10" class="col_progress">
-            <div>
-              <div class="progres_outer">
-                <div class="progres_inner" [style.max-width]="(cartValue * 100 / vendor.deliveryFeeThreshold) + '%'">
-                </div>
-              </div>
-              <div class="wrap_text">
-                <p><span class="label_value_required">
-                    <span class="label_progress">{{'pages.marketplace.marketplaceCategories.labelAddMore' | translate}}</span>
-                    {{ (vendor.deliveryFeeThreshold > cartValue ? (vendor.deliveryFeeThreshold - cartValue) : 0) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
-                  </span></p>
-              </div>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-col>
       <ion-col size="12">
-        <!-- CATEGORIES HORIZONTAL LIST -->
+        <ion-card>
+          <ion-row id="row_preview_vendor" class="ion-align-items-center">
+            <!-- Vendor logo -->
+            <ion-col size="auto">
+              <img id="vendor_logo" [src]="vendor.imageUrl"
+                onerror="this.onerror==null;this.src='./assets/icon/icon_food_marketplace.svg'" />
+            </ion-col>
+            <!-- Preview progress minimum order value and delivery fee treshold -->
+            <ion-col>
+              <ion-row>
+                <!-- Minimum order progress -->
+                <ion-col size="12">
+                  <ion-row class="row_progress_minimum_order ion-align-items-center">
+                    <ion-col size="2">
+                      <img
+                        [src]="cartValue < vendor.minimumOrderValue ? './assets/icon/icon_shopping_basket.svg' : './assets/icon/icon_shopping_basket_minimum_done.svg'"
+                        alt="">
+                    </ion-col>
+                    <ion-col size="10" class="col_progress">
+                      <div>
+                        <div class="progres_outer">
+                          <div class="progres_inner"
+                            [style.max-width]="(cartValue * 100 / vendor.minimumOrderValue) + '%'"></div>
+                        </div>
+                        <div class="wrap_text">
+                          <p><span class="label_progress">Minimum order </span>
+                            <span
+                              class="label_value_required">{{vendor.minimumOrderValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+                          </p>
+                        </div>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+                <!-- Delivery Fee Treshold -->
+                <ion-col size="12">
+                  <ion-row class="row_progress_minimum_order ion-align-items-center"
+                    *ngIf="vendor?.deliveryFeeThreshold !== null">
+                    <ion-col size="2">
+                      <img
+                        [src]="cartValue < vendor.deliveryFeeThreshold ? './assets/icon/icon_minimum_order_free_shipping_incomplete.svg' : './assets/icon/icon_minimum_order_free_shipping_done.svg'"
+                        alt="">
+                    </ion-col>
+                    <ion-col size="10" class="col_progress">
+                      <div>
+                        <div class="progres_outer">
+                          <div class="progres_inner"
+                            [style.max-width]="(cartValue * 100 / vendor.deliveryFeeThreshold) + '%'">
+                          </div>
+                        </div>
+                        <div class="wrap_text">
+                          <p><span class="label_value_required">
+                              <span
+                                class="label_progress">{{'pages.marketplace.marketplaceCategories.labelAddMore' | translate}}</span>
+                              {{ (vendor.deliveryFeeThreshold > cartValue ? (vendor.deliveryFeeThreshold - cartValue) : 0) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+                            </span></p>
+                        </div>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+          <!-- Toggle Promo Notifications -->
+          <ion-row id="row_toggle_notifications" class="ion-align-items-center" *ngIf="statusOfFollowingVendor !== null">
+            <ion-col size="auto">
+              <ion-icon class="icon_promo" src="./assets/icon/icon_promo_notification.svg"></ion-icon>
+            </ion-col>
+            <ion-col>
+              <p id="label_notifications">
+                {{'pages.marketplace.marketplaceCategories.labelInfoPromoNotifications' | translate}}</p>
+            </ion-col>
+            <ion-col size="auto">
+              <ion-toggle color="primary" mode="ios" [(ngModel)]="statusOfFollowingVendor"
+                (ionChange)="updateVendorFollowingStatus(statusOfFollowingVendor)"></ion-toggle>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </ion-col>
+
+      <!-- CATEGORIES HORIZONTAL LIST -->
+      <ion-col size="12">
         <div id="row_switch_category" *ngIf="allCategories?.length > 1">
           <div id="list_of_categories" scrollX="true">
             <ion-card button mode="md"

@@ -3,13 +3,15 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { slideInUp, slideOutUp, slideInRight } from 'ng-animate';
-import { take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { MarketplaceCategoriesPage } from 'src/app/pages/marketplace-categories/marketplace-categories.page';
 import { MarketplaceLocationsPage } from 'src/app/pages/marketplace-locations/marketplace-locations.page';
 import { MarketplaceProductsPage } from 'src/app/pages/marketplace-products/marketplace-products.page';
 import { AnalyticsService } from 'src/app/services/analytics.service';
 import { DeliveryAddressService } from 'src/app/services/delivery-address.service';
+import { EventsService } from 'src/app/services/events.service';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
@@ -51,6 +53,7 @@ import { MarketplaceService } from 'src/app/services/marketplace.service';
 })
 export class MarketplacePage implements OnInit {
   @Output() hideComponentEvent = new EventEmitter<boolean>();
+  private unsubscribe$: Subject<boolean> = new Subject();
 
   referralCode = localStorage.getItem('referralCode');
   localeData = new LocaleDataModel();
@@ -86,11 +89,19 @@ export class MarketplacePage implements OnInit {
     private loadingService: LoadingService,
     private marketplaceService: MarketplaceService,
     private modalCtrl: ModalController,
+    private eventsService: EventsService,
     private translate: TranslateService,
   ) {
     // Initialize locale context
     this.internationalizationService.initializeCountry().subscribe(res => {
       this.localeData = res;
+    });
+
+    this.eventsService.event$.pipe(takeUntil(this.unsubscribe$)).subscribe((res) => {
+      if (res === 'refreshVendorsList') {
+        console.log('Test refresh');
+        this.getVendorsListForMarketplace();
+      }
     });
   }
 
@@ -104,6 +115,10 @@ export class MarketplacePage implements OnInit {
     }
   }
 
+  /**
+   * @description Get list of Vendors available on Food Marketplace
+   * and redirect to vednor products page if is received redirect data from guest mode or deeplinking
+   */
   getVendorsListForMarketplace() {
     this.city = JSON.parse(localStorage.getItem('city'));
     this.county = JSON.parse(localStorage.getItem('county'));
@@ -118,7 +133,9 @@ export class MarketplacePage implements OnInit {
         if (localStorage.getItem('selectedVendorFromGuestMode')) {
           const vendor = res.vendors.find((el: any) => el.id.toString() === localStorage.getItem('selectedVendorFromGuestMode'));
           console.log('Selected Vendor', vendor);
-          this.openMarketplaceVendor(vendor).then(() => localStorage.removeItem('selectedVendorFromGuestMode'));
+          this.selectVendor(vendor);
+          localStorage.removeItem('selectedVendorFromGuestMode');
+          // this.openMarketplaceVendor(vendor).then(() => localStorage.removeItem('selectedVendorFromGuestMode'));
         }
         // when switch to another location
         if (this.searchedKeyword) {
@@ -132,18 +149,37 @@ export class MarketplacePage implements OnInit {
    * @name getCategories
    * @description Get the list of products categories for the selected vendor
    */
-  getCategories() {
+  getCategories(context: string) {
     this.loadingService.presentLoading();
     this.marketplaceService.getCategories(this.selectedVendor.id, this.city.Id).subscribe((res: any) => {
       if (res.requestStatus === 'Success') {
         this.categories = res.requestData;
-        this.openMarketplaceProducts('search');
+        // this.openMarketplaceProducts('search');
+        if (localStorage.getItem('selectedCategoryFromGuestMode')) {
+          this.selectedCategory = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedCategoryFromGuestMode'));
+          console.log('Selected Category', this.selectedCategory);
+          this.openMarketplaceProducts(context).then(() => localStorage.removeItem('selectedCategoryFromGuestMode'));
+        } else {
+          this.selectedCategory = this.categories[0];
+          this.openMarketplaceProducts(context);
+        }
       }
       console.log(res.requestData);
       setTimeout(() => {
         this.loadingService.dismissLoading();
       }, 1000);
     });
+  }
+
+  selectVendor(vendor: any) {
+    this.selectedVendor = vendor;
+    console.log(this.selectedVendor);
+    this.analyticsService.logEvent('select_vendor', { context: this.eventContext, city: this.city, vendor: this.selectVendor });
+    if (this.searchResult) {
+      this.getCategories('search');
+    } else {
+      this.getCategories('default');
+    }
   }
 
   /**
@@ -217,45 +253,34 @@ export class MarketplacePage implements OnInit {
     this.vendorsList = this.copyList;
   }
 
-  selectVendor(vendor: any) {
-    this.selectedVendor = vendor;
-    console.log(this.selectedVendor);
-    this.analyticsService.logEvent('select_vendor', { context: this.eventContext, city: this.city, vendor: this.selectVendor });
-    if (this.searchResult) {
-      this.getCategories();
-    } else {
-      this.openMarketplaceVendor(vendor);
-    }
-  }
-
-  async openMarketplaceVendor(vendorDetails: any) {
-    const modal = await this.modalCtrl.create({
-      component: MarketplaceCategoriesPage,
-      componentProps:
-      {
-        vendor: vendorDetails,
-        county: this.county,
-        city: this.city
-      }
-    });
-    this.marketplaceService.getShoppingCart(vendorDetails.id, this.city.Id);
-    modal.present();
-  }
+  // async openMarketplaceVendor(vendorDetails: any) {
+  //   const modal = await this.modalCtrl.create({
+  //     component: MarketplaceCategoriesPage,
+  //     componentProps:
+  //     {
+  //       vendor: vendorDetails,
+  //       county: this.county,
+  //       city: this.city
+  //     }
+  //   });
+  //   this.marketplaceService.getShoppingCart(vendorDetails.id, this.city.Id);
+  //   modal.present();
+  // }
 
   /**
    * @description Open marketplace products page
    * @param context - default | search
    */
   async openMarketplaceProducts(context: string) {
-    console.log('Filtered products list:', this.searchResult.filter(item => parseInt(item.vendorId, 2) === this.selectedVendor.id));
+    // console.log('Filtered products list:', this.searchResult.filter(item => parseInt(item.vendorId, 2) === this.selectedVendor.id));
     const modal = await this.modalCtrl.create({
       component: MarketplaceProductsPage,
       componentProps:
       {
         context,
-        products: this.searchResult.filter(item => item.vendorId === this.selectedVendor.id.toString()),
+        products: context === 'search' ? this.searchResult.filter(item => item.vendorId === this.selectedVendor.id.toString()) : [],
         allCategories: this.categories,
-        selectedCategory: this.categories[0],
+        selectedCategory: this.selectedCategory,
         vendor: this.selectedVendor,
         county: this.county,
         city: this.city

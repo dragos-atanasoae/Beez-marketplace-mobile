@@ -38,7 +38,7 @@
               <ion-col>
                 <p id="label_location">{{city?.Name}}, {{county?.Name}}</p>
               </ion-col>
-              <ion-col size="4">
+              <ion-col size="auto">
                 <p id="label_change_location">{{'components.marketplaceVendorsList.labelChangeLocation' | translate}}</p>
               </ion-col>
             </ion-row>
@@ -49,7 +49,7 @@
               <ion-col>
                 <p id="label_notifications">{{'components.marketplaceVendorsList.labelInfoNotificationsNewVendor' | translate}}</p>
               </ion-col>
-              <ion-col size="4">
+              <ion-col size="auto">
                 <!-- <p id="label_activate_notifications">{{'buttons.buttonTurnOn' | translate}}</p> -->
                 <ion-toggle color="primary" mode="ios" [(ngModel)]="newVendorNotificationsStatus" (ionChange)="toggleNewVendorNotifications()"></ion-toggle>
               </ion-col>
