@@ -8,7 +8,7 @@
     <!-- <ion-title>{{selectedCategory.name | titlecase}}</ion-title> -->
     <ion-row id="row_searchbar">
       <ion-col>
-        <ion-searchbar placeholder="{{'pages.marketplace.marketplaceCategories.labelSearchTheProduct' | translate}}"
+        <ion-searchbar placeholder="{{'pages.marketplace.marketplaceProducts.labelSearchProduct' | translate}}"
           inputmode="text" type="text" (ionChange)="searchProduct($event.target.value)" (ionClear)="cancelSearch()"
           [debounce]="1000" mode="ios" showCancelButton="never"></ion-searchbar>
       </ion-col>
@@ -85,7 +85,7 @@
                         <div class="wrap_text">
                           <p><span class="label_value_required">
                               <span
-                                class="label_progress">{{'pages.marketplace.marketplaceCategories.labelAddMore' | translate}}</span>
+                                class="label_progress">{{'pages.marketplace.marketplaceProducts.labelAddMore' | translate}}</span>
                               {{ (vendor.deliveryFeeThreshold > cartValue ? (vendor.deliveryFeeThreshold - cartValue) : 0) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
                             </span></p>
                         </div>
@@ -103,7 +103,7 @@
             </ion-col>
             <ion-col>
               <p id="label_notifications">
-                {{'pages.marketplace.marketplaceCategories.labelInfoPromoNotifications' | translate}}</p>
+                {{'pages.marketplace.marketplaceProducts.labelInfoPromoNotifications' | translate}}</p>
             </ion-col>
             <ion-col size="auto">
               <ion-toggle color="primary" mode="ios" [(ngModel)]="statusOfFollowingVendor"

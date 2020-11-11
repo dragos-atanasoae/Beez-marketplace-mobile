@@ -60,8 +60,11 @@ export class NotificationService {
     this.httpClient.get(url + '?tag=' + this.username, { headers: this.header })
       .subscribe((response: any) => {
         if (response.status === 'success') {
-          this.notificationsCount$.next(response.count);
-          console.log('Notifications count= ' + this.notificationsCount$);
+          this.getNotificationsHistory(1, null).subscribe((res: any) => {
+            if (res.status === 'success') {
+              this.notificationsCount$.next(res.notifications.TotalNumberOfRecords);
+            }
+          });
         }
       });
   }

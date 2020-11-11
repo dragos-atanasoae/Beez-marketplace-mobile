@@ -64,6 +64,7 @@ export class NotificationsCenterPage {
       .subscribe((response: any) => {
         if (response.status === 'success') {
           this.totalNumberOfRecords = response.notifications.TotalNumberOfRecords;
+          this.notificationsService.notificationsCount$.next(response.notifications.TotalNumberOfRecords);
           if (response.notifications.Results.length === 0) {
             this.notificationsList = 'empty';
           } else {

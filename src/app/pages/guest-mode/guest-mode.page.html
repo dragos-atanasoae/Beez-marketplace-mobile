@@ -13,7 +13,7 @@
           <div>
             <ion-row id="row_searchbar" class="ion-align-items-center">
               <ion-col id="wrap_searchbar">
-                <ion-searchbar placeholder="{{'components.marketplaceVendorsList.labelSearchTheProduct' | translate}}"
+                <ion-searchbar placeholder="{{'pages.guestMode.vendorsList.labelSearchTheProduct' | translate}}"
                   inputmode="text" type="text" (ionChange)="onSearchChange($event.target.value)" [debounce]="1000"
                   mode="ios" showCancelButton="never" @fadeIn></ion-searchbar>
                 <!-- <ion-searchbar placeholder="" inputmode="text" type="text" mode="ios" [debounce]="250"
@@ -38,7 +38,7 @@
                     </ion-col>
                     <ion-col>
                       <p id="label_change_location">
-                        {{'components.marketplaceVendorsList.labelChangeLocation' | translate}}</p>
+                        {{'pages.guestMode.vendorsList.labelChangeLocation' | translate}}</p>
                     </ion-col>
                   </ion-row>
                 </div>
@@ -54,7 +54,7 @@
               <ion-col>
                 <div>
                   <p id="label_select_category" *ngIf="activeCategory == null">
-                    {{'components.marketplaceVendorsList.labelSelectCategory' | translate}}</p>
+                    {{'pages.guestMode.vendorsList.labelSelectCategory' | translate}}</p>
                   <p id="label_select_category" class="active_selection" *ngIf="activeCategory !== null">
                     {{activeCategory.name}}</p>
                 </div>
@@ -69,7 +69,7 @@
         </ion-item-divider>
         <div class="container">
           <p class="label_searched_keyword" *ngIf="searchedKeyword"><span>{{this.vendorsList?.length}}</span>
-            {{'components.marketplaceVendorsList.labelVendor' | translate}}
+            {{'pages.guestMode.vendorsList.labelVendor' | translate}}
             <span>"{{searchedKeyword}}"</span></p>
           <div id="wrap_categories_list" *ngIf="categoriesDropdownIsActive">
             <ion-list [@listAnimation]="metacategories.length">
@@ -189,7 +189,7 @@
             <!-- Searchbar -->
             <ion-col size="12" id="wrap_searchbar">
               <ion-searchbar
-                placeholder="{{'pages.marketplace.marketplaceCategories.labelSearchTheProduct' | translate}}"
+                placeholder="{{'pages.guestMode.productsList.labelSearchProduct' | translate}}"
                 inputmode="text" type="text" (ionChange)="searchProduct($event.target.value)"
                 (ionClear)="cancelSearch()" [debounce]="1000" mode="ios" showCancelButton="never"></ion-searchbar>
             </ion-col>
@@ -237,12 +237,12 @@
             <p class="label_product_name">{{product.name | titlecase}}</p>
             <p class="label_product_details" [innerHTML]="product.weightInKG"></p>
             <p class="label_product_price">
-              <span>{{'pages.marketplace.marketplaceProducts.labelYouPay' | translate}}</span>
+              <span>{{'pages.guestMode.productsList.labelYouPay' | translate}}</span>
               {{product?.unitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
               <span class="label_unit_type">&nbsp;/{{product.unitType | lowercase}}</span>
             </p>
             <p class="label_cashback">
-              {{'pages.marketplace.marketplaceProducts.labelCashbackPercent' | translate}}&nbsp;<span>
+              {{'pages.guestMode.productsList.labelCashbackPercent' | translate}}&nbsp;<span>
                 {{selectedVendor.cashback}}</span></p>
           </ion-col>
           <!-- Button add -->
@@ -275,15 +275,15 @@
 <ng-template #stock let-vendor="vendor">
   <p class="label_details">
     <span>
-      {{vendor.productsInStock}} {{'components.marketplaceVendorsList.labelProducts' | translate}}
+      {{vendor.productsInStock}} {{'pages.guestMode.vendorsList.labelProducts' | translate}}
     </span>
-    {{'components.marketplaceVendorsList.labelInStock' | translate}}
+    {{'pages.guestMode.vendorsList.labelInStock' | translate}}
   </p>
 </ng-template>
 
 <ng-template #minOrder let-vendor="vendor">
   <p class="label_details">
-    {{'components.marketplaceVendorsList.labelMinimumOrderValue' | translate}}
+    {{'pages.guestMode.vendorsList.labelMinimumOrderValue' | translate}}
     <span>
       {{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
     </span>

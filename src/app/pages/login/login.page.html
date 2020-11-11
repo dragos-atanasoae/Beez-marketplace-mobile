@@ -16,7 +16,7 @@
       <img src="./assets/imgs/logo/logo_food_marketplace.svg" class="auth_logo" *ngIf="!guestPreviewProduct">
       <form [formGroup]="loginForm">
 
-        <!-- STEP 2 -> ENTER EMAIL ADDRESS -->
+        <!-- STEP 1 -> ENTER EMAIL ADDRESS -->
         <div class="step1" *ngIf="step == 1">
 
           <h2 class="page_title" *ngIf="!guestPreviewProduct">
@@ -38,7 +38,7 @@
               </ion-col>
             </ion-row>
             <p id="info_preview_product">
-              {{'pages.marketplace.shoppingCart.labelDisclaimerAuthenticationRequired' | translate}}
+              {{'pages.login.labelDisclaimerAuthenticationRequired' | translate}}
             </p>
 
           </div>
