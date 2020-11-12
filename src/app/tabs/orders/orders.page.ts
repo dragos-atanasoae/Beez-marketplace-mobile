@@ -175,73 +175,73 @@ export class OrdersPage implements OnInit {
       case 'Initiated':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.initiated'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.initiated'),
             icon: './assets/icon/order_states/icon_initiated_status.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionViewDetails')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionViewDetails')
           }
         };
 
       case 'PendingToOrder':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.pendingToOrder'),
+            text: this.translate.instant('pages. ordersTab.statusOfOrder.pendingToOrder'),
             icon: './assets/icon/order_states/icon_pending_to_order_inactive.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionOrderNow')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionOrderNow')
           }
         };
 
       case 'Ordered':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.ordered'),
+            text: this.translate.instant('pages. ordersTab.statusOfOrder.ordered'),
             icon: './assets/icon/order_states/icon_ordered_inactive.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionReceived')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionReceived')
           }
         };
 
       case 'Delivered':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.delivered'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.delivered'),
             icon: './assets/icon/order_states/icon_delivered_inactive.svg',
-            btnAction: order.paidValue < order.value ? this.translate.instant('pages.beezPayTab.labelActionPay') :
-              this.translate.instant('pages.beezPayTab.labelActionViewDetails')
+            btnAction: order.paidValue < order.value ? this.translate.instant('pages.ordersTab.labelActionPay') :
+              this.translate.instant('pages.ordersTab.labelActionViewDetails')
           }
         };
 
       case 'ReturnRequested':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.returnRequested'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.returnRequested'),
             icon: './assets/icon/order_states/icon_other_status.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionViewDetails')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionViewDetails')
           }
         };
 
       case 'Returned':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.returned'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.returned'),
             icon: './assets/icon/order_states/icon_other_status.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionViewDetails')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionViewDetails')
           }
         };
 
       case 'CancellationRequested':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.cancellationRequested'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.cancellationRequested'),
             icon: './assets/icon/order_states/icon_other_status.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionViewDetails')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionViewDetails')
           }
         };
 
       case 'Cancelled':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.canceled'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.canceled'),
             icon: './assets/icon/order_states/icon_other_status.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionViewDetails')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionViewDetails')
           }
         };
 
@@ -250,18 +250,18 @@ export class OrdersPage implements OnInit {
       case 'PendingCreated':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.pendingToOrder'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.pendingToOrder'),
             icon: './assets/icon/order_states/icon_pending_to_order_inactive.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionViewDetails')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionViewDetails')
           }
         };
 
       case 'Paid':
         return {
           status: {
-            text: this.translate.instant('pages.beezPayTab.statusOfOrder.ordered'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.ordered'),
             icon: './assets/icon/order_states/icon_ordered_inactive.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionViewDetails')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionViewDetails')
           }
         };
 
@@ -270,7 +270,7 @@ export class OrdersPage implements OnInit {
           status: {
             text: '',
             icon: './assets/icon/order_states/icon_other_status.svg',
-            btnAction: this.translate.instant('pages.beezPayTab.labelActionViewDetails')
+            btnAction: this.translate.instant('pages.ordersTab.labelActionViewDetails')
           }
         };
     }

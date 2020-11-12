@@ -18,11 +18,11 @@
     <ion-col size="12">
       <div id="banner_free_shipping">
         <ion-icon slot="icon-only" src="./assets/icon/product_states/icon_ordered_inactive.svg"></ion-icon>
-        <p>{{'pages.beezPayTab.firstTimeUserContext.labelFreeShipping' | translate}}</p>
+        <p>{{'pages.ordersTab.labelFreeShipping' | translate}}</p>
       </div>
-      <p id="label_first_order">{{'pages.beezPayTab.firstTimeUserContext.labelFirstOrder' | translate}}</p>
+      <p id="label_first_order">{{'pages.ordersTab.labelFirstOrder' | translate}}</p>
       <ion-button fill="solid" shape="round" size="medium" (click)="navigateToPath('tabs/marketplace')">
-        {{'pages.beezPayTab.firstTimeUserContext.labelBuyNowPayLater' | translate}}
+        {{'pages.ordersTab.labelBuyNow' | translate}}
       </ion-button>
     </ion-col>
   </ion-row>
@@ -170,7 +170,7 @@
   <ion-row class="ion-align-items-center">
     <ion-col size="12">
       <p class="label_order_name" *ngIf="order.category == 'ShoppingOrder'">
-        {{'pages.beezPayTab.labelOrderCode' | translate}} {{order.orderCode}}
+        {{'pages.ordersTab.labelOrderCode' | translate}} {{order.orderCode}}
       </p>
     </ion-col>
     <ion-col size="6">
