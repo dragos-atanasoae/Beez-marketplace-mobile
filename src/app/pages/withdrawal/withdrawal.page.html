@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" shape="round" color="primary" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      {{'pages.withdrawal.titleWithdrawal' | translate}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- Row progress -->
+  <ion-row class="ion-align-items-center" id="row_progress">
+    <ion-col size="12">
+      <p class="label_step">{{'pages.withdrawal.labelStep' | translate}} {{currentIndex + 1}}/2</p>
+    </ion-col>
+  </ion-row>
+  <!-- WITHDRAW CASHBACK -->
+  <ion-row id="row_withdrawal" class="ion-align-items-center">
+    <ion-col size="12">
+      <ion-slides mode="ios" pager="false">
+        <!-- SLIDE 1 - WITHDRAWAL AMOUNT -->
+        <ion-slide>
+          <ion-row id="row_amount" class="ion-align-items-center">
+            <ion-col></ion-col>
+            <ion-col size="8">
+              <p id="label_amount_input">{{'pages.withdrawal.labelAmount' | translate}}</p>
+              <div id="wrap_amount_input">
+                <ion-input [formControl]="withdrawalAmount" type="number" step="any" placeholder="0">
+                </ion-input>
+                <span>{{country == 'ro' ? 'lei': '£'}}</span>
+              </div>
+              <p id="label_available" [ngClass]="{'error_on_amount': errorRequestToMuch}">
+                {{'pages.withdrawal.lableAccountBalance' | translate}}:
+                <span>{{walletInfo?.available | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span>
+              </p>
+            </ion-col>
+            <ion-col></ion-col>
+            <!-- <p id="exceedAmount" *ngIf="invalidAmountMeesage != ''">{{'paymentPage.messageExceedAmount' | translate}}</p> -->
+          </ion-row>
+          <p id="label_minimum" *ngIf="withdrawalContext == 'withdraw'"
+            [ngClass]="{'error_on_amount': errorMinimumRequest}">{{'pages.withdrawal.labelMinimumRequest' | translate}}
+            {{50 | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</p>
+        </ion-slide>
+
+        <!-- SLIDE 2 - Withdrawal Details -->
+        <ion-slide *ngIf="withdrawalContext == 'withdraw'">
+          <ion-row>
+            <ion-col size="12">
+              <form id="withdrawal_form" [formGroup]="withdrawalForm">
+                <ion-item>
+                  <ion-label position="floating" color="primary">{{'pages.withdrawal.form.labelFirstname' | translate}}
+                  </ion-label>
+                  <ion-input required type="text" formControlName="name"></ion-input>
+                </ion-item>
+                <div class="validation-errors">
+                  <ng-container *ngFor="let validation of validationMessages.name">
+                    <div class="error-message"
+                      *ngIf="withdrawalForm.get('name').hasError(validation.type) && (withdrawalForm.get('name').dirty || withdrawalForm.get('name').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+                <ion-item>
+                  <ion-label position="floating" color="primary">{{'pages.withdrawal.form.labelLastname' | translate}}
+                  </ion-label>
+                  <ion-input required type="text" formControlName="surname"></ion-input>
+                </ion-item>
+                <div class="validation-errors">
+                  <ng-container *ngFor="let validation of validationMessages.surname">
+                    <div class="error-message"
+                      *ngIf="withdrawalForm.get('surname').hasError(validation.type) && (withdrawalForm.get('surname').dirty || withdrawalForm.get('surname').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+                <!-- Button Select Bank account file for upload -->
+                <p class="label_input_file">{{'pages.withdrawal.uploadDocument.labelBankAccount' | translate}}</p>
+                <ion-row class="wrap_btn_upload ion-align-items-center" *ngIf="withdrawalContext == 'withdraw'">
+                  <ion-col class="col_btn_file_upload">
+                    <ion-card button class="btn_add_file" [ngClass]="{btn_add_file_active: bankAccountFileName != null}"
+                      (click)="selectDocumentTypeForUpload('bankAccount')">
+                      <ion-row class="ion-align-items-center">
+                        <ion-col size="auto">
+                          <img
+                            [src]="bankAccountFileName != null ? './assets/icon/withdraw_page/bank_building_active.svg' : './assets/icon/withdraw_page/bank_building_inactive.svg'"
+                            alt="">
+                        </ion-col>
+                        <ion-col>
+                          <p class="upload_file_placeholder"
+                            [ngClass]="{'placeholder_active': bankAccountFileName != null}">
+                            {{ bankAccountFileName != null ? bankAccountFileName : ('pages.withdrawal.uploadDocument.placeholderUploadBankAccount' | translate) }}
+                          </p>
+                        </ion-col>
+                      </ion-row>
+                    </ion-card>
+                  </ion-col>
+                  <ion-col size="auto" class="col_btn_info_upload ion-align-self-stretch">
+                    <ion-card class="btn_add_file" [ngClass]="{btn_add_file_active: bankAccountFileName != null}"
+                      (click)="alertUploadFileInfo('bankAccount')">
+                      <ion-button fill="clear">
+                        <ion-icon slot="icon-only" name="information-circle-outline" color="primary"></ion-icon>
+                      </ion-button>
+                    </ion-card>
+                  </ion-col>
+                </ion-row>
+              </form>
+            </ion-col>
+          </ion-row>
+        </ion-slide>
+      </ion-slides>
+    </ion-col>
+    <ion-row id="row_buttons">
+      <ion-col size="4" *ngIf="currentIndex != 0">
+        <!-- BACK (prev slide) -->
+        <ion-button fill="clear" color="medium" size="medium" shape="round" (click)="previousSlide()">
+          {{'buttons.buttonBack' | translate}}
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <!-- NEXT SLIDE (RO)-->
+        <ion-button fill="solid" size="medium" shape="round" [disabled]="withdrawalAmount?.invalid"
+          (click)="checkStatusOfKYC()" *ngIf="currentIndex == 0 && country == 'ro'" @animationButtons>
+          {{'buttons.buttonNext' | translate}}
+        </ion-button>
+        <!-- SEND WITHDRAWAL REQUEST -->
+        <ion-button fill="solid" size="medium" shape="round"
+          *ngIf="currentIndex != 0 && withdrawalContext == 'withdraw'"
+          [disabled]="bankAccountFileName == null || withdrawalForm.invalid" (click)="sendWithdrawalRequest()"
+          @animationButtons>
+          {{'buttons.buttonContinue' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-row>
+</ion-content>

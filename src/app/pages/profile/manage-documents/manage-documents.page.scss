@@ -1,0 +1,199 @@
+#slide_kyc_valid {
+    width: 100%;
+    .row_page_header {
+        .gray_background {
+            width: 100%;
+            background: linear-gradient(to bottom, #F8F8F8 50%, #fff 50%);
+        }
+    
+        .credit_cards_icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 6em;
+            width: 6em;
+            margin: 2.5em auto;
+            padding: 0.5em;
+            border-radius: 50%;
+            box-shadow: 0em 0.25em 0.5em #00000029;
+            overflow: hidden;
+            background: #fff;
+    
+            img {
+                min-width: 3em;
+            }
+        }
+    
+    }
+    #row_page_body {
+        width: 80%;
+        max-width: 30em;
+        margin-right: auto;
+        margin-left: auto;
+    
+        .label_input_file {
+            margin: 2em 0 0.4em 0.5em;
+            font-size: 0.8em;
+            color: var(--ion-color-primary);
+            text-align: left;
+        }
+    
+        .upload_file_placeholder {
+            width: 100%;
+            display: block;
+            font-size: 0.8em;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 2em;
+        }
+    
+        .icon_selfie {
+            font-size: 2em;
+            margin-left: 0.2em;
+            color: var(--ion-color-tertiary);
+        }
+    
+        .icon_active {
+            color: var(--ion-color-primary) !important;
+        }
+    
+        .placeholder_active {
+            color: var(--ion-color-primary);
+        }
+    
+        .wrap_btn_upload {
+            ion-col {
+                overflow: hidden;
+            }
+    
+            .col_btn_file_upload {
+                padding: 0;
+                overflow: hidden;
+    
+                .btn_add_file {
+                    border-top: 1px solid #E0E0E0;
+                    border-bottom: 1px solid #E0E0E0;
+                    border-left: 1px solid #E0E0E0;
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                    border-bottom-left-radius: var(--beez-border-radius);
+                    border-top-left-radius: var(--beez-border-radius);
+                }
+            }
+    
+            .col_btn_info_upload {
+                padding: 0;
+    
+                .btn_add_file {
+                    height: 3.2rem;
+                    width: fit-content;
+                    border-top: 1px solid #E0E0E0;
+                    border-bottom: 1px solid #E0E0E0;
+                    border-right: 1px solid #E0E0E0;
+                    border-top-right-radius: var(--beez-border-radius);
+                    border-bottom-right-radius: var(--beez-border-radius);
+                    border-bottom-left-radius: 0;
+                    border-top-left-radius: 0;
+                    overflow: hidden;
+    
+                    ion-button {
+                        width: 4em;
+                        margin: 0;
+                        --padding-start: 0.5em;
+                        --padding-end: 0em;
+                        display: block;
+    
+                        ion-icon {
+                            font-size: 2em;
+                            line-height: 2.2em;
+                        }
+                    }
+                }
+            }
+        }
+    
+        .btn_add_file {
+            width: 100%;
+            height: 3.2rem;
+            margin: 0;
+            box-shadow: none;
+    
+            img {
+                width: 2em;
+                height: auto;
+                margin-left: 0.5em;
+                font-style: italic;
+            }
+        }
+    
+        .btn_add_file_active {
+            --background: #FFF9EF;
+            border: none;
+        }
+    }
+}
+#row_slide_upload_id_card, 
+#row_slide_upload_selfie {
+    max-width: 360px;
+    margin: 0 auto;
+
+    .label_description,
+    .label_step {
+        color: var(--ion-color-medium);
+    }
+
+    .label_title,
+    .label_description {
+        width: 80%;
+        margin: 0.3em auto 1em;
+        font-size: 0.9em;
+    }
+
+    .label_step {
+        margin-bottom: 0em;
+        margin-top: 1.5em;
+        font-size: 0.8em;
+    }
+
+    .label_title {
+        font-size: 1.2em;
+        color: var(--ion-color-primary);
+    }
+
+    .slide_header {
+        height: 20vh;
+    }
+
+    .slide_content {
+        height: 60vh;
+
+        .wrap_document_icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 9em;
+            height: 7em;
+            margin: 3em auto;
+            background:
+                linear-gradient(to right, var(--ion-color-tertiary) 0.5em, transparent 0.5em) 0 0,
+                linear-gradient(to right, var(--ion-color-tertiary) 0.5em, transparent 0.5em) 0 100%,
+                linear-gradient(to left, var(--ion-color-tertiary) 0.5em, transparent 0.5em) 100% 0,
+                linear-gradient(to left, var(--ion-color-tertiary) 0.5em, transparent 0.5em) 100% 100%,
+                linear-gradient(to bottom, var(--ion-color-tertiary) 0.5em, transparent 0.5em) 0 0,
+                linear-gradient(to bottom, var(--ion-color-tertiary) 0.5em, transparent 0.5em) 100% 0,
+                linear-gradient(to top, var(--ion-color-tertiary) 0.5em, transparent 0.5em) 0 100%,
+                linear-gradient(to top, var(--ion-color-tertiary) 0.5em, transparent 0.5em) 100% 100%;
+
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+
+            ion-icon {
+                font-size: 5em;
+                color: var(--ion-color-primary);
+            }
+        }
+    }
+
+}
