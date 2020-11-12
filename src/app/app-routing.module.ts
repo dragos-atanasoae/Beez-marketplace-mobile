@@ -96,6 +96,14 @@ const routes: Routes = [
     path: 'guest-mode',
     loadChildren: () => import('./pages/guest-mode/guest-mode.module').then( m => m.GuestModePageModule)
   },
+  {
+    path: 'withdrawal',
+    loadChildren: () => import('./pages/withdrawal/withdrawal.module').then( m => m.WithdrawalPageModule)
+  },
+  {
+    path: 'manage-documents',
+    loadChildren: () => import('./pages/profile/manage-documents/manage-documents.module').then( m => m.ManageDocumentsPageModule)
+  },
 ];
 @NgModule({
   imports: [

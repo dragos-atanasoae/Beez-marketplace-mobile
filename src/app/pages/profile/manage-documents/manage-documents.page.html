@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="primary" shape="round" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <span>{{'pages.manageDocuments.title' | translate}}</span>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-slides mode="ios" [options]="slidesOptions" #kycSlides>
+    <ion-slide *ngIf="isKycValid">
+      <div id="slide_kyc_valid">
+        <ion-row class="row_page_header">
+          <ion-col size="12" class="gray_background">
+            <ion-col class="credit_cards_icon">
+              <img src="./assets/icon/profile_icons/icon_documents.svg" alt="credit_cards_icon">
+            </ion-col>
+          </ion-col>
+        </ion-row>
+        <ion-row id="row_page_body">
+          <ion-col size="12">
+            <!-- Button select ID Card file for upload -->
+            <p class="label_input_file">{{'pages.manageDocuments.labelIdCard' | translate}}</p>
+            <ion-row class="wrap_btn_upload ion-align-items-center">
+              <ion-col class="col_btn_file_upload">
+                <ion-card button class="btn_add_file" [ngClass]="{btn_add_file_active: idCardFileName != null}"
+                  (click)="alertChangeDocument()">
+                  <ion-row class="ion-align-items-center">
+                    <ion-col size="auto">
+                      <img
+                        [src]="idCardFileName != null ? './assets/icon/withdraw_page/identity_card_active.svg' : './assets/icon/withdraw_page/identity_card_inactive.svg'"
+                        alt="">
+                    </ion-col>
+                    <ion-col>
+                      <p class="upload_file_placeholder" [ngClass]="{'placeholder_active': idCardFileName != null}">
+                        {{idCardFileName != null ? idCardFileName : ('pages.manageDocuments.placeholderUploadIdCard' | translate)}}
+                      </p>
+                    </ion-col>
+                  </ion-row>
+                </ion-card>
+              </ion-col>
+              <ion-col size="auto" class="col_btn_info_upload ion-align-items-stretch">
+                <ion-card class="btn_add_file" [ngClass]="{btn_add_file_active: idCardFileName != null}"
+                  (click)="alertUploadFileInfo()">
+                  <ion-button fill="clear">
+                    <ion-icon slot="icon-only" name="information-circle-outline" color="primary"></ion-icon>
+                  </ion-button>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+            <!-- Button Select Selfie file for upload -->
+            <p class="label_input_file">Selfie</p>
+            <ion-row class="wrap_btn_upload ion-align-items-center">
+              <ion-col class="col_btn_file_upload">
+                <ion-card button class="btn_add_file" [ngClass]="{btn_add_file_active: selfieFileName != null}"
+                  (click)="alertChangeDocument()">
+                  <ion-row class="ion-align-items-center">
+                    <ion-col size="auto">
+                      <ion-icon name="person-circle-outline" class="icon_selfie"
+                        [ngClass]="{icon_active: selfieFileName != null}"></ion-icon>
+                    </ion-col>
+                    <ion-col>
+                      <p class="upload_file_placeholder" [ngClass]="{'placeholder_active': idCardFileName != null}">
+                        {{ selfieFileName != null ? selfieFileName : ('pages.manageDocuments.placeholderUploadSelfie' | translate) }}
+                      </p>
+                    </ion-col>
+                  </ion-row>
+                </ion-card>
+              </ion-col>
+              <ion-col size="auto" class="col_btn_info_upload ion-align-items-stretch">
+                <ion-card class="btn_add_file" [ngClass]="{btn_add_file_active: selfieFileName != null}"
+                  (click)="alertUploadFileInfo()">
+                  <ion-button fill="clear">
+                    <ion-icon slot="icon-only" name="information-circle-outline" color="primary"></ion-icon>
+                  </ion-button>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-slide>
+    <ion-slide *ngIf="!isKycValid && idCardFileName == null">
+      <ion-row id="row_slide_upload_id_card">
+        <ion-col class="slide_header" size="12">
+          <p class="label_step">{{'pages.manageDocuments.labelStep' | translate}} 1/2</p>
+          <p class="label_title">{{'pages.manageDocuments.labelIdCardTitle' | translate}}</p>
+        </ion-col>
+        <ion-col class="slide_content" size="12">
+          <div class="wrap_document_icon">
+            <ion-icon src="./assets/icon/withdraw_page/identity_card_active.svg"></ion-icon>
+          </div>
+          <p class="label_description">{{'pages.manageDocuments.labelIdCardDescription' | translate}}</p>
+        </ion-col>
+        <ion-col class="slide_buttons" size="12">
+          <ion-button fill="solid" shape="round" (click)="takePicture('idCard')">
+            {{'pages.manageDocuments.btnGo' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-slide>
+    <ion-slide *ngIf="!isKycValid && selfieFileName == null">
+      <ion-row id="row_slide_upload_selfie">
+        <ion-col class="slide_header" size="12">
+          <p class="label_step">{{'pages.manageDocuments.labelStep' | translate}} 2/2</p>
+          <p class="label_title">{{'pages.manageDocuments.labelSelfieTitle' | translate}}</p>
+        </ion-col>
+        <ion-col class="slide_content" size="12">
+          <div class="wrap_document_icon">
+            <ion-icon name="person-circle-outline"></ion-icon>
+          </div>
+          <p class="label_description">{{'pages.manageDocuments.labelSelfieDescription' | translate}}</p>
+        </ion-col>
+        <ion-col class="slide_buttons" size="12">
+          <ion-button fill="solid" shape="round" (click)="takePicture('selfie')">
+            {{'pages.manageDocuments.btnGo' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-slide>
+  </ion-slides>
+  
+
+</ion-content>

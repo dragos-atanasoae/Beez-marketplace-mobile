@@ -12,6 +12,7 @@ import { trigger, transition, useAnimation } from '@angular/animations';
 import { fadeOut } from 'ng-animate';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Plugins } from '@capacitor/core';
+import { WithdrawalPage } from '../withdrawal/withdrawal.page';
 // import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 const { Browser } = Plugins;
@@ -199,38 +200,38 @@ export class TransactionsListPage implements OnInit {
    * @description Open modal withdraw form (request)
    */
   async openWithdrawModal(context: string) {
-    // const withdrawalModal = await this.modalCtrl.create({
-    //   component: WithdrawalPage,
-    //   componentProps: { withdrawalContext: context, walletInfo: this.walletInfo }
-    // });
-    // this.accountValidationService.isVerified().subscribe((res: any) => {
-    //   console.log(res);
-    //   switch (res) {
-    //     case 'NewUser':
-    //       this.skipAccountValidation = false;
-    //       this.showOverlayValidationAccount = true;
-    //       break;
-    //     case 'OldUser':
-    //       this.skipAccountValidation = true;
-    //       this.showOverlayValidationAccount = true;
-    //       break;
-    //     case 'NumberIsVerified':
-    //       console.log('This account is validated: ', res);
-    //       withdrawalModal.present();
-    //       const eventParams = { context: this.eventContext };
-    //       this.analyticsService.logEvent('open_withdrawal_page', eventParams);
-    //       break;
-    //     default:
-    //       console.log('Error on verify account status: ', res);
-    //       break;
-    //   }
-    // });
-    // withdrawalModal.onDidDismiss()
-    //   .then((data) => {
-    //     if (data.data !== undefined) {
-    //       this.reloadData();
-    //     }
-    //   });
+    const withdrawalModal = await this.modalCtrl.create({
+      component: WithdrawalPage,
+      componentProps: { withdrawalContext: context, walletInfo: this.walletInfo }
+    });
+    this.accountValidationService.isVerified().subscribe((res: any) => {
+      console.log(res);
+      switch (res) {
+        case 'NewUser':
+          this.skipAccountValidation = false;
+          this.showOverlayValidationAccount = true;
+          break;
+        case 'OldUser':
+          this.skipAccountValidation = true;
+          this.showOverlayValidationAccount = true;
+          break;
+        case 'NumberIsVerified':
+          console.log('This account is validated: ', res);
+          withdrawalModal.present();
+          const eventParams = { context: this.eventContext };
+          this.analyticsService.logEvent('open_withdrawal_page', eventParams);
+          break;
+        default:
+          console.log('Error on verify account status: ', res);
+          break;
+      }
+    });
+    withdrawalModal.onDidDismiss()
+      .then((data) => {
+        if (data.data !== undefined) {
+          this.reloadData();
+        }
+      });
   }
 
   reloadData() {

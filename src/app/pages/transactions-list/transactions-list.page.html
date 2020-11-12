@@ -58,9 +58,13 @@
     </div>
     <!-- WITHDRAW BTN -->
     <ion-row [ngClass]="{'row_buttons': country =='ro', 'row_buttons_uk': country =='uk'}">
-      <!-- MISSED TRANSACTIOS BTN -->
       <ion-col size="12" *ngIf="country == 'ro'">
-        
+        <ion-button [ngClass]="{btn_withdraw_disabled: walletInfo?.available <= 0}"
+          [disabled]="walletInfo?.available <= 0" fill="solid" shape="round" class="btn_withdraw"
+          (click)="openWithdrawModal('withdraw')">
+          <ion-icon src="./assets/icon/profile_icons/Icon_withdraw.svg"></ion-icon>
+          {{'pages.transactionsList.buttonWithdraw' | translate}}
+        </ion-button>
       </ion-col>
     </ion-row>
     <ion-col size="12" class="ion-no-padding">

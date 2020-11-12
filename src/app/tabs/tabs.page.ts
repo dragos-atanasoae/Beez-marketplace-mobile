@@ -15,6 +15,7 @@ import { BackButtonActionService } from '../services/back-button-action.service'
 import { WalletService } from '../services/wallet.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
+import { KycValidationService } from '../services/kyc-validation.service';
 
 const { PushNotifications, Keyboard } = Plugins;
 
@@ -60,7 +61,8 @@ export class TabsPage implements OnInit, AfterViewInit {
     private alertCtrl: AlertController,
     private popoverCtrl: PopoverController,
     private router: Router,
-    private notificationsService: NotificationService
+    private notificationsService: NotificationService,
+    private kycService: KycValidationService
   ) { }
 
   ngOnInit() {
@@ -80,6 +82,7 @@ export class TabsPage implements OnInit, AfterViewInit {
     this.stripePaymentService.getPaymentProcessor();
     this.stripePaymentService.getPaymentMethods('initialize');
     this.listenForBackEvent();
+    this.kycService.getStatusKYC();
   }
 
   ngAfterViewInit(): void {
