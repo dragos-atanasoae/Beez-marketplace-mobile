@@ -1,0 +1,74 @@
+ion-content {
+    --background: var(--beez-background-color);
+}
+
+.wrap_content {
+    max-width: 576px;
+    margin: 0em auto;
+    padding-bottom: 2em;
+}
+
+.card_refund_details {
+    margin-bottom: 1em;
+    box-shadow: none;
+
+    .card_subtitle {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 0.5em;
+        border-bottom: 1px solid var(--ion-color-light-shade);
+        text-transform: capitalize;
+
+        .wrap_status,
+        .wrap_initiated_by {
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+            text-transform: none;
+
+            ion-icon {
+                font-size: 1.8em;
+                margin-right: 0.2em;
+            }
+
+            .label_refund_date {
+                margin-left: 0.7em;
+            }
+        }
+    }
+
+    .card_content {
+        padding: 0 1em 1em;
+
+        .label_product_name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .label_quantity {
+            font-size: 0.9em;
+            text-align: right;
+        }
+
+        .label_amount {
+            color: var(--ion-color-primary);
+        }
+
+        .label_amount_value {
+            float: right;
+            display: flex;
+            align-items: center;
+            font-size: 0.9em;
+            color: var(--ion-color-primary);
+        }
+
+        ion-icon {
+            font-size: 1.5em;
+        }
+    }
+}
+
+.card_refund_details:first-of-type {
+    margin-top: 0;
+}

@@ -1,3 +1,4 @@
+import { RefundDetailsPage } from './../refund-details/refund-details.page';
 // import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { ConfirmDeleteDataComponent } from './../../components/confirm-delete-data/confirm-delete-data.component';
@@ -160,7 +161,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
         // this.showToastInfoDelivery();
         break;
       case 'Paid':
-        this.iconOrderStatus = this.orderDetails.shippmentInfo.shipmentStatus !== null ? './assets/icon/order_states/icon_ordered.svg' : './assets/icon/order_states/icon_pending_to_order.svg';
+        this.iconOrderStatus = this.orderDetails.shippmentInfo.shipmentStatus !== null ? './assets/icon/order_states/icon_ordered.svg' : './assets/icon/order_states/icon_ordered.svg';
         this.labelOrderStatus = this.translate.instant(this.orderDetails.shippmentInfo.shipmentStatus !== null ? 'pages.marketplace.statusOfOrder.deliveryInProgress' : 'pages.marketplace.statusOfOrder.ordered');
         // this.showToastInfoDelivery();
         break;
@@ -287,6 +288,15 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
         this.getItemDetails();
       }
     });
+  }
+
+  async openRefundDetails() {
+    const modal = await this.modalCtrl.create({
+      component: RefundDetailsPage,
+      componentProps: { refundInfo: this.orderDetails?.refundInfo }
+    });
+
+    await modal.present();
   }
 
   /**
