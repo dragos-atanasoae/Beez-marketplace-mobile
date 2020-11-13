@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" shape="round" color="primary" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{'pages.refundDetails.labelPageTitle' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="wrap_content">
+    <ng-container
+      *ngTemplateOutlet="refundDetails; context: { requestedBy:'user', refundInfo: refundInfo?.requestedByUser }">
+    </ng-container>
+
+    <ng-container
+      *ngTemplateOutlet="refundDetails; context: { requestedBy:'vendor', refundInfo: refundInfo?.requestedByVendor }">
+    </ng-container>
+  </div>
+
+</ion-content>
+
+<ng-template #refundDetails let-refundInfo="refundInfo" let-requestedBy="requestedBy">
+  <ion-card class="card_refund_details ion-no-margin" *ngFor="let product of refundInfo?.products">
+    <ion-card-header>
+      <ion-card-subtitle class="card_subtitle">
+        <div class="wrap_status">
+          <ion-icon [src]="checkRefundStatus(refundInfo?.status).status.icon">
+          </ion-icon>
+          <span [style.color]="checkRefundStatus(refundInfo?.status).status.color">
+            {{ checkRefundStatus(refundInfo?.status).status.text }}
+          </span>
+        </div>
+        <div class="wrap_initiated_by">
+          {{'pages.refundDetails.labelInitiatedBy' | translate}}
+          {{(requestedBy == 'vendor' ? 'pages.refundDetails.labeVendor' : 'pages.refundDetails.labelUser') | translate}}
+          <span class="label_refund_date">
+            {{refundInfo?.date | convertToLocaleTime : 'DD.MM.YYYY' }}
+          </span>
+        </div>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content class="card_content">
+      <ion-row>
+        <!-- Product name -->
+        <ion-col size="10">
+          <p class="label_product_name">
+            {{product?.name | titlecase}}
+          </p>
+        </ion-col>
+        <!-- Product quantity -->
+        <ion-col size="2" class="label_quantity">
+          <strong>-{{product?.quantity}}</strong>
+        </ion-col>
+      </ion-row>
+
+      <!-- Amount to refund -->
+      <ion-row class="ion-align-items-center">
+        <ion-col size="6">
+          <p class="label_amount">
+            {{'pages.refundDetails.labelAmount' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size="6">
+          <p class="label_amount_value">
+            <ion-icon src="./assets/icon/icon_refund_request.svg"></ion-icon>
+            <strong>{{product?.quantity * product?.unitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</strong>
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ng-template>

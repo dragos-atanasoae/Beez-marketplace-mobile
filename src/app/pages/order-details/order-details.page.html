@@ -13,11 +13,13 @@
   <div class="wrap_content">
     <ion-row class="row_product_header">
       <ion-col size="4" class="wrap_button">
-        <ion-button expand="block" fill="clear" shape="round" color="tertiary" *ngIf="orderDetails?.shippmentInfo == undefined"
-          [disabled]="orderDetails?.status.status !== 'PendingToOrder'" (click)="modalConfirmRemoveOrder()">
+        <ion-button expand="block" fill="clear" shape="round" color="tertiary"
+          *ngIf="orderDetails?.shippmentInfo == undefined" [disabled]="orderDetails?.status.status !== 'PendingToOrder'"
+          (click)="modalConfirmRemoveOrder()">
           <ion-icon name="trash"></ion-icon>
         </ion-button>
-        <p class="label_button_info" *ngIf="orderDetails?.shippmentInfo == undefined">{{'pages.marketplace.orderDetails.buttonRemove' | translate}}</p>
+        <p class="label_button_info" *ngIf="orderDetails?.shippmentInfo == undefined">
+          {{'pages.marketplace.orderDetails.buttonRemove' | translate}}</p>
       </ion-col>
       <!-- Store logo -->
       <ion-col size="4" class="col_wrap_product_image centered_content">
@@ -96,7 +98,7 @@
             <ion-col size="12" class="col_buttons">
               <div *ngIf="(orderDetails?.status.status == 'Delivered') 
                 && (!orderDetails?.feedbackReceived && orderDetails?.refundInfo?.requestedByUser == null)">
-              <!-- <div *ngIf="(orderDetails?.shippmentInfo?.shipmentStatus == 'Delivered') 
+                <!-- <div *ngIf="(orderDetails?.shippmentInfo?.shipmentStatus == 'Delivered') 
                 && (!orderDetails?.feedbackReceived && orderDetails?.paymentInfo.refundInfo == null)"> -->
                 <p class="label_section_title">{{'pages.marketplace.orderDetails.labelHowWasYourOrder' | translate}}</p>
                 <p class="label_review_order">
@@ -115,7 +117,9 @@
                 {{'buttons.buttonTrackOrder' | translate}}
               </ion-button> -->
               <ion-button class="button_primary" color="primary" expand="block" fill="solid" shape="round"
-                *ngIf="orderDetails?.shippmentInfo.shipmentStatus == 'Shipped'" (click)="openLinkInAppBrowser(orderDetails?.shippmentInfo?.shipmentTrackingLink, 'track_order')" @bounceIn>
+                *ngIf="orderDetails?.shippmentInfo.shipmentStatus == 'Shipped'"
+                (click)="openLinkInAppBrowser(orderDetails?.shippmentInfo?.shipmentTrackingLink, 'track_order')"
+                @bounceIn>
                 {{'buttons.buttonTrackOrder' | translate}}
               </ion-button>
               <!-- Review order(show feedback form) -->
@@ -158,6 +162,60 @@
       </ion-col>
     </ion-row>
 
+    <!-- Section refund details -->
+    <section *ngIf="orderDetails?.refundInfo">
+      <ion-row class="row_refund_details_header">
+        <ion-col size="1">
+          <ion-icon src="./assets/icon/icon_refund_request_inactive.svg"></ion-icon>
+        </ion-col>
+        <ion-col size="6">
+          <p class="label_title">
+            {{'pages.marketplace.orderDetails.labelRefundDetails' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size="5" class="ion-text-end">
+          <ion-button fill="clear" shape="round" size="small" color="tertiary" (click)="openRefundDetails()">
+            {{'pages.marketplace.orderDetails.buttonViewDetails' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <div class="horizontal_line"></div>
+      <ion-row class="row_section_details"
+        *ngIf="orderDetails?.refundInfo !== null && orderDetails?.refundInfo != undefined">
+        <ion-col size="12">
+          <p class="label_total_refund">{{'pages.marketplace.orderDetails.labelTotalRefund' | translate}}:
+            <span class="label_amount_paid color_primary">
+              {{orderDetails?.refundInfo?.totalRequestedAmount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
+            </span>
+          </p>
+          <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByUser != null">
+            {{'pages.marketplace.orderDetails.labelRefundRequestByUser' | translate}}
+            <span class="label_amount_paid color_primary">
+              {{orderDetails?.refundInfo?.requestedByUser.amount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
+            </span>
+          </p>
+          <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByUser != null">
+            Status:
+            <span class="color_primary">
+              {{('pages.marketplace.orderDetails.statusListRefund.status' + orderDetails?.refundInfo?.requestedByUser?.status) | translate}}
+            </span>
+          </p>
+          <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByVendor != null">
+            {{'pages.marketplace.orderDetails.labelRefundRequestByVendor' | translate}}
+            <span class="label_amount_paid color_primary">
+              {{orderDetails?.refundInfo?.requestedByVendor.amount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
+            </span>
+          </p>
+          <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByVendor != null">
+            Status:
+            <span class="color_primary">
+              {{('pages.marketplace.orderDetails.statusListRefund.status' + orderDetails?.refundInfo?.requestedByVendor?.status) | translate}}
+            </span>
+          </p>
+        </ion-col>
+      </ion-row>
+    </section>
+
     <!-- Section payment details -->
     <section *ngIf="orderDetails?.paymentInfo !== null">
       <p class="label_section_title">
@@ -176,38 +234,6 @@
             {{'pages.marketplace.orderDetails.labelPaymentDate' | translate}}:
             <span class="color_primary">
               {{orderDetails?.paymentInfo.payments[0].createdAt | convertToLocaleTime : 'DD.MM.YYYY'}}
-            </span>
-          </p>
-        </ion-col>
-      </ion-row>
-      <!-- REFUND DETAILS -->
-      <ion-row class="row_section_details" *ngIf="orderDetails?.refundInfo !== null && orderDetails?.refundInfo != undefined">
-        <ion-col size="12">
-          <p class="label_total_refund">{{'pages.marketplace.orderDetails.labelTotalRefund' | translate}}: 
-            <span class="label_amount_paid color_primary">
-              {{orderDetails?.refundInfo?.totalRequestedAmount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
-            </span>
-          </p>
-          <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByUser != null">{{'pages.marketplace.orderDetails.labelRefundRequestByUser' | translate}}
-            <span class="label_amount_paid color_primary">
-              {{orderDetails?.refundInfo?.requestedByUser.amount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
-            </span>
-          </p>
-          <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByUser != null">
-            Status:
-            <span class="color_primary">
-              {{('pages.marketplace.orderDetails.statusListRefund.status' + orderDetails?.refundInfo?.requestedByUser?.status) | translate}}
-            </span>
-          </p>
-          <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByVendor != null">{{'pages.marketplace.orderDetails.labelRefundRequestByVendor' | translate}}
-            <span class="label_amount_paid color_primary">
-              {{orderDetails?.refundInfo?.requestedByVendor.amount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
-            </span>
-          </p>
-          <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByVendor != null">
-            Status:
-            <span class="color_primary">
-              {{('pages.marketplace.orderDetails.statusListRefund.status' + orderDetails?.refundInfo?.requestedByVendor?.status) | translate}}
             </span>
           </p>
         </ion-col>

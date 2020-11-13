@@ -341,11 +341,29 @@
     .color_medium {
       color: var(--ion-color-medium);
     }
+
     .label_refund_details {
       margin-left: 1em;
       font-size: 0.7rem!important;
     }
-  
+  }
+
+  .row_refund_details_header {
+    align-items: center;
+    padding-left: 1em;
+    
+    ion-icon {
+      display: block;
+      margin: auto;
+      font-size: 1.5em;
+    }
+
+    .label_title {
+      margin: 0.5em 0em;
+      font-size: 1em;
+      font-weight: 600;
+      color: var(--ion-color-tertiary-shade);
+    }
   }
   
   #overlay_review_order {
