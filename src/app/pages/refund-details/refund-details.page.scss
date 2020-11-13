@@ -12,6 +12,10 @@ ion-content {
     margin-bottom: 1em;
     box-shadow: none;
 
+    ion-card-header {
+        padding-bottom: 0em;
+    }
+
     .card_subtitle {
         display: flex;
         justify-content: space-between;
@@ -44,6 +48,7 @@ ion-content {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-size: 1em;
         }
 
         .label_quantity {
