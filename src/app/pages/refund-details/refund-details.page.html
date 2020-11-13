@@ -5,7 +5,7 @@
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{'pages.refundDetails.labelPageTitle' | translate}}</ion-title>
+    <ion-title>{{'pages.marketplace.refundDetails.labelPageTitle' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -35,8 +35,8 @@
           </span>
         </div>
         <div class="wrap_initiated_by">
-          {{'pages.refundDetails.labelInitiatedBy' | translate}}
-          {{(requestedBy == 'vendor' ? 'pages.refundDetails.labeVendor' : 'pages.refundDetails.labelUser') | translate}}
+          {{'pages.marketplace.refundDetails.labelInitiatedBy' | translate}}
+          {{(requestedBy == 'vendor' ? 'pages.marketplace.refundDetails.labeVendor' : 'pages.marketplace.refundDetails.labelUser') | translate}}
           <span class="label_refund_date">
             {{refundInfo?.date | convertToLocaleTime : 'DD.MM.YYYY' }}
           </span>
@@ -62,7 +62,7 @@
       <ion-row class="ion-align-items-center">
         <ion-col size="6">
           <p class="label_amount">
-            {{'pages.refundDetails.labelAmount' | translate}}
+            {{'pages.marketplace.refundDetails.labelAmount' | translate}}
           </p>
         </ion-col>
         <ion-col size="6">

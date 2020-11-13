@@ -41,21 +41,21 @@ export class RefundDetailsPage implements OnInit {
         return {
           status: {
             icon: './assets/icon/order_states/icon_initiated.svg',
-            text: this.translate.instant('pages.refundDetails.statusListRefund.statusPending'),
+            text: this.translate.instant('pages.marketplace.refundDetails.statusListRefund.statusPending'),
           }
         };
       case 'VendorApproved':
         return {
           status: {
             icon: './assets/icon/icon_refund_accepted.svg',
-            text: this.translate.instant('pages.refundDetails.statusListRefund.statusApproved')
+            text: this.translate.instant('pages.marketplace.refundDetails.statusListRefund.statusApproved')
           }
         };
       case 'VendorDenied':
         return {
           status: {
             icon: './assets/icon/icon_refund_denied.svg',
-            text: this.translate.instant('pages.refundDetails.statusListRefund.statusDenied'),
+            text: this.translate.instant('pages.marketplace.refundDetails.statusListRefund.statusDenied'),
             color: 'var(--ion-color-danger)'
           }
         };
@@ -63,14 +63,14 @@ export class RefundDetailsPage implements OnInit {
         return {
           status: {
             icon: './assets/icon/icon_refund_accepted.svg',
-            text: this.translate.instant('pages.refundDetails.statusListRefund.statusApproved')
+            text: this.translate.instant('pages.marketplace.refundDetails.statusListRefund.statusApproved')
           }
         };
       case 'BeezDenied':
         return {
           status: {
             icon: './assets/icon/icon_refund_denied.svg',
-            text: this.translate.instant('pages.refundDetails.statusListRefund.statusDenied'),
+            text: this.translate.instant('pages.marketplace.refundDetails.statusListRefund.statusDenied'),
             color: 'var(--ion-color-danger)'
           }
         };

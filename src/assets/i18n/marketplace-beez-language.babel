@@ -7048,6 +7048,23 @@
                                         </translations>
                                     </concept_node>
                                     <concept_node>
+                                        <name>buttonViewDetails</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>ro-RO</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
                                         <name>labelDeliveryDate</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description></description>
@@ -7303,6 +7320,23 @@
                                         </translations>
                                     </concept_node>
                                     <concept_node>
+                                        <name>labelRefundDetails</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>ro-RO</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
                                         <name>labelRefundRequestByUser</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description></description>
@@ -7481,6 +7515,40 @@
                                                 </translations>
                                             </concept_node>
                                             <concept_node>
+                                                <name>statusBeezApproved</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description></description>
+                                                <comment></comment>
+                                                <default_text></default_text>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>ro-RO</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>statusBeezDenied</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description></description>
+                                                <comment></comment>
+                                                <default_text></default_text>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>ro-RO</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
                                                 <name>statusDenied</name>
                                                 <definition_loaded>false</definition_loaded>
                                                 <description></description>
@@ -7499,6 +7567,40 @@
                                             </concept_node>
                                             <concept_node>
                                                 <name>statusPending</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description></description>
+                                                <comment></comment>
+                                                <default_text></default_text>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>ro-RO</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>statusVendorApproved</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description></description>
+                                                <comment></comment>
+                                                <default_text></default_text>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>ro-RO</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>statusVendorDenied</name>
                                                 <definition_loaded>false</definition_loaded>
                                                 <description></description>
                                                 <comment></comment>
@@ -7555,6 +7657,169 @@
                                             </concept_node>
                                             <concept_node>
                                                 <name>successRemoveOrder</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description></description>
+                                                <comment></comment>
+                                                <default_text></default_text>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>ro-RO</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                        </children>
+                                    </folder_node>
+                                </children>
+                            </folder_node>
+                            <folder_node>
+                                <name>refundDetails</name>
+                                <children>
+                                    <concept_node>
+                                        <name>- ABOUT -</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>ro-RO</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>labeVendor</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>ro-RO</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>labelAmount</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>ro-RO</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>labelInitiatedBy</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>ro-RO</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>labelPageTitle</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>ro-RO</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>labelUser</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>ro-RO</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <folder_node>
+                                        <name>statusListRefund</name>
+                                        <children>
+                                            <concept_node>
+                                                <name>statusApproved</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description></description>
+                                                <comment></comment>
+                                                <default_text></default_text>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>ro-RO</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>statusDenied</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description></description>
+                                                <comment></comment>
+                                                <default_text></default_text>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>ro-RO</language>
+                                                        <approved>false</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>statusPending</name>
                                                 <definition_loaded>false</definition_loaded>
                                                 <description></description>
                                                 <comment></comment>
