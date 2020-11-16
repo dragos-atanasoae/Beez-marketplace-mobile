@@ -44,11 +44,16 @@ ion-content {
     .card_content {
         padding: 0 1em 1em;
 
+        strong {
+            font-size: 1.1em;
+        }
+
         .label_product_name {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             font-size: 1em;
+            font-weight: 500;
         }
 
         .label_quantity {
@@ -58,6 +63,7 @@ ion-content {
 
         .label_amount {
             font-size: 1em;
+            font-weight: 500;
             color: var(--ion-color-primary);
         }
 
