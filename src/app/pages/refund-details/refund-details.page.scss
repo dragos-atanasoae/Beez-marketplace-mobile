@@ -52,11 +52,12 @@ ion-content {
         }
 
         .label_quantity {
-            font-size: 0.9em;
+            font-size: 1em;
             text-align: right;
         }
 
         .label_amount {
+            font-size: 1em;
             color: var(--ion-color-primary);
         }
 
@@ -64,7 +65,7 @@ ion-content {
             float: right;
             display: flex;
             align-items: center;
-            font-size: 0.9em;
+            font-size: 1em;
             color: var(--ion-color-primary);
         }
 
