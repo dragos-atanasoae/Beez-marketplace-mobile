@@ -6,6 +6,7 @@
     <string name="custom_url_scheme">beez-marketplace</string>
     <string name="branch_key">key_live_mjN47aidNzcc7UlhEPCT6lgiwrleQNue</string>
     <string name="branch_test_key">key_test_ljH65pomLsli0JlawGFHWlcnwCniRHCy</string>
-    <string name="facebook_app_id">267642484564300</string>
+    <string name="fb_app_id">267642484564300</string>
+    <string name="fb_app_name">Food Marketplace by Beez</string>
     <string name="fb_login_protocol_scheme">fb267642484564300</string>
 </resources>

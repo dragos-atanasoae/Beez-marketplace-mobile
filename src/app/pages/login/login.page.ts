@@ -1,24 +1,22 @@
 import { LoadingService } from 'src/app/services/loading.service';
 import { AnalyticsService } from './../../services/analytics.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastOptions } from '@ionic/core';
-import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { LoginModel } from 'src/app/models/login.model';
 import { FacebookProfileModel } from 'src/app/models/facebookProfile.model';
 import { ModalController, AlertController, ToastController, MenuController, Platform, NavController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ResetPasswordPage } from '../reset-password/reset-password.page';
 import { ManageAccountService } from 'src/app/services/manage-account.service';
-// import { FacebookLoginResponse, Facebook } from '@ionic-native/facebook/ngx';
-
-import { Plugins } from '@capacitor/core';
-// import { ResponseSignInWithApplePlugin } from '@capacitor-community/apple-sign-in';
-import { Subscription } from 'rxjs';
+import { FacebookLoginResponse, Facebook } from '@ionic-native/facebook/ngx';
+import { ResponseSignInWithApplePlugin } from '@capacitor-community/apple-sign-in';
 import { Router } from '@angular/router';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
-
+import { Plugins } from '@capacitor/core';
+const { SignInWithApple } = Plugins;
 
 @Component({
   selector: 'app-login',
@@ -39,7 +37,7 @@ export class LoginPage implements OnInit {
   resetPasswordResponse: any;
 
   // Facebook authentication
-  // facebookAuthData: FacebookLoginResponse;
+  facebookAuthData: FacebookLoginResponse;
   private facebookProfileData = new FacebookProfileModel();
   facebookAuthApiResponse: any;
   modifiedProfilePictureUrl: string;
@@ -75,7 +73,7 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,
     private analyticsService: AnalyticsService,
     private router: Router,
-    // private facebook: Facebook,
+    private facebook: Facebook,
   ) {
     // Initialize locale context
     this.internationalizationService.initializeCountry().subscribe(res => {
@@ -275,44 +273,46 @@ export class LoginPage implements OnInit {
   // *** 3.1 FACEBOOK LOGIN ***
   // ==========================
   facebookLogin(country: string) {
-    // const eventParams = { context: this.eventContext };
-    // this.analyticsService.logEvent('login_facebook', eventParams);
-    // this.facebook.login(['public_profile', 'email'])
-    //   .then((res: FacebookLoginResponse) => {
-    //     this.facebookAuthData = res;
-    //     this.getFacebookData(country);
-    //     console.log('Logged into Facebook!', res);
-    //     console.log(this.facebookAuthData);
-    //   })
-    //   .catch(e => console.log('Error logging into Facebook', e));
+    const eventParams = { context: this.eventContext };
+    this.analyticsService.logEvent('login_facebook', eventParams);
+    this.facebook.login(['public_profile', 'email'])
+      .then((res: FacebookLoginResponse) => {
+        if (res.status === 'connected') {
+          this.facebookAuthData = res;
+          this.getFacebookData('ro');
+        }
+        console.log('Logged into Facebook!', res);
+        console.log(this.facebookAuthData);
+      })
+      .catch(e => console.log('Error logging into Facebook', e));
   }
   // *** 3.2 GET DATA FROM FACEBOOK ***
   // ==================================
   getFacebookData(country: string) {
-    // this.facebook.api('/me?fields=id,first_name,last_name,email,picture.type(large)', ['public_profile', 'email'])
-    //   .then(data => {
-    //     // console.log(data);
-    //     this.facebookProfileData.facebookID = data.id;
-    //     this.facebookProfileData.firstName = data.first_name;
-    //     this.facebookProfileData.lastName = data.last_name;
-    //     this.facebookProfileData.facebookEmail = data.email;
-    //     this.facebookProfileData.profilePicture = data.picture.data.url;
+    this.facebook.api('/me?fields=id,first_name,last_name,email,picture.type(large)', ['public_profile', 'email'])
+      .then(data => {
+        // console.log(data);
+        this.facebookProfileData.facebookID = data.id;
+        this.facebookProfileData.firstName = data.first_name;
+        this.facebookProfileData.lastName = data.last_name;
+        this.facebookProfileData.facebookEmail = data.email;
+        this.facebookProfileData.profilePicture = data.picture.data.url;
 
-    //     console.log(this.facebookProfileData);
+        console.log(this.facebookProfileData);
 
-    //     if (this.facebookProfileData !== null) {
-    //       // console.log(this.facebookProfileData.facebookEmail);
-    //       this.facebookProfileData.profilePicture = this.facebookProfileData.profilePicture.replace(/&/g, '(AND)');
-    //       if (this.facebookProfileData.facebookEmail !== null || this.facebookProfileData.facebookEmail !== undefined) {
-    //         this.postUserData('facebook', country, '', data.id, data.email, data.first_name, data.last_name, this.facebookProfileData.profilePicture, '', '');
-    //       } else {
-    //         this.postUserData('facebook', country, '', data.id, 'inexistent', data.first_name, data.last_name, this.facebookProfileData.profilePicture, '', '');
-    //       }
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
+        if (this.facebookProfileData !== null) {
+          // console.log(this.facebookProfileData.facebookEmail);
+          this.facebookProfileData.profilePicture = this.facebookProfileData.profilePicture.replace(/&/g, '(AND)');
+          if (this.facebookProfileData.facebookEmail !== null || this.facebookProfileData.facebookEmail !== undefined) {
+            this.postUserData('facebook', country, '', data.id, data.email, data.first_name, data.last_name, this.facebookProfileData.profilePicture, '', '');
+          } else {
+            this.postUserData('facebook', country, '', data.id, 'inexistent', data.first_name, data.last_name, this.facebookProfileData.profilePicture, '', '');
+          }
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
   // *** 3.3 SAVE FACEBOOK PROFILE INFO TO LOCAL STORAGE ***
   // =======================================================
@@ -481,44 +481,43 @@ export class LoginPage implements OnInit {
     promptPasswordAlert.present();
   }
 
-  // async signInWIthApple(country: string) {
-  //   try {
-  //     const response: ResponseSignInWithApplePlugin = await SignInWithApple.Authorize();
-  //     console.log('Apple sign in: ', response);
-  //   } catch (e) {
-  //     console.log('Apple sing in error: ', e);
-  //   }
-  // }
+  async signInWIthApple(country: string) {
+    try {
+      const response: ResponseSignInWithApplePlugin = await SignInWithApple.Authorize();
+      console.log('Apple sign in: ', response);
+    } catch (e) {
+      console.log('Apple sing in error: ', e);
+    }
+  }
 
   /**
    * @description Open SignInWithApple native component and get authentication data from Apple account
    * @param country
    */
   openAppleSignIn(country: string) {
-    const { SignInWithApple } = Plugins;
-    // SignInWithApple.Authorize()
-    //   .then(async (res: ResponseSignInWithApplePlugin) => {
-    //     if (res.response && res.response.identityToken) {
-    //       console.log(res);
-    //       this.facebookProfileData.facebookID = res.response.user;
-    //       this.facebookProfileData.firstName = res.response.givenName;
-    //       this.facebookProfileData.lastName = res.response.familyName;
-    //       this.facebookProfileData.facebookEmail = res.response.email !== null ? res.response.email : 'inexistent';
-    //       this.facebookProfileData.profilePicture = '';
-    //       this.postUserData(
-    //         'apple', country, '',
-    //         this.facebookProfileData.facebookID,
-    //         this.facebookProfileData.facebookEmail,
-    //         this.facebookProfileData.firstName,
-    //         this.facebookProfileData.lastName,
-    //         this.modifiedProfilePictureUrl, '', '');
-    //     } else {
-    //       console.log('error');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    SignInWithApple.Authorize()
+      .then(async (res: ResponseSignInWithApplePlugin) => {
+        if (res.response && res.response.identityToken) {
+          console.log(res);
+          this.facebookProfileData.facebookID = res.response.user;
+          this.facebookProfileData.firstName = res.response.givenName;
+          this.facebookProfileData.lastName = res.response.familyName;
+          this.facebookProfileData.facebookEmail = res.response.email !== null ? res.response.email : 'inexistent';
+          this.facebookProfileData.profilePicture = '';
+          this.postUserData(
+            'apple', country, '',
+            this.facebookProfileData.facebookID,
+            this.facebookProfileData.facebookEmail,
+            this.facebookProfileData.firstName,
+            this.facebookProfileData.lastName,
+            this.modifiedProfilePictureUrl, '', '');
+        } else {
+          console.log('error');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   goToNextStep() {

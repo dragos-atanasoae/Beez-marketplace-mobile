@@ -1,6 +1,7 @@
 import { Platform } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Facebook } from '@ionic-native/facebook/ngx';
 import { Mixpanel } from '@ionic-native/mixpanel/ngx';
 import Analytics from 'analytics';
 import segmentPlugin from '@analytics/segment';
@@ -28,7 +29,7 @@ export class AnalyticsService {
   constructor(
     private platform: Platform,
     private mixpanel: Mixpanel,
-    // private facebook: Facebook,
+    private facebook: Facebook,
   ) { }
 
   /**
@@ -91,11 +92,11 @@ export class AnalyticsService {
    * @param params
    */
   facebookLogEvents(event: string, params: any) {
-    // this.facebook.logEvent(event, params)
-    //   .then(res => {
-    //     // console.log('Facebook log event: ' + res);
-    //   })
-    //   .catch(e => console.log(e));
+    this.facebook.logEvent(event, params)
+      .then(res => {
+        // console.log('Facebook log event: ' + res);
+      })
+      .catch(e => console.log(e));
   }
 
   /**

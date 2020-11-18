@@ -23,6 +23,7 @@ import { CustomAlertModule } from './components/custom-alert/custom-alert.module
 import { Mixpanel, MixpanelPeople } from '@ionic-native/mixpanel/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
+import { Facebook } from '@ionic-native/facebook/ngx';
 registerLocaleData(localeRo, 'ro');
 registerLocaleData(localeEnGB, 'en-GB');
 
@@ -55,6 +56,7 @@ export function createTranslateLoader(http: HttpClient) {
     CurrencyPipe,
     DatePipe,
     EmailComposer,
+    Facebook,
     InAppBrowser,
     LoadingService,
     Mixpanel,
