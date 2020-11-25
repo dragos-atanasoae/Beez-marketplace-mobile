@@ -157,7 +157,9 @@ export class MarketplacePage implements OnInit {
         if (localStorage.getItem('selectedCategoryFromGuestMode')) {
           this.selectedCategory = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedCategoryFromGuestMode'));
           console.log('Selected Category', this.selectedCategory);
-          this.openMarketplaceProducts(context).then(() => localStorage.removeItem('selectedCategoryFromGuestMode'));
+          if (this.selectedCategory) {
+            this.openMarketplaceProducts(context).then(() => localStorage.removeItem('selectedCategoryFromGuestMode'));
+          }
         } else {
           this.selectedCategory = this.categories[0];
           this.openMarketplaceProducts(context);
