@@ -8,8 +8,8 @@
     }
 
     .stripe_input_base {
-        margin: 0.5em auto;
-        padding: 0.5rem 1rem;
+        margin: 0em auto 0.5em;
+        padding: 0.7rem 1rem;
         background: #fff;
         border-radius: var(--beez-border-radius);
         border: 1px solid rgb(112, 112, 112, 0.1);
@@ -23,7 +23,7 @@
 
     .stripe_input_invalid {
         border: 1px solid var(--ion-color-danger);
-        animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+        animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
 
     .label_error_message {
@@ -41,6 +41,7 @@
         --padding-end: 1rem;
         --padding-bottom: 0.5rem;
         --padding-start: 1rem;
+        color: var(--ion-color-secondary);
         background: #fff;
         border-radius: var(--beez-border-radius);
         border: 1px solid rgb(112, 112, 112, 0.1);
@@ -55,14 +56,14 @@
             &.ion-touched {
                 border: 1px solid var(--ion-color-danger) !important;
                 color: var(--ion-color-danger);
-                animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+                animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
             }
         }
     }
 
     ion-icon {
         font-size: 1.5rem;
-        top: 0.75em;
+        top: 0.52em;
         left: 0.7em;
         position: absolute !important;
     }
@@ -73,7 +74,7 @@
 
     .invalid_filter {
         filter: invert(35%) sepia(18%) saturate(5089%) hue-rotate(335deg) brightness(80%) contrast(92%);
-        animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+        animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
 
     #label_powered_by_stripe {
@@ -118,7 +119,7 @@
         color: var(--ion-color-primary);
     }
     #row_input_amount {
-        padding: 0!important;
+        padding: 0 !important;
         #label_pay_another_amount {
             color: var(--ion-color-primary);
             font-weight: 500;
@@ -137,16 +138,16 @@
             line-height: 1.4rem;
             text-align: right;
             color: var(--ion-color-tertiary);
-    
+
             &.has-focus {
                 border-bottom: 1px solid var(--ion-color-primary);
             }
-    
+
             &.ion-invalid {
                 &.ion-touched {
                     border-bottom: 1px solid var(--ion-color-danger) !important;
                     color: var(--ion-color-danger);
-                    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+                    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
                 }
             }
         }
@@ -155,7 +156,6 @@
 
 //  ANIMATIONS
 @keyframes shake {
-
     10%,
     90% {
         transform: translate3d(-1px, 0, 0);
