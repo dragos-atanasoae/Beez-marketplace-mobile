@@ -1,3 +1,4 @@
+import { style } from '@angular/animations';
 import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewInit, OnDestroy, Output, EventEmitter, NgZone } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -65,7 +66,7 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
     private internationalizationService: InternationalizationService,
     private stripePaymentService: StripePaymentService,
     private analyticsService: AnalyticsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Initialize locale context
@@ -73,7 +74,7 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
       this.localeData = res;
     });
     this.amountToPay = new FormControl(((this.paymentDetails.transactionType === 'upFront' || this.paymentDetails.payNow) ? this.paymentDetails.amount : null),
-    Validators.compose([Validators.required, Validators.min(2)]));
+      Validators.compose([Validators.required, Validators.min(2)]));
     if (this.paymentDetails.productType === 'ShopCart' || this.paymentDetails.payNow || this.paymentDetails.transactionType === 'upFront') {
       this.amountToPay.setValue(this.paymentDetails.amount);
       console.log('Amount to pay: ', this.amountToPay.value);
@@ -136,19 +137,30 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
       invalid: 'stripe_input_invalid'
     };
 
-    this.cardNumber = elements.create('cardNumber', { placeholder: 'Card number', showIcon: true, iconStyle: 'solid', classes });
+    const styles = {
+      base: {
+        iconColor: '#636363',
+        color: '#636363',
+
+        '::placeholder': {
+          color: '#aca8a8'
+        }
+      },
+    };
+
+    this.cardNumber = elements.create('cardNumber', { placeholder: 'Card number', showIcon: true, iconStyle: 'solid', classes, style: styles });
     this.cardNumber.mount(this.cardNumberElement.nativeElement);
     this.cardNumber.addEventListener('change', ({ elementType, complete, error }) => {
       this.onChangeStripeElement(elementType, complete, error);
     });
 
-    this.cardExpiry = elements.create('cardExpiry', { placeholder: 'Expiry date', classes });
+    this.cardExpiry = elements.create('cardExpiry', { placeholder: 'Expiry date', classes, style: styles });
     this.cardExpiry.mount(this.cardExpiryElement.nativeElement);
     this.cardExpiry.addEventListener('change', ({ elementType, complete, error }) => {
       this.onChangeStripeElement(elementType, complete, error);
     });
 
-    this.cardCvc = elements.create('cardCvc', { placeholder: 'Code CVC', classes });
+    this.cardCvc = elements.create('cardCvc', { placeholder: 'Code CVC', classes, style: styles });
     this.cardCvc.mount(this.cardCvcElement.nativeElement);
     this.cardCvc.addEventListener('change', ({ elementType, complete, error }) => {
       this.onChangeStripeElement(elementType, complete, error);
@@ -281,7 +293,7 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
             setTimeout(() => {
               this.loadingService.dismissLoading();
               this.stripePaymentService.getPaymentMethods('initialize');
-              this.eventNewPaymentMethodAdded.emit({context: this.paymentDetails.transactionType, status: 'success'});
+              this.eventNewPaymentMethodAdded.emit({ context: this.paymentDetails.transactionType, status: 'success' });
             }, 3000);
           }
           // this.disableButton = false;
@@ -326,7 +338,7 @@ export class StripeAddPaymentMethodComponent implements OnInit, AfterViewInit, O
                 this.stripePaymentService.getPaymentMethods('update');
               } else {
                 this.stripePaymentService.getPaymentMethods('initialize');
-                this.eventNewPaymentMethodAdded.emit({context: 'addCard', status: 'success'});
+                this.eventNewPaymentMethodAdded.emit({ context: 'addCard', status: 'success' });
                 this.loadingService.dismissLoading();
                 this.disableButton = false;
                 this.analyticsService.logEvent('add_card', { context: this.eventContext });

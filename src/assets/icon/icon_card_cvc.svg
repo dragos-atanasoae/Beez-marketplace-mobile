@@ -1,0 +1,13 @@
+<svg id="ic_card_cvc" data-name="ic card cvc" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25">
+  <g id="credit-card_2_" data-name="credit-card (2)" transform="translate(3 -74)">
+    <path id="Path_7421" data-name="Path 7421" d="M18.23,82.955v-.961A1.994,1.994,0,0,0,16.236,80H1.994A1.994,1.994,0,0,0,0,81.994v.961a.178.178,0,0,0,.178.178H18.052A.178.178,0,0,0,18.23,82.955Z" fill="#636363"/>
+    <path id="Path_7422" data-name="Path 7422" d="M0,200.178v6.088a1.994,1.994,0,0,0,1.994,1.994H16.236a1.994,1.994,0,0,0,1.994-1.994v-6.088a.178.178,0,0,0-.178-.178H.178A.178.178,0,0,0,0,200.178Z" transform="translate(0 -115.727)" fill="#636363"/>
+    <rect id="Rectangle_2383" data-name="Rectangle 2383" width="7.955" height="1.326" transform="translate(1.16 88.034)" fill="#fff"/>
+    <rect id="Rectangle_2384" data-name="Rectangle 2384" width="2.652" height="1.326" transform="translate(12.465 88.034)" fill="#fff"/>
+    <g id="Rectangle_2385" data-name="Rectangle 2385" transform="translate(10.697 86.965)" fill="none" stroke="#fff" stroke-width="0.5">
+      <rect width="6.187" height="3.464" stroke="none"/>
+      <rect x="0.25" y="0.25" width="5.687" height="2.964" fill="none"/>
+    </g>
+  </g>
+  <rect id="Rectangle_2388" data-name="Rectangle 2388" width="25" height="25" fill="none"/>
+</svg>
