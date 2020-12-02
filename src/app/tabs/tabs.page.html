@@ -1,13 +1,20 @@
 <ion-tabs #ionTabs (ionTabsDidChange)="getSelectedTab()">
 
   <ion-tab-bar #tabsBar slot="bottom">
+    <ion-tab-button tab="marketplace">
+      <ion-icon id="tab_home" [ngClass]="activeTab == 'marketplace'? 'scale-in-center' : 'inactive_tab'" name="home">
+      </ion-icon>
+    </ion-tab-button>
+
     <ion-tab-button tab="orders">
       <ion-icon [ngClass]="activeTab == 'orders'? 'scale-in-center' : ''"
         [src]="activeTab == 'orders'? '../../../assets/icon/tabs_icons/ordersTabActive.svg' : '../../../assets/icon/tabs_icons/ordersTabInactive.svg'">
       </ion-icon>
     </ion-tab-button>
-    <ion-tab-button tab="marketplace">
-      <ion-icon id="tab_home" [ngClass]="activeTab == 'marketplace'? 'scale-in-center' : 'inactive_tab'" name="home">
+
+    <ion-tab-button tab="promotions">
+      <ion-icon [ngClass]="activeTab == 'promotions'? 'scale-in-center' : ''"
+        [src]="activeTab == 'promotions'? '../../../assets/icon/tabs_icons/promotionsTabActive.svg' : '../../../assets/icon/tabs_icons/promotionsTabInactive.svg'">
       </ion-icon>
     </ion-tab-button>
 
