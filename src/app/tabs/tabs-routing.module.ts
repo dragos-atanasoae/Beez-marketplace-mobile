@@ -8,12 +8,16 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: 'marketplace',
+        loadChildren: () => import('./marketplace/marketplace.module').then( m => m.MarketplacePageModule)
+      },
+      {
         path: 'orders',
         loadChildren: () => import('./orders/orders.module').then( m => m.OrdersPageModule)
       },
       {
-        path: 'marketplace',
-        loadChildren: () => import('./marketplace/marketplace.module').then( m => m.MarketplacePageModule)
+        path: 'promotions',
+        loadChildren: () => import('./promotions/promotions.module').then( m => m.PromotionsPageModule)
       },
       {
         path: 'profile',
@@ -31,6 +35,10 @@ const routes: Routes = [
     redirectTo: '/tabs/marketplace',
     pathMatch: 'full'
   },
+  // {
+  //   path: 'promotions',
+  //   loadChildren: () => import('./promotions/promotions.module').then( m => m.PromotionsPageModule)
+  // },
   // {
   //   path: 'orders',
   //   loadChildren: () => import('./orders/orders.module').then( m => m.OrdersPageModule)

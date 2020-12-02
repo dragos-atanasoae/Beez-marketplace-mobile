@@ -1,0 +1,361 @@
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    .row_empty_promotions_list {
+        ion-col {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            .img_no_results {
+                max-width: 15em;
+                max-height: 15em;
+            }
+
+            .no_results_title,
+            .no_results_message {
+                width: 80%;
+                max-width: 30em;
+                text-align: center;
+                color: var(--ion-color-tertiary-tint);
+            }
+
+            .no_results_message {
+                margin: 0;
+                font-size: 0.9em;
+            }
+
+            span {
+                color: var(--ion-color-primary);
+            }
+
+            span:focus {
+                outline: none;
+            }
+        }
+    }
+
+    #loading_content {
+        max-width: 576px;
+        margin: 1em auto;
+        ion-card {
+            margin: 0.75em 1em;
+            padding-left: 0.5em;
+            border-radius: var(--beez-border-radius);
+            box-shadow: var(--beez-box-shadow);
+
+        }
+    }
+}
+
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px
+    }
+}
+
+ion-content {
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: var(--beez-background-color);
+}
+
+#wrap_promotions_list {
+    max-width: 576px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .cardview_promotion {
+        margin: 0.75em 1em;
+        border-radius: var(--beez-border-radius);
+        box-shadow: var(--beez-box-shadow);
+        background: #fff;
+    }
+
+    .full_view_promotion {
+        border-radius: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        left: 0;
+        top: 0;
+        overflow-y: scroll;
+        // -webkit-animation: slide-in-fwd-center 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        // animation: slide-in-fwd-center 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        z-index: 99;
+
+        .col_promotion_img {
+            background: var(--beez-background-color);
+
+            img {
+                height: 15vh;
+                max-height: 10rem;
+                margin: 0 auto;
+                display: block;
+                -webkit-animation: scale-in-left 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+                animation: scale-in-left 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+            }
+        }
+
+        .col_promotion_name {
+            padding: 0.5em 1.5em;
+            text-align: center;
+            color: var(--ion-color-secondary);
+            // border-bottom: 1px solid var(--ion-color-medium);
+            background: var(--beez-background-color);
+            box-shadow: var(--beez-box-shadow);
+
+            .label_shop_name {
+                margin-top: 0.2rem;
+                margin-bottom: 1.5rem;
+                font-size: 0.8rem;
+                font-weight: 400;
+            }
+
+            .label_promotion_name {
+                margin-top: 0.4rem;
+                font-size: 1.2rem;
+                font-weight: 500;
+            }
+
+            ion-button {
+                margin-bottom: 1.5em;
+            }
+        }
+
+        .col_promotion_details {
+            padding: 1.5em;
+
+            p {
+                max-width: 576px;
+                margin: 0.5em auto;
+            }
+
+            .title_section {
+                font-size: 1rem;
+                font-weight: 500;
+                color: var(--ion-color-tertiary);
+            }
+
+            .label_promotion_description,
+            .label_promotion_details {
+                font-size: 0.8rem;
+            }
+
+            .label_promotion_discount,
+            .label_promotion_cashback,
+            .label_promo_code,
+            .label_promo_start_date,
+            .label_promo_end_date {
+                padding-left: 1em;
+                color: var(--ion-color-primary);
+
+                span {
+                    font-weight: 500;
+                    color: var(--ion-color-tertiary);
+                }
+            }
+        }
+    }
+
+    .default_view_promotion {
+        padding: 0.5em;
+        z-index: 9;
+        -webkit-animation: slide-in-bck-center 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        animation: slide-in-bck-center 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+
+        .col_promotion_img {
+            img {
+                max-height: 6rem;
+                width: auto;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+            }
+        }
+
+        .col_promotion_name {
+            text-align: left;
+            color: var(--ion-color-tertiary);
+
+            .label_shop_name {
+                margin-top: 0.2em;
+                margin-bottom: 0;
+                font-size: 0.7rem;
+                font-weight: 500;
+            }
+
+            .label_promotion_name {
+                margin-top: 0.2rem;
+                margin-bottom: 0.2rem;
+                font-size: 0.9rem;
+                font-weight: 600;
+            }
+
+            .label_promotion_discount,
+            .label_promo_end_date {
+                margin-top: 0.2rem;
+                margin-bottom: 0;
+                font-size: 0.7rem;
+                font-weight: 500;
+                color: var(--ion-color-primary);
+                span {
+                    color: var(--ion-color-medium);
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2020-11-26 17:7:54
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation slide-in-bck-center
+ * ----------------------------------------
+ */
+@-webkit-keyframes slide-in-bck-center {
+    0% {
+        -webkit-transform: translateZ(600px);
+        transform: translateZ(600px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-bck-center {
+    0% {
+        -webkit-transform: translateZ(600px);
+        transform: translateZ(600px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
+
+
+/* ----------------------------------------------
+ * Generated by Animista on 2020-11-26 16:57:19
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation slide-in-fwd-center
+ * ----------------------------------------
+ */
+@-webkit-keyframes slide-in-fwd-center {
+    0% {
+        -webkit-transform: translateZ(-1400px);
+        transform: translateZ(-1400px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-fwd-center {
+    0% {
+        -webkit-transform: translateZ(-1400px);
+        transform: translateZ(-1400px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2020-11-26 16:52:53
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation scale-in-left
+ * ----------------------------------------
+ */
+@-webkit-keyframes scale-in-left {
+    0% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        -webkit-transform-origin: 0% 50%;
+        transform-origin: 0% 50%;
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform-origin: 10% 50%;
+        transform-origin: 10% 50%;
+        opacity: 1;
+    }
+}
+
+@keyframes scale-in-left {
+    0% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        -webkit-transform-origin: 0% 50%;
+        transform-origin: 0% 50%;
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform-origin: 0% 50%;
+        transform-origin: 0% 50%;
+        opacity: 1;
+    }
+}

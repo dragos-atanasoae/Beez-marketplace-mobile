@@ -344,4 +344,14 @@ export class MarketplaceService {
     const url = this.prefixUrlByCountry + this.apiURL + 'api/BeezPay/InvoiceDownloadUrl?id=' + productId + '&category=' + categoryName;
     return this.httpClient.get(url, { headers: this.headers });
   }
+
+  /**
+   * @name getPromotionsList
+   * @description Get list of promotions
+   */
+  getPromotionsList() {
+    this.prepareHeaderForRequest();
+    const url = this.prefixUrlByCountry + this.apiURL + 'api/deals/Promos';
+    return this.httpClient.get(url, { headers: this.headers });
+  }
 }
