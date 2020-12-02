@@ -80,8 +80,6 @@ export class ProfilePage implements OnInit, OnDestroy {
   notificationsCount: number;
   profileInfo: any;
   eventContext: 'Profile Page';
-
-  paymentProcessor = null;
   private unsubscribe$: Subject<boolean> = new Subject();
 
   constructor(
@@ -117,6 +115,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this.getDashboardInfo();
+    this.getUserInformation();
   }
 
   ngOnInit() {
@@ -125,24 +124,16 @@ export class ProfilePage implements OnInit, OnDestroy {
       this.localeData = res;
     });
     this.getReferralInfo();
-    this.getPaymentProcessor();
-    // this.getDashboardInfo();
-    // this.isVipMember();
     this.getVipDetails();
     if (this.country === 'ro') {
       this.getProfileInfo();
     }
-    this.getUserInformation();
     this.notificationService.notificationsCount$.pipe(takeUntil(this.unsubscribe$)).subscribe(r => this.notificationsCount = r);
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next(true);
     this.unsubscribe$.complete();
-  }
-
-  getPaymentProcessor() {
-    this.stripePaymentService.paymentProcessor$.subscribe(res => {this.paymentProcessor = res; console.log('Payment processor', this.paymentProcessor); });
   }
 
   /**
@@ -152,7 +143,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   getUserInformation() {
     this.userService.getProfileInfo()
       .subscribe((response: any) => {
-        // console.log(response);
+        console.log('User info: ', response);
         if (response.status === 'succes') {
           this.profileInfo = response.data;
         }
@@ -264,9 +255,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     });
     modal.onDidDismiss().then((data) => {
       if (data.data === 'creditCardListChanged') {
-        if (this.paymentProcessor === 'Stripe') {
-          this.stripePaymentService.getPaymentMethods('initialize');
-        }
+        this.stripePaymentService.getPaymentMethods('initialize');
         this.getUserInformation();
       }
     });

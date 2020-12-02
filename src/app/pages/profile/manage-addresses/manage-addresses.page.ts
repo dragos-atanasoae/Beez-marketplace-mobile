@@ -108,6 +108,7 @@ export class ManageAddressesPage implements OnInit {
                 this.analyticsService.logEvent('delete_address', { context: this.eventContext });
                 this.presentToast(this.translate.instant('pages.manageAddresses.toastMessages.onDeleteSuccess'));
                 this.getProfileInfo();
+                this.action = 'edit';
               } else {
                 this.presentToast(this.translate.instant('pages.manageAddresses.toastMessages.onDeleteError'));
               }

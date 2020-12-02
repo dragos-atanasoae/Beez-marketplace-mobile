@@ -184,7 +184,7 @@ export class OrdersPage implements OnInit {
       case 'PendingToOrder':
         return {
           status: {
-            text: this.translate.instant('pages. ordersTab.statusOfOrder.pendingToOrder'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.pendingToOrder'),
             icon: './assets/icon/order_states/icon_pending_to_order_inactive.svg',
             btnAction: this.translate.instant('pages.ordersTab.labelActionOrderNow')
           }
@@ -193,7 +193,7 @@ export class OrdersPage implements OnInit {
       case 'Ordered':
         return {
           status: {
-            text: this.translate.instant('pages. ordersTab.statusOfOrder.ordered'),
+            text: this.translate.instant('pages.ordersTab.statusOfOrder.ordered'),
             icon: './assets/icon/order_states/icon_ordered_inactive.svg',
             btnAction: this.translate.instant('pages.ordersTab.labelActionReceived')
           }
