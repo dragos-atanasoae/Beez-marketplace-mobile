@@ -68,7 +68,7 @@ export class HelpPage {
     const messagePart1 = this.translate.instant('pages.help.contactWhatsapp.messagePart1');
     const messagePart2 = this.translate.instant('pages.help.contactWhatsapp.messagePart2');
     const contactMessage = messagePart1 + ' ' + userEmail + ', ' + messagePart2 + '';
-    this.inAppBrowser.create('https://api.whatsapp.com/send?phone=40732516760&text=' + contactMessage, '_system');
+    this.inAppBrowser.create('https://api.whatsapp.com/send?phone=' + this.translate.instant('pages.help.labelPhoneNumber') + '&text=' + contactMessage, '_system');
     // Browser.open({url: 'https://api.whatsapp.com/send?phone=40732516760&text=' + contactMessage, windowName: '_system'});
     const eventParams = { context: this.eventContext };
     this.analyticsService.logEvent('contact_via_whatsapp', eventParams);
@@ -99,7 +99,7 @@ export class HelpPage {
   callBeez() {
     const eventParams = { context: this.eventContext };
     this.analyticsService.logEvent('call_support_help_page', eventParams);
-    this.callNumber.callNumber('+40744366885', true)
+    this.callNumber.callNumber(this.translate.instant('pages.help.labelPhoneNumber'), true)
       .then(res => console.log('Launched dialer!', res))
       .catch(err => console.log('Error launching dialer', err));
   }
