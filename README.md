@@ -40,6 +40,6 @@ Note: After making updates to the native portion of the code (such as adding a n
 ## Build Status
 | __Platform__            | __Dev__    | __Release__ |
 |:-----------------------:|:----------:|:-----------:|
-| __Android GooglePlay__  | v1.0.3     | [1.0.3]() |
-| __Android Huawei__      | v1.0.3     | [1.0.3]() |
-| __iOS__                 | v1.0.3     | [1.0.3]() |
+| __Android GooglePlay__  | v1.0.4     | [1.0.4]() |
+| __Android Huawei__      | v1.0.4     | [1.0.4]() |
+| __iOS__                 | v1.0.4     | [1.0.4]() |

@@ -359,6 +359,6 @@ export class MarketplaceService {
         console.log('FM Promotions:', promotionsList);
         this.promotionsList$.next(promotionsList);
       }
-    })
+    });
   }
 }
