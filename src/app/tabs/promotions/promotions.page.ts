@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { take } from 'rxjs/operators';
 import { AnalyticsService } from 'src/app/services/analytics.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
@@ -35,20 +36,9 @@ export class PromotionsPage implements OnInit {
 
   getPromotionsList() {
     // this.loadingService.presentLoading();
-    this.marketplaceService.getPromotionsList().subscribe((response: any) => {
-      if (response) {
-        // this.promotionsList = response;
-        this.promotionsList = response.filter((item: any) => item.promotionType === 'Vendor');
-        console.log('Promotions:', this.promotionsList);
-      }
-      this.loadingService.dismissLoading();
-    }, () => {
-      this.loadingService.dismissLoading();
-      if (this.promotionsList === undefined) {
-        this.promotionsList = [];
-      }
+    this.marketplaceService.promotionsList$.pipe(take(2)).subscribe((res: any) => {
+      this.promotionsList = res;
     });
-
   }
 
   /**

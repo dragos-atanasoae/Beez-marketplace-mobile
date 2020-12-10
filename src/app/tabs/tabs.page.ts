@@ -16,6 +16,8 @@ import { WalletService } from '../services/wallet.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
 import { KycValidationService } from '../services/kyc-validation.service';
+import { MarketplaceService } from '../services/marketplace.service';
+import { take } from 'rxjs/operators';
 
 const { PushNotifications, Keyboard } = Plugins;
 
@@ -43,6 +45,7 @@ export class TabsPage implements OnInit, AfterViewInit {
   isKeyboardActive = false;
   heightOfTabsBar = 50;
   isVIPMember = true;
+  promotionsList = [];
 
   constructor(
     public platform: Platform,
@@ -62,7 +65,8 @@ export class TabsPage implements OnInit, AfterViewInit {
     private popoverCtrl: PopoverController,
     private router: Router,
     private notificationsService: NotificationService,
-    private kycService: KycValidationService
+    private kycService: KycValidationService,
+    private marketplaceService: MarketplaceService
   ) { }
 
   ngOnInit() {
@@ -82,6 +86,7 @@ export class TabsPage implements OnInit, AfterViewInit {
     this.stripePaymentService.getPaymentProcessor();
     this.stripePaymentService.getPaymentMethods('initialize');
     this.listenForBackEvent();
+    this.getPromotionsList();
     this.kycService.getStatusKYC();
   }
 
@@ -243,6 +248,19 @@ export class TabsPage implements OnInit, AfterViewInit {
   }
 
   /**
+   * @name getPromotionsList
+   * @description Get promotions list and initialize counter for badge notification
+   */
+  getPromotionsList() {
+    this.marketplaceService.getPromotionsList();
+    setTimeout(() => {
+      this.marketplaceService.promotionsList$.pipe(take(1)).subscribe((res: any) => {
+        this.promotionsList = res;
+      });
+    }, 4000);
+  }
+
+  /**
    * *** NAVIGATION ***
    * ****** START *****
    */
@@ -257,6 +275,9 @@ export class TabsPage implements OnInit, AfterViewInit {
     // get number of unread notifications
     if (this.activeTab === 'profile') {
       // this.notificationService.unreadNotifications();
+    }
+    if (this.activeTab === 'promotions') {
+      this.promotionsList = [];
     }
     const eventParams = { active_tab: this.activeTab };
     this.analyticsService.logEvent('select_tab_' + this.activeTab, eventParams);
@@ -293,9 +314,9 @@ export class TabsPage implements OnInit, AfterViewInit {
     toast.present();
   }
 
-/**
- * @description Overwrite back button for android platform(back and exit)
- */
+  /**
+   * @description Overwrite back button for android platform(back and exit)
+   */
   listenForBackEvent() {
     this.platform.backButton.subscribe(async () => {
       const url = this.router.url;

@@ -19,7 +19,7 @@ export class MarketplaceService {
   guestHeader: any;
 
   shoppingCartList$ = new BehaviorSubject([]);
-  // shoppingCartList = this.shoppingCartList$.asObservable();
+  promotionsList$ = new BehaviorSubject([]);
 
   totalCart$ = new Subject<number>();
   totalCart = this.totalCart$.asObservable();
@@ -352,6 +352,13 @@ export class MarketplaceService {
   getPromotionsList() {
     this.prepareHeaderForRequest();
     const url = this.prefixUrlByCountry + this.apiURL + 'api/deals/Promos';
-    return this.httpClient.get(url, { headers: this.headers });
+    this.httpClient.get(url, { headers: this.headers }).subscribe((res: any) => {
+      console.log(res);
+      if (res) {
+        const promotionsList = res.filter((item: any) => item.promotionType === 'Vendor');
+        console.log('FM Promotions:', promotionsList);
+        this.promotionsList$.next(promotionsList);
+      }
+    })
   }
 }
