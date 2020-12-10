@@ -14,8 +14,9 @@
 
     <ion-tab-button tab="promotions">
       <ion-icon [ngClass]="activeTab == 'promotions'? 'scale-in-center' : ''"
-        [src]="activeTab == 'promotions'? '../../../assets/icon/tabs_icons/promotionsTabActive.svg' : '../../../assets/icon/tabs_icons/promotionsTabInactive.svg'">
-      </ion-icon>
+      [src]="activeTab == 'promotions'? '../../../assets/icon/tabs_icons/promotionsTabActive.svg' : '../../../assets/icon/tabs_icons/promotionsTabInactive.svg'">
+    </ion-icon>
+    <ion-badge class="scale-in-center" color="danger" mode="ios" *ngIf="promotionsList.length > 0">{{promotionsList.length}}</ion-badge>
     </ion-tab-button>
 
     <ion-tab-button class="profile_btn" tab="profile">
