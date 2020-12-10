@@ -97,7 +97,8 @@
             </ion-col>
           </ion-row>
           <!-- Toggle Promo Notifications -->
-          <ion-row id="row_toggle_notifications" class="ion-align-items-center" *ngIf="statusOfFollowingVendor !== null">
+          <ion-row id="row_toggle_notifications" class="ion-align-items-center"
+            *ngIf="statusOfFollowingVendor !== null">
             <ion-col size="auto">
               <ion-icon class="icon_promo" src="./assets/icon/icon_promo_notification.svg"></ion-icon>
             </ion-col>
@@ -156,10 +157,12 @@
     <ion-col size="7">
       <p class="label_product_name">{{product.name | titlecase}}</p>
       <p class="label_product_details" [innerHTML]="product.weightInKG"></p>
+      
       <p class="label_product_price"><span>{{'pages.marketplace.marketplaceProducts.labelYouPay' | translate}}</span>
         {{product?.unitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
         <span class="label_unit_type">&nbsp;/{{product.unitType | lowercase}}</span>
       </p>
+      <p class="label_old_price" *ngIf="product.oldUnitValue">{{'pages.marketplace.marketplaceProducts.labelOldPrice' | translate}} <span>{{product?.oldUnitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span></p>
       <p class="label_cashback">{{'pages.marketplace.marketplaceProducts.labelCashbackPercent' | translate}}&nbsp;<span>
           {{vendor.cashback}}</span></p>
     </ion-col>

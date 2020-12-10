@@ -24,11 +24,8 @@
           </div>
         </ion-toolbar>
       </ion-header>
+      <!-- Location & Notifications toggle -->
       <ion-row id="row_searchbar" class="ion-align-items-center">
-        <!-- <ion-col id="wrap_searchbar">
-          <ion-searchbar placeholder="" inputmode="text" type="text" mode="ios" [debounce]="250"
-            showCancelButton="never" (ionChange)="onSearchChange($event.target.value)"></ion-searchbar>
-        </ion-col> -->
         <ion-col size="12" id="wrap_options">
           <div>
             <ion-row class="row_select_option ion-align-items-center" (click)="openMarketplaceLocations()">
@@ -57,6 +54,7 @@
           </div>
         </ion-col>
       </ion-row>
+      <!-- MetaCategories list(dropdown)  -->
       <ion-row id="row_select_category" class="ion-align-items-center"
         (click)="categoriesDropdownIsActive = !categoriesDropdownIsActive">
         <ion-col size="auto">
