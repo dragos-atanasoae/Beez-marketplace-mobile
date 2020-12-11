@@ -33,6 +33,9 @@
         <p class="label_product_price">
           {{productDetails.unitValue * quantity | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
         </p>
+        <p class="label_product_old_price" *ngIf="productDetails.oldUnitValue">
+          {{productDetails.oldUnitValue * quantity | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+        </p>
       </ion-col>
       <!-- Increase / Decrease quantity -->
       <ion-col size="4" class="centered_content">

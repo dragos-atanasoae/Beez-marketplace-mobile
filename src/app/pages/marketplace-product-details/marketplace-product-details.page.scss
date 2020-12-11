@@ -56,10 +56,17 @@ ion-toolbar {
       text-align: center;
   
       .label_product_price {
-        margin: 0em;
+        margin: 0;
         font-weight: 600;
-        font-size: 1.2em;
+        font-size: 1.4em;
         color: var(--ion-color-primary);
+      }
+      .label_product_old_price {
+        margin: 0;
+        font-size: 1em;
+        font-weight: 500;
+        color: var(--ion-color-medium);
+        text-decoration: line-through;
       }
   
       .label_product_name {
