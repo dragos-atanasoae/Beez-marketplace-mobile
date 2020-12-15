@@ -34,7 +34,9 @@ export class AppComponent {
         fadeOutDuration: 500
       });
       this.languageService.setInitialAppLanguage();
-      this.receiveDeepLinkData();
+      if (!this.platform.is('desktop')) {
+        this.receiveDeepLinkData();
+      }
     });
   }
 

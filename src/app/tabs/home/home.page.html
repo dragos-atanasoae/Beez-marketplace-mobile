@@ -1,0 +1,134 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- View/Change active location -->
+    <ion-row id="row_location_dropdown" class="ion-align-items-center" (click)="openMarketplaceLocations()">
+      <ion-col size="auto">
+        <ion-icon id="icon_pin_location" color="primary" name="location-sharp"></ion-icon>
+      </ion-col>
+      <ion-col>
+        <p>{{city?.Name}}, {{county?.Name}}</p>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <!-- Search product/category -->
+    <ion-searchbar mode="ios" placeholder="Cauta produs sau categorie" inputmode="text"
+      (ionChange)="onSearchChange($event)" [debounce]="250"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Section Promotions Carousel -->
+  <!-- <ion-slides mode="ios">
+    <ion-slide>
+      <h1>Awesome Slide Content</h1>
+    </ion-slide>
+  </ion-slides> -->
+  <!-- Section Top 5 Categories -->
+  <div>
+    <ion-row class="ion-align-items-center section_header">
+      <ion-col>
+        <p class="section_title">Categorii populare</p>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-button color="primary" fill="clear" shape="round" size="small">
+          Vezi toate
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <div class="wrap_horizontal_list">
+      <ion-card class="cardview_metacategory" *ngFor="let category of metacategories">
+        <div class="wrap_category_title">
+          <p>{{category.name}}</p>
+        </div>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- Section Top 5 Vendors -->
+  <div>
+    <ion-row class="ion-align-items-center section_header">
+      <ion-col>
+        <p class="section_title">Producatori populari</p>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-button color="primary" fill="clear" shape="round" size="small">
+          Vezi toti
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <div class="wrap_horizontal_list">
+      <ion-card class="cardview_top_vendors" *ngFor="let vendor of vendorsList">
+        <div class="header_cardview_vendor">
+          <ion-row class="row_vendor_name">
+            <ion-col size="auto">
+              <div class="wrap_vendor_logo">
+                <img [src]="vendor.imageUrl" [alt]="vendor.name">
+              </div>
+            </ion-col>
+            <ion-col>
+              <div class="wrap_vendor_name">
+                <p>{{vendor.name}}</p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+        <div class="container_cardview_vendor">
+          <p class="label_vendor_main_category">Lactate, dulceturi, etc</p>
+          <p class="label_available_products">127 produse</p>
+          <ion-row>
+            <ion-col size="6">
+              <p class="lable_minimum_order"><span>100 lei</span> cos minim</p>
+            </ion-col>
+            <ion-col size="6">
+              <p class="label_cashback_value"><span>5-10%</span> cashback</p>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-card>
+    </div>
+  </div>
+  <!-- Section Promotions -->
+  <div>
+    <ion-row class="ion-align-items-center section_header">
+      <ion-col>
+        <p class="section_title">Promotii</p>
+      </ion-col>
+      <ion-col size="auto">
+      </ion-col>
+    </ion-row>
+    <div class="wrap_horizontal_list">
+      <ion-card class="cardview_top_vendors" *ngFor="let vendor of vendorsList">
+        <div class="header_cardview_vendor">
+          <ion-row class="row_vendor_name">
+            <ion-col size="auto">
+              <div class="wrap_vendor_logo">
+                <img [src]="vendor.imageUrl" [alt]="vendor.name">
+              </div>
+            </ion-col>
+            <ion-col>
+              <div class="wrap_vendor_name">
+                <p>{{vendor.name}}</p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+        <div class="container_cardview_vendor">
+          <p class="label_vendor_main_category">Lactate, dulceturi, etc</p>
+          <p class="label_available_products">127 produse</p>
+          <ion-row>
+            <ion-col size="6">
+              <p class="lable_minimum_order"><span>100 lei</span> cos minim</p>
+            </ion-col>
+            <ion-col size="6">
+              <p class="label_cashback_value"><span>5-10%</span> cashback</p>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- Section Products -->
+</ion-content>

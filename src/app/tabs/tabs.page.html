@@ -1,6 +1,11 @@
 <ion-tabs #ionTabs (ionTabsDidChange)="getSelectedTab()">
 
   <ion-tab-bar #tabsBar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon id="tab_home" [ngClass]="activeTab == 'home'? 'scale-in-center' : 'inactive_tab'" name="home">
+      </ion-icon>
+    </ion-tab-button>
+    
     <ion-tab-button tab="marketplace">
       <ion-icon id="tab_home" [ngClass]="activeTab == 'marketplace'? 'scale-in-center' : 'inactive_tab'" name="home">
       </ion-icon>
