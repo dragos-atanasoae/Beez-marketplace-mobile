@@ -1,0 +1,71 @@
+<div class="container_vendors_list">
+  <div class="wrap_vendor_preview" *ngFor="let vendor of vendorsList">
+    <ion-row class="header_vendor_preview ion-align-items-center">
+      <ion-col size="auto">
+        <img class="logo_vendor_preview" [src]="vendor.imageUrl" [alt]="vendor.name">
+      </ion-col>
+      <ion-col>
+        <p class="label_vendor_name">{{vendor.name}}</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p class="label_minimum_order"><span>100 lei</span> cos minim</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p class="label_cashback"><span>10%</span> cashback</p>
+      </ion-col>
+    </ion-row>
+    <div class="container_products_preview">
+      <ion-item button lines="none">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="auto">
+            <div class="wrap_product_image">
+              <img src="https://static.use-beez.com/OnlineVendors/Vendors/vendor1642020122745.png" alt="">
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <p class="label_product_name">Test</p>
+              <p class="label_product_weight">100g</p>
+              <p class="lable_product_price">Platesti <span>100 lei/buc</span></p>
+              <p class="label_cashback">Primesti inapoi 5%</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item button lines="none">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="auto">
+            <div class="wrap_product_image">
+              <img src="https://static.use-beez.com/OnlineVendors/Vendors/vendor1642020122745.png" alt="">
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <p class="label_product_name">Test</p>
+              <p class="label_product_weight">100g</p>
+              <p class="lable_product_price">Platesti <span>100 lei/buc</span></p>
+              <p class="label_cashback">Primesti inapoi 5%</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item button lines="none">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="auto">
+            <div class="wrap_product_image">
+              <img src="https://static.use-beez.com/OnlineVendors/Vendors/vendor1642020122745.png" alt="">
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <p class="label_product_name">Test</p>
+              <p class="label_product_weight">100g</p>
+              <p class="lable_product_price">Platesti <span>100 lei/buc</span></p>
+              <p class="label_cashback">Primesti inapoi 5%</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </div>
+  </div>
+</div>

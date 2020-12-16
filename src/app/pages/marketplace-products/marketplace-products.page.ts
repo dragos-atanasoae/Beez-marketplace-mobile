@@ -25,8 +25,8 @@ import { AnalyticsService } from 'src/app/services/analytics.service';
   ]
 })
 export class MarketplaceProductsPage implements OnInit, OnDestroy {
-  @Input() context: string;
-  @Input() products: any;
+  @Input() context: string; // search | null(default)
+  @Input() products: any; // only for search context
   @Input() vendor: any;
   @Input() allCategories: any;
   @Input() selectedCategory: any;

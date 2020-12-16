@@ -270,7 +270,7 @@ export class MarketplacePage implements OnInit {
 
   /**
    * @description Open marketplace products page
-   * @param context - default | search
+   * @param context - default null | search
    */
   async openMarketplaceProducts(context: string) {
     // console.log('Filtered products list:', this.searchResult.filter(item => parseInt(item.vendorId, 2) === this.selectedVendor.id));

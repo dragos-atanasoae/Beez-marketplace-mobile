@@ -1,10 +1,13 @@
+import { trigger, transition, query, style, stagger, animate, state } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { MarketplaceLocationsPage } from 'src/app/pages/marketplace-locations/marketplace-locations.page';
 import { MarketplaceProductsPage } from 'src/app/pages/marketplace-products/marketplace-products.page';
+import { VendorsListPage } from 'src/app/pages/vendors-list/vendors-list.page';
 import { AnalyticsService } from 'src/app/services/analytics.service';
+import { InternationalizationService } from 'src/app/services/internationalization.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
 
@@ -12,6 +15,20 @@ import { MarketplaceService } from 'src/app/services/marketplace.service';
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
+  animations: [
+    trigger('listAnimation', [
+      transition('* <=> *', [
+        query(':enter',
+          [style({ opacity: 0, transform: 'translateY(-20%)' }), stagger('100ms', animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0%)' })))],
+          { optional: true }
+        ),
+        query(':leave',
+          animate('200ms', style({ opacity: 0 })),
+          { optional: true }
+        )
+      ])
+    ]),
+  ]
 })
 export class HomePage implements OnInit {
   private unsubscribe$: Subject<boolean> = new Subject();
@@ -21,33 +38,40 @@ export class HomePage implements OnInit {
   localeData = new LocaleDataModel();
   eventContext = 'Marketplace Tab';
 
-    // Vendors
-    vendorsList: any = null;
-    copyList: any = [];
-    selectedVendor: any = null;
-    metacategories = [
-      { id: 0, name: 'Bacanie', imgUrl: 'bacanie' },
-    ];
-    // Product categories
-    categories: any = null;
-    selectedCategory: any = null;
+  // Vendors
+  vendorsList: any = null;
+  vendorsTop5List: any = null;
+  vendorsWithActivePromotions: any = null;
+  copyList: any = [];
+  selectedVendor: any = null;
+  showAllVendors = false;
+  metacategories = null;
+  // Product categories
+  categories: any = null;
+  selectedCategory: any = null;
 
-    // Metacategories
-    categoriesDropdownIsActive = false;
-    activeCategory = null;
+  // Metacategories
+  showAllMetacategories = false;
+  activeCategory = null;
 
-    // Search
-    searchIsActive = false;
-    searchResult = null;
-    newVendorNotificationsStatus = null;
-    searchedKeyword = null;
+  // Search
+  searchIsActive = false;
+  searchResult = null;
+  newVendorNotificationsStatus = null;
+  searchedKeyword = null;
 
   constructor(
     private analyticsService: AnalyticsService,
     private loadingService: LoadingService,
+    private internationalizationService: InternationalizationService,
     private modalCtrl: ModalController,
     private marketplaceService: MarketplaceService
-  ) { }
+  ) {
+    // Initialize locale context
+    this.internationalizationService.initializeCountry().subscribe(res => {
+      this.localeData = res;
+    });
+  }
 
   ngOnInit() {
     console.log('City from local storage', this.city);
@@ -64,6 +88,7 @@ export class HomePage implements OnInit {
    * and redirect to vednor products page if is received redirect data from guest mode or deeplinking
    */
   getVendorsListForMarketplace() {
+    this.loadingService.presentLoading();
     this.city = JSON.parse(localStorage.getItem('city'));
     this.county = JSON.parse(localStorage.getItem('county'));
     console.log(this.county, this.city);
@@ -73,6 +98,10 @@ export class HomePage implements OnInit {
         this.metacategories = res.activeMetaCategories;
         this.vendorsList = res.vendors;
         this.copyList = this.vendorsList;
+        this.vendorsTop5List = res.vendors.slice(0, 5);
+        console.log('Top 5 vendors:', this.vendorsTop5List);
+        this.getVendorsWithPromotions(res.vendors);
+
         console.log('Buffered vendor ', localStorage.getItem('selectedVendorFromGuestMode'));
         if (localStorage.getItem('selectedVendorFromGuestMode')) {
           const vendor = res.vendors.find((el: any) => el.id.toString() === localStorage.getItem('selectedVendorFromGuestMode'));
@@ -87,6 +116,16 @@ export class HomePage implements OnInit {
         }
       }
     });
+  }
+
+  getVendorsWithPromotions(vendors: any) {
+    this.loadingService.dismissLoading();
+    this.vendorsWithActivePromotions = vendors.filter((item: any) => {
+      if (item.vendorMetaCategories.find((el: any) => el.name === 'Promotii')) {
+        return item;
+      }
+    });
+    console.log('PROMOTII', this.vendorsWithActivePromotions);
   }
 
   /**
@@ -120,7 +159,7 @@ export class HomePage implements OnInit {
   selectVendor(vendor: any) {
     this.selectedVendor = vendor;
     console.log(this.selectedVendor);
-    this.analyticsService.logEvent('select_vendor', { context: this.eventContext, city: this.city, vendor: this.selectVendor });
+    this.analyticsService.logEvent('select_vendor', { context: this.eventContext, city: this.city, vendor: this.selectedVendor });
     if (this.searchResult) {
       this.getCategories('search');
     } else {
@@ -197,6 +236,15 @@ export class HomePage implements OnInit {
 
   resetList() {
     this.vendorsList = this.copyList;
+  }
+
+  async openVendorsList(vendorsList: any, metacategory?: any) {
+    console.log(vendorsList, metacategory);
+    const modal = await this.modalCtrl.create({
+      component: VendorsListPage,
+      componentProps: {vendorsList, metacategory}
+    });
+    modal.present();
   }
 
   /**
