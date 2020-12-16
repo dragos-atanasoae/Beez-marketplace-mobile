@@ -59,8 +59,8 @@ export class PromotionsPage implements OnInit {
    */
   openPromotionVendor(promotion: any) {
       this.loadingService.presentLoading();
-      const path = promotion.promotionLink.split('https://test.use-beez.com/')[1];
-      // const path = promotion.promotionLink.split('https://use-beez.com/')[1];
+      const path = promotion.promotionLink.indexOf('https://test.use-beez.com/') !== -1 ?
+      promotion.promotionLink.split('https://test.use-beez.com/')[1] : promotion.promotionLink.split('https://use-beez.com/')[1];
       this.redirectDeeplinkService.managePathRedirect(path);
   }
 }
