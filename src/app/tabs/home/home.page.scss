@@ -43,6 +43,12 @@ ion-toolbar {
 ion-content {
     --background: var(--beez-background-color);
 
+    .active_selection {
+        box-shadow: 1px 1px 8px 2px rgba(34, 34, 34, 0.4) !important;
+        transform: scale(1.05);
+        border: 1px solid  rgba(34, 34, 34, 0.4);
+    }
+
     .section_header {
         margin-bottom: 0;
         padding: 0 1rem;
@@ -104,6 +110,10 @@ ion-content {
         padding-left: 1em;
         padding-right: 1em;
         text-align: center;
+
+        .cardview_vendor {
+            text-align: left;
+        }
     }
 
     .cardview_metacategory {
@@ -141,7 +151,7 @@ ion-content {
         }
     }
 
-    .cardview_top_vendors {
+    .cardview_vendor {
         display: inline-block;
         width: 12rem;
         height: 10.5rem;
@@ -218,6 +228,12 @@ ion-content {
                 font-size: 0.8rem;
                 line-height: 0.8rem;
                 font-weight: 600;
+                max-height: 1rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
                 color: var(--ion-color-tertiary);
             }
 
@@ -264,7 +280,8 @@ ion-content {
             width: 100%;
             background-color: rgba(255, 255, 255, 0.85);
             white-space: pre-wrap !important;
-            filter: blur(0)!important;
+            filter: blur(0) !important;
+
             p {
                 line-height: 1.2rem;
                 max-height: 2.4rem;
@@ -277,19 +294,23 @@ ion-content {
                 -webkit-box-orient: vertical;
                 color: var(--ion-color-tertiary);
             }
+
             ion-icon {
                 font-size: 2.4rem;
             }
         }
     }
 }
+
 #row_comunity {
     width: fit-content;
-    margin: 0 auto;
+    margin: 2.5rem auto 1.5rem auto;
+
     p {
         font-size: 0.8rem;
         color: var(--ion-color-medium);
     }
+
     ion-button {
         margin-left: 1rem;
         margin-right: 1rem;
@@ -299,5 +320,95 @@ ion-content {
         --padding-bottom: 0;
         width: 1.5rem;
         height: 1.5rem;
+    }
+}
+
+@media (max-width: 445px) {
+
+    // Display all vendors on single column(full width)
+    .wrap_vertical_list {
+        padding: 0rem;
+        width: 100%;
+        margin: 0 auto;
+
+        .cardview_vendor {
+            width: 98%;
+            margin-left: auto;
+            margin-right: auto;
+
+            .header_cardview_vendor,
+            .row_vendor_name,
+            .container_cardview_vendor {
+                width: 100%;
+                padding-left: 1.2rem;
+                padding-right: 1.2rem;
+
+                ion-row {
+                    width: 100%;
+                }
+            }
+        }
+
+        .cardview_vendor {
+            height: 11rem;
+
+            .header_cardview_vendor {
+                height: 6rem;
+
+                .row_vendor_name {
+                    height: 3.6rem;
+
+                    ion-col {
+                        padding: 0;
+                        height: 3.5rem !important;
+                    }
+
+                    .wrap_vendor_logo {
+                        width: 3.5rem !important;
+                        height: 3.5rem !important;
+                        margin: 0 0.5rem 0 0 !important;
+                    }
+
+                    .wrap_vendor_name {
+                        p {
+                            font-size: 1rem !important;
+                            line-height: 1rem !important;
+                        }
+                    }
+                }
+            }
+
+            .container_cardview_vendor {
+                height: 5rem;
+
+                .label_available_products {
+                    font-size: 0.7rem;
+                }
+
+                ion-row {
+                    ion-col {
+                        padding: 0.2rem;
+                    }
+                }
+
+                .lable_minimum_order,
+                .label_cashback_value {
+                    text-align: left;
+                    font-size: 0.7rem;
+
+                    span {
+                        font-size: 0.9rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 446px) {
+
+    // Display all vendors on two columns
+    .wrap_vertical_list {
+        border: 1px solid green;
     }
 }

@@ -45,6 +45,7 @@ export class HomePage implements OnInit {
   copyList: any = [];
   selectedVendor: any = null;
   showAllVendors = false;
+  showAllVendorsPromo = false;
   metacategories = null;
   // Product categories
   categories: any = null;

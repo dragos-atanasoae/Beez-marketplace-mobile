@@ -25,7 +25,8 @@
       <h1>Awesome Slide Content</h1>
     </ion-slide>
   </ion-slides> -->
-  <!-- Section Top 5 Categories -->
+
+  <!-- Section Top 5 MetaCategories -->
   <div *ngIf="metacategories">
     <ion-row class="ion-align-items-center section_header">
       <ion-col>
@@ -38,7 +39,7 @@
       </ion-col>
     </ion-row>
     <div [class]="showAllMetacategories ? 'wrap_vertical_list' : 'wrap_horizontal_list'" [@listAnimation]="metacategories.length">
-      <ion-card button class="cardview_metacategory" *ngFor="let category of showAllMetacategories ? metacategories : metacategories.slice(0, 5)" (click)="activeCategory = category; openVendorsList(vendorsList, category)">
+      <ion-card button class="cardview_metacategory" [class]="activeCategory == category ? 'active_selection' : ''" *ngFor="let category of showAllMetacategories ? metacategories : metacategories.slice(0, 5)" (click)="activeCategory = category">
         <div class="wrap_category_title">
           <p>{{category.name}}</p>
         </div>
@@ -46,21 +47,21 @@
     </div>
   </div>
 
-  <!-- Section Top 5 Vendors -->
+  <!-- Section Vendors List -->
   <div *ngIf="vendorsList">
     <ion-row class="ion-align-items-center section_header">
       <ion-col>
         <p class="section_title">Producatori populari</p>
       </ion-col>
       <ion-col size="auto">
-        <ion-button color="primary" fill="clear" shape="round" size="small" (click)="openVendorsList(vendorsList, null)">
-          Vezi toti
+        <ion-button color="primary" fill="clear" shape="round" size="small" (click)="showAllVendors = !showAllVendors">
+          {{showAllVendors ? 'Mai putin' : 'Mai mult'}}
         </ion-button>
       </ion-col>
     </ion-row>
 
     <div [class]="showAllVendors ? 'wrap_vertical_list' : 'wrap_horizontal_list'" *ngIf="vendorsList" [@listAnimation]="vendorsList.slice(0, 5).length">
-      <ion-card button class="cardview_top_vendors" *ngFor="let vendor of showAllVendors ? vendorsList : vendorsList.slice(0, 5)" (click)="selectVendor(vendor)">
+      <ion-card button class="cardview_vendor" *ngFor="let vendor of showAllVendors ? (vendorsList | filterByMetacategory : activeCategory) : vendorsList.slice(0, 5)" (click)="selectVendor(vendor)">
         <div class="header_cardview_vendor">
           <ion-row class="row_vendor_name">
             <ion-col size="auto">
@@ -88,7 +89,7 @@
           </ion-row>
         </div>
       </ion-card>
-      <ion-card button id="button_view_more" class="cardview_top_vendors" *ngIf="!showAllVendors" (click)="showAllVendors = !showAllVendors">
+      <ion-card button id="button_view_more" class="cardview_vendor" *ngIf="!showAllVendors" (click)="showAllVendors = !showAllVendors">
         <ion-row class="ion-align-items-center">
           <ion-col size="9">
             <div>
@@ -110,10 +111,13 @@
         <p class="section_title">Promotii</p>
       </ion-col>
       <ion-col size="auto">
+        <ion-button color="primary" fill="clear" shape="round" size="small" (click)="showAllVendorsPromo = !showAllVendorsPromo">
+          {{showAllVendorsPromo ? 'Vezi mai putin' : 'Vezi toate'}}
+        </ion-button>
       </ion-col>
     </ion-row>
-    <div class="wrap_horizontal_list" [@listAnimation]="6">
-      <ion-card button class="cardview_top_vendors" *ngFor="let vendor of vendorsWithActivePromotions">
+    <div [class]="showAllVendorsPromo ? 'wrap_vertical_list' : 'wrap_horizontal_list'" [@listAnimation]="6">
+      <ion-card button class="cardview_vendor" *ngFor="let vendor of vendorsWithActivePromotions">
         <div class="header_cardview_vendor">
           <ion-row class="row_vendor_name">
             <ion-col size="auto">
@@ -145,7 +149,7 @@
   </div>
 
   <!-- Section Preview Vendor/Products -->
-  <div *ngIf="vendorsList">
+  <!-- <div *ngIf="vendorsList">
     <ion-row class="ion-align-items-center section_header">
       <ion-col>
         <p class="section_title">Produse</p>
@@ -157,10 +161,10 @@
       </ion-col>
     </ion-row>
     <app-vendors-list [vendorsList]="vendorsList.slice(0,1)"></app-vendors-list>
-  </div>
+  </div> -->
 
   <!-- Section Follow us -->
-  <ion-row id="row_comunity" class="ion-align-items-center">
+  <ion-row id="row_comunity" class="ion-align-items-center" *ngIf="vendorsList">
     <ion-col size="auto">
       <p>Follow us</p>
     </ion-col>

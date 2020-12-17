@@ -1,28 +1,36 @@
 <div class="container_vendors_list">
   <div class="wrap_vendor_preview" *ngFor="let vendor of vendorsList">
+    <!-- Header - Vendor logo, name, minimum order & cashback -->
     <ion-row class="header_vendor_preview ion-align-items-center">
       <ion-col size="auto">
+        <!-- Vendor logo -->
         <img class="logo_vendor_preview" [src]="vendor.imageUrl" [alt]="vendor.name">
       </ion-col>
       <ion-col>
+        <!-- Vendor name -->
         <p class="label_vendor_name">{{vendor.name}}</p>
       </ion-col>
       <ion-col size="auto">
-        <p class="label_minimum_order"><span>100 lei</span> cos minim</p>
+        <!-- Vendor minimum order -->
+        <p class="label_minimum_order"><span>{{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span> cos minim</p>
       </ion-col>
       <ion-col size="auto">
-        <p class="label_cashback"><span>10%</span> cashback</p>
+        <!-- Vendor cashback -->
+        <p class="label_cashback"><span>{{vendor.cashback}}</span> cashback</p>
       </ion-col>
     </ion-row>
+    <!-- Products list -->
     <div class="container_products_preview">
       <ion-item button lines="none">
         <ion-row class="ion-align-items-center">
           <ion-col size="auto">
+            <!-- Product image -->
             <div class="wrap_product_image">
               <img src="https://static.use-beez.com/OnlineVendors/Vendors/vendor1642020122745.png" alt="">
             </div>
           </ion-col>
           <ion-col>
+            <!-- Product details -->
             <div>
               <p class="label_product_name">Test</p>
               <p class="label_product_weight">100g</p>
@@ -67,5 +75,8 @@
         </ion-row>
       </ion-item>
     </div>
+    <ion-button (click)="selectVendor(vendor)" fill="solid" shape="round" color="primary" size="small">
+      Cumpara de la {{vendor.name}}
+    </ion-button>
   </div>
 </div>
