@@ -40,9 +40,11 @@ export class AnalyticsService {
   logEvent(event: any, eventParams: any) {
     if (!this.platform.is('desktop')) {
       this.mixpanelLogEvents(event, eventParams);
-      this.firebaseLogEvents(event, eventParams);
       this.facebookLogEvents(event, eventParams);
       this.segmentLogEvents(event, eventParams);
+      if (!this.checkIfIsHuaweiDevice()) {
+        this.firebaseLogEvents(event, eventParams);
+      }
     } else {
       console.log('Skip analytics');
     }
@@ -110,7 +112,9 @@ export class AnalyticsService {
     * @param uid
     */
   async firebaseIdentifyUser(uid: string) {
-    FirebaseAnalytics.setUserId({ userId: uid});
+    if (!this.checkIfIsHuaweiDevice()) {
+      FirebaseAnalytics.setUserId({ userId: uid});
+    }
   }
 
   /**
@@ -155,6 +159,14 @@ export class AnalyticsService {
     this.mixpanel.init(environment.mixpanelToken)
       .then(() => { console.log('Mixpanel init Success!'); })
       .catch(() => { console.log('Mixpanel init Error!'); });
+  }
+
+  /**
+   * @description Check if is a Huawei device to prevent app crash for huawei devices without Google services
+   */
+  async checkIfIsHuaweiDevice() {
+    const deviceInfo = await Device.getInfo();
+    return deviceInfo.manufacturer === 'Huawei';
   }
 
 }

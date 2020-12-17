@@ -19,7 +19,7 @@ import { KycValidationService } from '../services/kyc-validation.service';
 import { MarketplaceService } from '../services/marketplace.service';
 import { take } from 'rxjs/operators';
 
-const { PushNotifications, Keyboard } = Plugins;
+const { PushNotifications, Keyboard, Device } = Plugins;
 
 @Component({
   selector: 'app-tabs',
@@ -76,8 +76,11 @@ export class TabsPage implements OnInit, AfterViewInit {
       // console.log('Platform mobile, get the device token', !this.platform.is('desktop'));
       this.analyticsService.initializeMixpanel();
       this.analyticsService.segmentIdentify();
-      this.initializeDeviceToken();
+      if (!this.checkIfIsHuaweiDevice()) {
+        this.initializeDeviceToken();
+      }
     } else {
+      console.log('Is Huawei? ', this.checkIfIsHuaweiDevice());
       // console.log('Skip initialization of push notifications');
     }
     this.getNotificationsHistory();
@@ -95,6 +98,11 @@ export class TabsPage implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.heightOfTabsBar = this.tabsBar.nativeElement.offsetHeight;
     }, 500);
+  }
+
+  async checkIfIsHuaweiDevice() {
+    const deviceInfo = await Device.getInfo();
+    return deviceInfo.manufacturer === 'Huawei';
   }
 
   /**
