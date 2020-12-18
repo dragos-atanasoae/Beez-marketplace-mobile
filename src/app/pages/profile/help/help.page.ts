@@ -79,7 +79,7 @@ export class HelpPage {
    */
   async sendEmail() {
     const email = {
-      to: 'contact@use-beez.com',
+      to: this.translate.instant('pages.help.labelEmailAddress'),
       cc: 'lucian@use-beez.com',
       subject: this.emailSubject,
       body: this.emailBody,
