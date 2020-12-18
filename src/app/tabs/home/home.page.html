@@ -14,7 +14,7 @@
     </ion-row>
     <!-- Search product/category -->
     <ion-searchbar mode="ios" placeholder="Cauta produs sau categorie" inputmode="text"
-      (ionChange)="onSearchChange($event)" [debounce]="250"></ion-searchbar>
+      (ionChange)="onSearchChange($event.target.value)" [debounce]="250"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -26,43 +26,55 @@
     </ion-slide>
   </ion-slides> -->
 
-  <!-- Section Top 5 MetaCategories -->
-  <div *ngIf="metacategories">
+  <!-- Section MetaCategories List -->
+  <div id="metacategories_list" *ngIf="metacategories && !searchResult">
+    <!-- List Header: title & toggle view -->
     <ion-row class="ion-align-items-center section_header">
       <ion-col>
-        <p class="section_title">Categorii populare</p>
+        <p class="section_title">Categorii</p>
       </ion-col>
       <ion-col size="auto">
-        <ion-button color="primary" fill="clear" shape="round" size="small" (click)="showAllMetacategories = !showAllMetacategories">
+        <ion-button color="primary" fill="clear" shape="round" size="small"
+          (click)="toggleViewMode('metacategoriesList')">
           {{showAllMetacategories ? 'Vezi mai putin' : 'Vezi toate'}}
         </ion-button>
       </ion-col>
     </ion-row>
-    <div [class]="showAllMetacategories ? 'wrap_vertical_list' : 'wrap_horizontal_list'" [@listAnimation]="metacategories.length">
-      <ion-card button class="cardview_metacategory" [class]="activeCategory == category ? 'active_selection' : ''" *ngFor="let category of showAllMetacategories ? metacategories : metacategories.slice(0, 5)" (click)="activeCategory = category">
+    <div [class]="showAllMetacategories ? 'wrap_vertical_list' : 'wrap_horizontal_list'"
+      [@listAnimation]="metacategories.length">
+      <ion-card button class="cardview_metacategory" [class]="activeCategory == category ? 'active_selection' : ''"
+        *ngFor="let category of metacategories" [style.background]="category.heroPicture ? 'url('+category.heroPicture+')' : 'url(\'../../../assets/icon/icon_food_marketplace_dark.svg\')'"
+        (click)="selectMetacategory(category)">
         <div class="wrap_category_title">
           <p>{{category.name}}</p>
         </div>
+      </ion-card>
+      <ion-card button class="cardview_metacategory" (click)="showAllMetacategories = !showAllMetacategories">
+        
       </ion-card>
     </div>
   </div>
 
   <!-- Section Vendors List -->
-  <div *ngIf="vendorsList">
+  <div id="vendors_list" *ngIf="vendorsList && !searchResult">
+    <!-- List Header: title & toggle view -->
     <ion-row class="ion-align-items-center section_header">
       <ion-col>
-        <p class="section_title">Producatori populari</p>
+        <p class="section_title">Producatori</p>
       </ion-col>
       <ion-col size="auto">
-        <ion-button color="primary" fill="clear" shape="round" size="small" (click)="showAllVendors = !showAllVendors">
+        <ion-button color="primary" fill="clear" shape="round" size="small" (click)="toggleViewMode('vendorsList')">
           {{showAllVendors ? 'Mai putin' : 'Mai mult'}}
         </ion-button>
       </ion-col>
     </ion-row>
 
-    <div [class]="showAllVendors ? 'wrap_vertical_list' : 'wrap_horizontal_list'" *ngIf="vendorsList" [@listAnimation]="vendorsList.slice(0, 5).length">
-      <ion-card button class="cardview_vendor" *ngFor="let vendor of showAllVendors ? (vendorsList | filterByMetacategory : activeCategory) : vendorsList.slice(0, 5)" (click)="selectVendor(vendor)">
-        <div class="header_cardview_vendor">
+    <div [class]="showAllVendors ? 'wrap_vertical_list' : 'wrap_horizontal_list'" *ngIf="vendorsList"
+      [@listAnimation]="vendorsList.slice(0, 5).length">
+      <ion-card button class="cardview_vendor"
+        *ngFor="let vendor of showAllVendors ? (vendorsList | filterByMetacategory : activeCategory) : vendorsList.slice(0, 5)"
+        (click)="selectVendor(vendor)">
+        <div class="header_cardview_vendor" [style.background]="vendor.heroPicture ? 'url('+vendor.heroPicture+')' : 'url(\'../../../assets/icon/icon_food_marketplace_dark.svg\')'">
           <ion-row class="row_vendor_name">
             <ion-col size="auto">
               <div class="wrap_vendor_logo">
@@ -81,7 +93,9 @@
           <p class="label_available_products">{{vendor.productsInStock}} produse</p>
           <ion-row>
             <ion-col size="6">
-              <p class="lable_minimum_order"><span>{{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span> cos minim</p>
+              <p class="lable_minimum_order">
+                <span>{{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span>
+                cos minim</p>
             </ion-col>
             <ion-col size="6">
               <p class="label_cashback_value"><span>{{vendor.cashback}}</span> cashback</p>
@@ -89,7 +103,9 @@
           </ion-row>
         </div>
       </ion-card>
-      <ion-card button id="button_view_more" class="cardview_vendor" *ngIf="!showAllVendors" (click)="showAllVendors = !showAllVendors">
+      <!-- View more button -->
+      <ion-card button id="button_view_more" class="cardview_vendor" *ngIf="!showAllVendors"
+        (click)="showAllVendors = true; activeCategory = null">
         <ion-row class="ion-align-items-center">
           <ion-col size="9">
             <div>
@@ -105,19 +121,21 @@
   </div>
 
   <!-- Section Promotions -->
-  <div *ngIf="vendorsWithActivePromotions">
+  <div id="vendors_promo_list" *ngIf="vendorsWithActivePromotions && !searchResult">
     <ion-row class="ion-align-items-center section_header">
       <ion-col>
         <p class="section_title">Promotii</p>
       </ion-col>
       <ion-col size="auto">
-        <ion-button color="primary" fill="clear" shape="round" size="small" (click)="showAllVendorsPromo = !showAllVendorsPromo">
+        <ion-button color="primary" fill="clear" shape="round" size="small"
+          (click)="toggleViewMode('vendorsPromoList')">
           {{showAllVendorsPromo ? 'Vezi mai putin' : 'Vezi toate'}}
         </ion-button>
       </ion-col>
     </ion-row>
     <div [class]="showAllVendorsPromo ? 'wrap_vertical_list' : 'wrap_horizontal_list'" [@listAnimation]="6">
-      <ion-card button class="cardview_vendor" *ngFor="let vendor of vendorsWithActivePromotions">
+      <ion-card button class="cardview_vendor" (click)="selectVendor(vendor)"
+        *ngFor="let vendor of vendorsWithActivePromotions">
         <div class="header_cardview_vendor">
           <ion-row class="row_vendor_name">
             <ion-col size="auto">
@@ -137,7 +155,9 @@
           <p class="label_available_products">{{vendor.productsInStock}} produse</p>
           <ion-row>
             <ion-col size="6">
-              <p class="lable_minimum_order"><span>{{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span> cos minim</p>
+              <p class="lable_minimum_order">
+                <span>{{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span>
+                cos minim</p>
             </ion-col>
             <ion-col size="6">
               <p class="label_cashback_value"><span>{{vendor.cashback}}</span> cashback</p>
@@ -145,23 +165,37 @@
           </ion-row>
         </div>
       </ion-card>
+      <!-- View more button -->
+      <!-- <ion-card button id="button_view_more" class="cardview_vendor"
+        *ngIf="!showAllVendors && vendorsWithActivePromotions.length > 3" (click)="showAllVendors = !showAllVendors">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="9">
+            <div>
+              <p>Vezi toate promotiile</p>
+            </div>
+          </ion-col>
+          <ion-col size="3">
+            <ion-icon color="tertiary" name="chevron-forward-outline"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card> -->
     </div>
   </div>
 
   <!-- Section Preview Vendor/Products -->
-  <!-- <div *ngIf="vendorsList">
+  <div *ngIf="searchedVendorsList">
     <ion-row class="ion-align-items-center section_header">
       <ion-col>
         <p class="section_title">Produse</p>
       </ion-col>
       <ion-col size="auto">
-        <ion-button color="primary" fill="clear" shape="round" size="small" (click)="openVendorsList(vendorsList, null)">
-          Vezi producatori
+        <ion-button color="primary" fill="clear" shape="round" size="small" (click)="cancelSearch()">
+          Inapoi
         </ion-button>
       </ion-col>
     </ion-row>
-    <app-vendors-list [vendorsList]="vendorsList.slice(0,1)"></app-vendors-list>
-  </div> -->
+    <app-vendors-list [vendorsList]="searchedVendorsList" (eventSelectVendor)="receiveEventSelectVendor($event)"></app-vendors-list>
+  </div>
 
   <!-- Section Follow us -->
   <ion-row id="row_comunity" class="ion-align-items-center" *ngIf="vendorsList">

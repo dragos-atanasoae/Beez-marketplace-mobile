@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
 
@@ -10,6 +10,7 @@ import { InternationalizationService } from 'src/app/services/internationalizati
 export class VendorsListComponent implements OnInit {
   @Input() vendorsList: any = [];
   @Input() context: string;
+  @Output() eventSelectVendor = new EventEmitter<object>();
 
   localeData = new LocaleDataModel();
 
@@ -24,8 +25,8 @@ export class VendorsListComponent implements OnInit {
 
   ngOnInit() { }
 
-  selectVendor(vendor: any) {
-    console.log(vendor);
+  selectVendor(vendor: any, product?: any) {
+    this.eventSelectVendor.emit({vendor, product});
   }
 
 }

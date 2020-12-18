@@ -108,10 +108,6 @@ const routes: Routes = [
     path: 'manage-documents',
     loadChildren: () => import('./pages/profile/manage-documents/manage-documents.module').then( m => m.ManageDocumentsPageModule)
   },
-  {
-    path: 'vendors-list',
-    loadChildren: () => import('./pages/vendors-list/vendors-list.module').then( m => m.VendorsListPageModule)
-  },
 ];
 @NgModule({
   imports: [

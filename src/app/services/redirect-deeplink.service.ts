@@ -52,7 +52,7 @@ export class RedirectDeeplinkService {
         this.switchFoodMarketplaceVendor(pathComponents);
         break;
       default:
-        this.navigateToPath('tabs/marketplace');
+        this.navigateToPath('tabs/home');
         break;
     }
   }
@@ -61,7 +61,7 @@ export class RedirectDeeplinkService {
     switch (pathComponents[1]) {
       case 'home-page':
         console.log('redirect to shops no selection');
-        this.navigateToPath('tabs/marketplace');
+        this.navigateToPath('tabs/home');
         break;
       case 'orders':
         console.log('redirect to BeezPay tab');
@@ -77,7 +77,7 @@ export class RedirectDeeplinkService {
         break;
       default:
         console.log('redirect to search default');
-        this.navigateToPath('tabs/marketplace');
+        this.navigateToPath('tabs/home');
         break;
     }
   }
@@ -94,7 +94,7 @@ export class RedirectDeeplinkService {
       if (pathComponents[6]) { this.selectedProductFromGuestMode$.next(pathComponents[6]); }
     }
     if (localStorage.getItem('currentUserToken')) {
-      this.navigateToPath('tabs/marketplace');
+      this.navigateToPath('tabs/home');
     }
     setTimeout(() => {
       this.eventsService.publishEvent('refreshVendorsList');
