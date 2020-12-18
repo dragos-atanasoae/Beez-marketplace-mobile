@@ -1,0 +1,48 @@
+<div class="container_vendors_list">
+  <div class="wrap_vendor_preview" *ngFor="let vendor of vendorsList">
+    <!-- Header - Vendor logo, name, minimum order & cashback -->
+    <ion-row class="header_vendor_preview ion-align-items-center">
+      <ion-col size="auto">
+        <!-- Vendor logo -->
+        <img class="logo_vendor_preview" [src]="vendor.imageUrl" [alt]="vendor.name">
+      </ion-col>
+      <ion-col>
+        <!-- Vendor name -->
+        <p class="label_vendor_name">{{vendor.name}}</p>
+      </ion-col>
+      <ion-col size="auto">
+        <!-- Vendor minimum order -->
+        <p class="label_minimum_order"><span>{{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span> cos minim</p>
+      </ion-col>
+      <ion-col size="auto">
+        <!-- Vendor cashback -->
+        <p class="label_cashback"><span>{{vendor.cashback}}</span> cashback</p>
+      </ion-col>
+    </ion-row>
+    <!-- Products list -->
+    <div class="container_products_preview">
+      <ion-item button lines="none" *ngFor="let product of vendor.products.slice(0,3)" (click)="selectVendor(vendor, product)">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="auto">
+            <!-- Product image -->
+            <div class="wrap_product_image">
+              <img [src]="product.imgUrl != null ? ('https://static.use-beez.com' + product.imgUrl | convertPathOfShopImage :'~/') : './assets/icon/icon_placeholder_marketplace.svg'" alt="">
+            </div>
+          </ion-col>
+          <ion-col>
+            <!-- Product details -->
+            <div>
+              <p class="label_product_name">{{product.name}}</p>
+              <p class="label_product_weight">{{product.weightInKG}}</p>
+              <p class="lable_product_price">Platesti <span>{{product.unitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}/{{product.unitType}}</span></p>
+              <p class="label_cashback">Primesti inapoi {{vendor.cashback}}</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </div>
+    <ion-button (click)="selectVendor(vendor, null)" fill="solid" shape="round" color="primary" size="small">
+      Cumpara de la {{vendor.name}}
+    </ion-button>
+  </div>
+</div>

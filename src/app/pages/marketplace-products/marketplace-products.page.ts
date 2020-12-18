@@ -25,8 +25,7 @@ import { AnalyticsService } from 'src/app/services/analytics.service';
   ]
 })
 export class MarketplaceProductsPage implements OnInit, OnDestroy {
-  @Input() context: string;
-  @Input() products: any;
+  @Input() context: string; // search | null(default)
   @Input() vendor: any;
   @Input() allCategories: any;
   @Input() selectedCategory: any;
@@ -50,14 +49,19 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
     private loadingService: LoadingService,
     private marketplaceService: MarketplaceService,
     private internationalizationService: InternationalizationService
-    ) {}
+  ) { }
 
   ngOnInit() {
     if (this.context === 'search') {
       // this.selectedCategory = null;
       console.log('Products page context: ', this.context);
-      this.productsList = this.products;
+      this.productsList = this.vendor.products;
       console.log(this.productsList);
+      // open selected product from search results
+      if (localStorage.getItem('selectedProductFromGuestMode')) {
+        const selectedProduct = this.productsList.find((product: any) => product.id.toString() === localStorage.getItem('selectedProductFromGuestMode'));
+        this.openMarketplaceProductsDetails(selectedProduct).then(() => localStorage.removeItem('selectedProductFromGuestMode'));
+      }
     } else {
       console.log('Default products page');
       this.getProductsForCategories();
@@ -104,19 +108,19 @@ export class MarketplaceProductsPage implements OnInit, OnDestroy {
   getProductsForCategories() {
     this.loadingService.presentLoading();
     this.marketplaceService.getProductsForCategory(this.selectedCategory.id, this.vendor.id, this.city.Id)
-    .subscribe((res: any) => {
-      if (res.requestStatus === 'Success') {
-        this.productsList = res.requestData;
-        if (localStorage.getItem('selectedProductFromGuestMode')) {
-          const product = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedProductFromGuestMode'));
-          console.log('Selected Product', product);
-          if (product) {
-            this.openMarketplaceProductsDetails(product).then(() => localStorage.removeItem('selectedProductFromGuestMode'));
+      .subscribe((res: any) => {
+        if (res.requestStatus === 'Success') {
+          this.productsList = res.requestData;
+          if (localStorage.getItem('selectedProductFromGuestMode')) {
+            const product = res.requestData.find((el: any) => el.id.toString() === localStorage.getItem('selectedProductFromGuestMode'));
+            console.log('Selected Product', product);
+            if (product) {
+              this.openMarketplaceProductsDetails(product).then(() => localStorage.removeItem('selectedProductFromGuestMode'));
+            }
           }
         }
-      }
-      this.loadingService.dismissLoading();
-    });
+        this.loadingService.dismissLoading();
+      });
   }
 
   updateActiveCategory(category: any) {

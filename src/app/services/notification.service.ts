@@ -99,4 +99,13 @@ export class NotificationService {
     return this.httpClient.post(url, body, { headers: this.header });
   }
 
+  /**
+   * @description Get data for Info slides from home tab
+   */
+  getItemsToShow() {
+    this.prepareHeaderForRequest();
+    const url = this.prefixUrlByCountry + this.apiURL + 'api/ShowHideApi/GetItemsToShow';
+    return this.httpClient.get(url, {headers: this.header});
+  }
+
 }

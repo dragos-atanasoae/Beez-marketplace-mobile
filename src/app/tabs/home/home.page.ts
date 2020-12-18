@@ -1,45 +1,25 @@
-import { trigger, transition, useAnimation, query, style, stagger, animate } from '@angular/animations';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-import { slideInUp, slideOutUp, slideInRight } from 'ng-animate';
+import { trigger, transition, query, style, stagger, animate, state } from '@angular/animations';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonContent, ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { MarketplaceLocationsPage } from 'src/app/pages/marketplace-locations/marketplace-locations.page';
 import { MarketplaceProductsPage } from 'src/app/pages/marketplace-products/marketplace-products.page';
 import { AnalyticsService } from 'src/app/services/analytics.service';
-import { DeliveryAddressService } from 'src/app/services/delivery-address.service';
-import { EventsService } from 'src/app/services/events.service';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
-  selector: 'app-marketplace',
-  templateUrl: './marketplace.page.html',
-  styleUrls: ['./marketplace.page.scss'],
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
   animations: [
-    trigger('dropdownAnimation', [
-      transition(':enter', useAnimation(slideInUp), {
-        params: { timing: 0.8, delay: 0 }
-      }),
-      transition(':leave', useAnimation(slideOutUp), {
-        params: { timing: 0.2, delay: 0 }
-      })
-    ]),
-    trigger('fadeIn', [
-      transition(':enter', useAnimation(slideInRight), {
-        params: { timing: 0.2, delay: 0 }
-      }),
-      // transition(':leave', useAnimation(fadeOut), {
-      //   params: { timing: 0.5, delay: 0 }
-      // })
-    ]),
     trigger('listAnimation', [
       transition('* <=> *', [
         query(':enter',
-          [style({ opacity: 0, transform: 'translateX(-20%)' }), stagger('50ms', animate('400ms ease-out', style({ opacity: 1, transform: 'translateX(0%)' })))],
+          [style({ opacity: 0, transform: 'translateY(-20%)' }), stagger('100ms', animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0%)' })))],
           { optional: true }
         ),
         query(':leave',
@@ -47,32 +27,34 @@ import { MarketplaceService } from 'src/app/services/marketplace.service';
           { optional: true }
         )
       ])
-    ])
+    ]),
   ]
 })
-export class MarketplacePage implements OnInit {
-  @Output() hideComponentEvent = new EventEmitter<boolean>();
+export class HomePage implements OnInit {
+  @ViewChild(IonContent, { static: false }) content: IonContent;
   private unsubscribe$: Subject<boolean> = new Subject();
 
-  referralCode = localStorage.getItem('referralCode');
-  localeData = new LocaleDataModel();
-  eventContext = 'Marketplace Tab';
   city: any = JSON.parse(localStorage.getItem('city'));
   county: any = JSON.parse(localStorage.getItem('county'));
+  localeData = new LocaleDataModel();
+  eventContext = 'Marketplace Tab';
 
   // Vendors
   vendorsList: any = null;
+  searchedVendorsList: any = null;
+  vendorsTop5List: any = null;
+  vendorsWithActivePromotions: any = null;
   copyList: any = [];
   selectedVendor: any = null;
-  metacategories = [
-    { id: 0, name: 'Bacanie', imgUrl: 'bacanie' },
-  ];
+  showAllVendors = false;
+  showAllVendorsPromo = false;
+  metacategories = null;
   // Product categories
   categories: any = null;
   selectedCategory: any = null;
 
   // Metacategories
-  categoriesDropdownIsActive = false;
+  showAllMetacategories = false;
   activeCategory = null;
 
   // Search
@@ -83,24 +65,15 @@ export class MarketplacePage implements OnInit {
 
   constructor(
     private analyticsService: AnalyticsService,
-    private deliveryAddressService: DeliveryAddressService,
-    private internationalizationService: InternationalizationService,
     private loadingService: LoadingService,
-    private marketplaceService: MarketplaceService,
+    private internationalizationService: InternationalizationService,
     private modalCtrl: ModalController,
-    private eventsService: EventsService,
-    private translate: TranslateService,
+    private marketplaceService: MarketplaceService,
+    private notificationsService: NotificationService,
   ) {
     // Initialize locale context
     this.internationalizationService.initializeCountry().subscribe(res => {
       this.localeData = res;
-    });
-
-    this.eventsService.event$.pipe(takeUntil(this.unsubscribe$)).subscribe((res) => {
-      if (res === 'refreshVendorsList') {
-        console.log('Test refresh');
-        this.getVendorsListForMarketplace();
-      }
     });
   }
 
@@ -112,6 +85,7 @@ export class MarketplacePage implements OnInit {
       this.getVendorsListForMarketplace();
       this.getFollowingInfo();
     }
+    this.getInfoSlides();
   }
 
   /**
@@ -119,6 +93,7 @@ export class MarketplacePage implements OnInit {
    * and redirect to vednor products page if is received redirect data from guest mode or deeplinking
    */
   getVendorsListForMarketplace() {
+    this.loadingService.presentLoading();
     this.city = JSON.parse(localStorage.getItem('city'));
     this.county = JSON.parse(localStorage.getItem('county'));
     console.log(this.county, this.city);
@@ -128,6 +103,10 @@ export class MarketplacePage implements OnInit {
         this.metacategories = res.activeMetaCategories;
         this.vendorsList = res.vendors;
         this.copyList = this.vendorsList;
+        this.vendorsTop5List = res.vendors.slice(0, 5);
+        console.log('Top 5 vendors:', this.vendorsTop5List);
+        this.getVendorsWithPromotions(res.vendors);
+
         console.log('Buffered vendor ', localStorage.getItem('selectedVendorFromGuestMode'));
         if (localStorage.getItem('selectedVendorFromGuestMode')) {
           const vendor = res.vendors.find((el: any) => el.id.toString() === localStorage.getItem('selectedVendorFromGuestMode'));
@@ -142,6 +121,16 @@ export class MarketplacePage implements OnInit {
         }
       }
     });
+  }
+
+  getVendorsWithPromotions(vendors: any) {
+    this.loadingService.dismissLoading();
+    this.vendorsWithActivePromotions = vendors.filter((item: any) => {
+      if (item.vendorMetaCategories.find((el: any) => el.name === 'Promotii')) {
+        return item;
+      }
+    });
+    console.log('PROMOTII', this.vendorsWithActivePromotions);
   }
 
   /**
@@ -172,10 +161,29 @@ export class MarketplacePage implements OnInit {
     });
   }
 
+  getInfoSlides() {
+    this.notificationsService.getItemsToShow().subscribe((res: any) => {
+      console.log('Data for slides', res);
+    });
+  }
+
+  /**
+   * @description Receive event select vendor or a product from vendor
+   * @param $event
+   */
+  receiveEventSelectVendor($event: any) {
+    console.log($event);
+    if ($event.product) {
+      console.log('Set to local storage');
+      localStorage.setItem('selectedProductFromGuestMode', $event.product.id);
+    }
+    this.selectVendor($event.vendor);
+  }
+
   selectVendor(vendor: any) {
     this.selectedVendor = vendor;
     console.log(this.selectedVendor);
-    this.analyticsService.logEvent('select_vendor', { context: this.eventContext, city: this.city, vendor: this.selectVendor });
+    this.analyticsService.logEvent('select_vendor', { context: this.eventContext, city: this.city, vendor: this.selectedVendor });
     if (this.searchResult) {
       this.getCategories('search');
     } else {
@@ -226,17 +234,35 @@ export class MarketplacePage implements OnInit {
         console.log(res);
         if (res.status === 'success') {
           this.searchResult = res.products;
-          console.log(this.searchResult);
-          const filteredIds = [...new Set(this.searchResult.map((product: any) => product.vendorId))];
-          console.log(filteredIds);
-          const filteredVendorsList = this.copyList.filter(item => filteredIds.includes(item.id.toString()));
-          console.log(filteredVendorsList);
-          this.vendorsList = filteredVendorsList;
+          this.processingSearchResult(this.searchResult);
+          console.log('Search result', this.searchResult);
           this.analyticsService.logEvent('search_on_marketplace', { context: this.eventContext, search: keyword });
         }
         this.loadingService.dismissLoading();
       });
     }
+  }
+
+  /**
+   * @description Processing the search result: filter unique vendors and group all products by vendor
+   * @param searchResult
+   */
+  processingSearchResult(searchResult: any) {
+    // Filter vendors from search result
+    const filteredIds = [...new Set(searchResult.map((product: any) => product.vendorId))];
+    // console.log('Vendors id', filteredIds);
+    const filteredVendorsList = this.copyList.filter(item => filteredIds.includes(item.id.toString()));
+    // console.log('Vendors', filteredVendorsList);
+
+    // Add products from search result to filtered vendors list
+    this.searchedVendorsList = filteredVendorsList.map((vendor: any) => {
+      vendor.products = searchResult.filter((product: any) => product.vendorId === vendor.id.toString());
+      vendor.totalScore = vendor.products.map(product => product.score).reduce((prev, next) => prev + next);
+      return vendor;
+    });
+
+    this.searchedVendorsList.sort((a, b) => b.totalScore - a.totalScore);
+    // console.log('Updated search result', this.searchedVendorsList);
   }
 
   /**
@@ -248,29 +274,16 @@ export class MarketplacePage implements OnInit {
     this.searchResult = null;
     this.searchIsActive = false;
     this.vendorsList = this.copyList;
+    this.searchedVendorsList = null;
   }
 
   resetList() {
     this.vendorsList = this.copyList;
   }
 
-  // async openMarketplaceVendor(vendorDetails: any) {
-  //   const modal = await this.modalCtrl.create({
-  //     component: MarketplaceCategoriesPage,
-  //     componentProps:
-  //     {
-  //       vendor: vendorDetails,
-  //       county: this.county,
-  //       city: this.city
-  //     }
-  //   });
-  //   this.marketplaceService.getShoppingCart(vendorDetails.id, this.city.Id);
-  //   modal.present();
-  // }
-
   /**
    * @description Open marketplace products page
-   * @param context - default null | search
+   * @param context - default | search
    */
   async openMarketplaceProducts(context: string) {
     // console.log('Filtered products list:', this.searchResult.filter(item => parseInt(item.vendorId, 2) === this.selectedVendor.id));
@@ -303,7 +316,7 @@ export class MarketplacePage implements OnInit {
           this.getFollowingInfo();
           break;
         case 'noSelection':
-          this.hideComponentEvent.emit(true);
+          // this.hideComponentEvent.emit(true);
           break;
         default:
           console.log('Cancel select location');
@@ -311,5 +324,42 @@ export class MarketplacePage implements OnInit {
       }
     });
   }
-}
 
+  selectMetacategory(metacategory: any) {
+    this.activeCategory = metacategory;
+    this.showAllVendors = true;
+    this.scrollToElement('vendors_list');
+  }
+
+  toggleViewMode(context: string) {
+    switch (context) {
+      case 'metacategoriesList':
+        this.showAllMetacategories = !this.showAllMetacategories;
+        break;
+      case 'vendorsList':
+        this.showAllVendors = !this.showAllVendors;
+        setTimeout(() => {
+          if (!this.showAllVendors) {
+            this.scrollToElement('metacategories_list');
+          } else {
+            this.scrollToElement('vendors_list');
+          }
+        }, 100);
+        break;
+      case 'vendorsPromoList':
+        this.showAllVendorsPromo = !this.showAllVendorsPromo;
+        setTimeout(() => {
+          if (this.showAllVendorsPromo) {
+            this.scrollToElement('vendors_promo_list');
+          }
+        }, 100);
+        break;
+    }
+  }
+
+  scrollToElement(id) {
+    const titleELe = document.getElementById(id);
+    this.content.scrollToPoint(0, titleELe.offsetTop, 1000);
+  }
+
+}
