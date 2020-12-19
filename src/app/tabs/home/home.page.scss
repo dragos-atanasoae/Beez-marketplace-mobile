@@ -50,16 +50,26 @@ ion-content {
     }
 
     .section_header {
-        margin-bottom: 0;
-        padding: 0 1rem;
+        --padding-start: 0;
+        --padding-end: 0;
+        --inner-padding-end: 0;
+        --padding-top: 0;
+        --padding-bottom: 0;
 
-        ion-col {
-            padding-bottom: 0;
-            padding-right: 0;
+        --background: var(--beez-background-color);
+        ion-row {
+            width: 100%;
+            margin-bottom: 0;
+            padding: 0 1rem;
+            ion-col {
+                padding-bottom: 0;
+                padding-right: 0;
+            }
         }
 
         .section_title {
             font-size: 0.9rem;
+            line-height: 0rem;
             font-weight: 500;
             color: var(--ion-color-tertiary);
         }
@@ -72,6 +82,49 @@ ion-content {
             --padding-top: 0.1rem;
             --padding-start: 0.5rem;
             --padding-end: 0.5rem;
+        }
+
+        #btn_active_category_reset {
+            width: fit-content;
+            height: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 0.3rem;
+            margin-left: 0;
+            --padding-start: 0;
+            --padding-end: 0.2rem;
+            --padding-top: 0.1rem;
+            --padding-bottom: 0.1rem;
+            background: none;
+            box-shadow: none;
+            ion-row {
+                padding: 0;
+                ion-col {
+                    padding: 0;
+                    p {
+                        font-size: 0.8rem;
+                        font-weight: 400;
+                        color: var(--ion-color-tertiary);
+                        margin: 0.2rem 0.5rem;
+                    }
+                }
+                #col_active_category {
+                    padding-right: 1rem;
+                    background: #fff;
+                    border-radius: 0.5rem;
+                    border: 1px solid var(--ion-color-primary);
+
+                    #label_active_category {
+                        font-size: 0.6rem;
+                    }
+                    ion-icon {
+                        position: absolute;
+                        right: 0.1rem;
+                        bottom: 0;
+                        font-size: 1.2rem;
+                        color: var(--ion-color-medium);
+                    }
+                }
+            }
         }
     }
 
@@ -118,6 +171,30 @@ ion-content {
         .cardview_vendor {
             text-align: left;
         }
+
+        #btn_active_category_reset {
+            width: fit-content;
+            margin-top: 0;
+            margin-bottom: 0;
+            --padding-start: 0.2rem;
+            --padding-end: 0.2rem;
+            --padding-top: 0.1rem;
+            --padding-bottom: 0.1rem;
+            border: 1px solid var(--ion-color-primary);
+            ion-col {
+                padding: 0;
+            }
+            p {
+                font-size: 0.6rem;
+                color: var(--ion-color-tertiary);
+                margin: 0.2rem 0.5rem;
+            }
+            ion-icon {
+                margin: 0 0.3rem 0 0;
+                font-size: 1rem;
+                color: var(--ion-color-medium);
+            }
+        }
     }
 
     .cardview_metacategory {
@@ -128,7 +205,6 @@ ion-content {
         padding: 0 0.5em;
         z-index: 1;
         text-align: left;
-        // background: url('../../../assets/icon/icon_food_marketplace_dark.svg');
         background-color: #999!important;
         background-position: center center!important;
         background-repeat: no-repeat!important;
@@ -136,12 +212,23 @@ ion-content {
         border-radius: var(--beez-border-radius);
         box-shadow: var(--beez-box-shadow);
 
+        .overlay_black_filter {
+            width: 8rem;
+            height: 6rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
         .wrap_category_title {
             position: absolute;
             width: 7rem;
             left: 0.5rem;
             bottom: 0.5rem;
             white-space: pre-wrap !important;
+            z-index: 2;
 
             p {
                 margin-bottom: 0;
@@ -168,6 +255,7 @@ ion-content {
         border-radius: var(--beez-border-radius);
         background: #fff;
         box-shadow: var(--beez-box-shadow);
+        --ripple-color: var(--ion-color-primary);
 
         .header_cardview_vendor {
             width: 12rem;
@@ -179,6 +267,7 @@ ion-content {
             background-repeat: no-repeat!important;
             background-size: cover!important;
             position: relative;
+            box-shadow: inset 0 0 0 14rem rgba(0, 0, 0, 0.3);
 
             .row_vendor_name {
                 position: absolute;
@@ -212,13 +301,16 @@ ion-content {
 
                 .wrap_vendor_name {
                     height: fit-content;
-                    padding-right: 0.5rem;
+                    margin-right: 0.5rem;
+                    // padding: 0 0.5rem;
                     position: absolute;
                     bottom: 0.1rem;
-
+                    
+                    border-radius: 0.2rem;
                     p {
                         margin: 0;
                         font-size: 0.8rem;
+                        font-weight: 500;
                         line-height: 0.9rem;
                         color: #fff;
                     }
@@ -250,6 +342,7 @@ ion-content {
 
             .label_available_products {
                 margin: 0;
+                padding-left: 0.2rem;
                 font-size: 0.6rem;
                 color: var(--ion-color-medium);
             }

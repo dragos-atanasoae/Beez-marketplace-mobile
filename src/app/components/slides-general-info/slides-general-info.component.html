@@ -1,0 +1,39 @@
+    <!-- START INFORMATIVE CAROUSEL -->
+    <div class="wrap_carousel">
+      <ion-slides pager="true" *ngIf="generalInfoSlides"
+        class="shop_carousel_slides container">
+        <ion-slide *ngFor="let item of generalInfoSlides">
+          <ion-row class="cardview_slide ion-align-items-center">
+            <ion-col size="12" class="wrap_btn_close_slide">
+              <ion-button fill="clear" size="small" shape="round" color="secondary" class="btn_close_slide"
+                (click)="markAsSeenOrClosed(item.id, 'closed')">
+                <ion-icon name="close" (click)="markAsSeenOrClosed(item.id, 'closed')"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col size="auto" class="wrap_slide_image">
+              <img class="slide_image" [src]="item.imageLink"
+                onerror="this.onerror==null;this.src='./assets/imgs/bee-characters/InitiatingProductState-animation-albina_3s.svg'">
+            </ion-col>
+            <ion-col class="wrap_slide_details">
+              <ion-row>
+                <ion-col size-lg="6" size-md="6" size-xs="12">
+                  <p class="label_title">
+                    {{item?.title}}
+                  </p>
+                  <p class="label_description">
+                    {{item?.description | slice:0:80}}
+                  </p>
+                </ion-col>
+                <ion-col size-lg="6" size-md="6" size-xs="12" (click)="manageRedirects(item)">
+                  <ion-button fill="outline" shape="round" size="small" class="btn_action">
+                    <span>{{item?.elementDescription}} <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+                    </span>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-slide>
+      </ion-slides>
+    </div>
+    <!-- END INFORMATIVE CAROUSEL -->

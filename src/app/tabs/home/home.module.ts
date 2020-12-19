@@ -10,6 +10,7 @@ import { HomePage } from './home.page';
 import { VendorsListModule } from 'src/app/components/vendors-list/vendors-list.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { SlidesGeneralInfoModule } from 'src/app/components/slides-general-info/slides-general-info.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
     IonicModule,
     PipesModule,
     TranslateModule,
+    SlidesGeneralInfoModule,
     VendorsListModule,
     HomePageRoutingModule
   ],

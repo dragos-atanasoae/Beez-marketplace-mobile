@@ -1,0 +1,96 @@
+.wrap_carousel {
+    padding: 0;
+    background: #fff;
+
+    .cardview_slide {
+        position: relative;
+        width: 100%;
+        margin: 0.7em 0.5em 0.5em 0.5em;
+        padding: 0.3em 0.4em;
+        border-radius: var(--beez-border-radius);
+        // box-shadow: 0pt 3pt 6pt var(--progress-bar-background);
+
+        .wrap_btn_close_slide {
+            padding: 0.1em;
+
+            .btn_close_slide {
+                z-index: 9998;
+                position: absolute;
+                top: -0.5em;
+                right: -0.4em;
+                --padding-end: 0;
+
+                ion-icon {
+                    font-size: 1.5em;
+                    color: var(--ion-color-medium);
+                }
+            }
+        }
+
+        .wrap_slide_image {
+            img {
+                width: auto;
+                max-width: 5em;
+                max-height: 4em;
+            }
+        }
+
+        .wrap_slide_details {
+            padding-right: 0.6em;
+            overflow-x: hidden;
+            ion-col,
+            ion-row {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .label_title,
+            .label_description {
+                text-align: left;
+            }
+
+            .label_title {
+                max-width: 15em;
+                margin: 0 0 0.2em;
+                font-size: 0.7em;
+                font-weight: 500;
+                color: var(--ion-color-primary);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .label_description {
+                margin-top: 0em;
+                margin-bottom: 1em;
+                color: var(--ion-color-secondary);
+                font-size: 0.5em;
+            }
+        }
+
+        .btn_action {
+            float: left;
+            // width: auto;
+            height: 2em;
+            // max-width: 12em;
+            min-width: 10em;
+            --padding-end: 0.5em;
+            margin: 0em 0em 0.5em;
+            text-transform: none;
+            font-size: 0.6rem !important;
+            // font-weight: normal;
+            // border: 1px solid #fff;
+            --border-width: 1px;
+            --box-shadow: none;
+
+            ion-icon {
+                right: 0.2em;
+            }
+
+            ion-icon,
+            span {
+                vertical-align: middle;
+            }
+        }
+    }
+}

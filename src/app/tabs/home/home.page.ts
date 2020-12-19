@@ -1,15 +1,17 @@
 import { trigger, transition, query, style, stagger, animate, state } from '@angular/animations';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { IonContent, ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { MarketplaceLocationsPage } from 'src/app/pages/marketplace-locations/marketplace-locations.page';
 import { MarketplaceProductsPage } from 'src/app/pages/marketplace-products/marketplace-products.page';
 import { AnalyticsService } from 'src/app/services/analytics.service';
+import { EventsService } from 'src/app/services/events.service';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
-import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -63,17 +65,27 @@ export class HomePage implements OnInit {
   newVendorNotificationsStatus = null;
   searchedKeyword = null;
 
+  // Slides general info
+  generalInfoSlides = [];
+
   constructor(
     private analyticsService: AnalyticsService,
+    private eventsService: EventsService,
     private loadingService: LoadingService,
+    private inAppBrowser: InAppBrowser,
     private internationalizationService: InternationalizationService,
     private modalCtrl: ModalController,
     private marketplaceService: MarketplaceService,
-    private notificationsService: NotificationService,
   ) {
     // Initialize locale context
     this.internationalizationService.initializeCountry().subscribe(res => {
       this.localeData = res;
+    });
+
+    this.eventsService.event$.pipe(takeUntil(this.unsubscribe$)).subscribe((res) => {
+      if (res === 'refreshVendorsList') {
+        this.getVendorsListForMarketplace();
+      }
     });
   }
 
@@ -85,7 +97,6 @@ export class HomePage implements OnInit {
       this.getVendorsListForMarketplace();
       this.getFollowingInfo();
     }
-    this.getInfoSlides();
   }
 
   /**
@@ -158,12 +169,6 @@ export class HomePage implements OnInit {
       setTimeout(() => {
         this.loadingService.dismissLoading();
       }, 1000);
-    });
-  }
-
-  getInfoSlides() {
-    this.notificationsService.getItemsToShow().subscribe((res: any) => {
-      console.log('Data for slides', res);
     });
   }
 
@@ -303,6 +308,9 @@ export class HomePage implements OnInit {
     modal.present();
   }
 
+  /**
+   * @description Open modal Locations to select | update the location
+   */
   async openMarketplaceLocations() {
     const modal = await this.modalCtrl.create({
       component: MarketplaceLocationsPage
@@ -325,12 +333,20 @@ export class HomePage implements OnInit {
     });
   }
 
+  /**
+   * @description Select metacategory, filter vendors list by active metacategory and change vendors view mode to vertical list
+   * @param metacategory
+   */
   selectMetacategory(metacategory: any) {
     this.activeCategory = metacategory;
     this.showAllVendors = true;
     this.scrollToElement('vendors_list');
   }
 
+  /**
+   * @description Toggle metacategories & vendors view mode horizontal | vertical list
+   * @param context
+   */
   toggleViewMode(context: string) {
     switch (context) {
       case 'metacategoriesList':
@@ -357,9 +373,21 @@ export class HomePage implements OnInit {
     }
   }
 
+  /**
+   * @description Scroll to element by id
+   * @param id
+   */
   scrollToElement(id) {
     const titleELe = document.getElementById(id);
     this.content.scrollToPoint(0, titleELe.offsetTop, 1000);
   }
 
+  /**
+   * @name openLinkInBrowser
+   * @description Open product link (used for follow us on social media)
+   * @param link
+   */
+  openLinkInBrowser(link: string) {
+    this.inAppBrowser.create(link, '_system');
+  }
 }
