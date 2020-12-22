@@ -13,8 +13,9 @@
       </ion-col>
     </ion-row>
     <!-- Search product/category -->
-    <ion-searchbar mode="ios" placeholder="Cauta produs sau categorie" inputmode="text"
-      (ionChange)="onSearchChange($event.target.value)" [debounce]="250"></ion-searchbar>
+    <ion-searchbar mode="ios" [placeholder]="'pages.home.placeholderSearch' | translate" inputmode="text"
+      (keyup.enter)="onSearchChange($event.target.value)" (ionChange)="onSearchChange($event.target.value)"
+      [debounce]="600"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -28,12 +29,12 @@
     <ion-item-divider sticky class="section_header">
       <ion-row class="ion-align-items-center">
         <ion-col>
-          <p class="section_title">Categorii</p>
+          <p class="section_title">{{'pages.home.labelCategories' | translate}}</p>
         </ion-col>
         <ion-col size="auto">
           <ion-button color="primary" fill="clear" shape="round" size="small"
             (click)="toggleViewMode('metacategoriesList')">
-            {{showAllMetacategories ? 'Vezi mai putin' : 'Vezi toate'}}
+            {{(showAllMetacategories ? 'pages.home.buttons.buttonViewLess' : 'pages.home.buttons.buttonViewAll') | translate}}
           </ion-button>
         </ion-col>
       </ion-row>
@@ -42,7 +43,8 @@
     <div [class]="showAllMetacategories ? 'wrap_vertical_list' : 'wrap_horizontal_list'"
       [@listAnimation]="metacategories.length">
       <ion-card button class="cardview_metacategory" [class]="activeCategory == category ? 'active_selection' : ''"
-        *ngFor="let category of metacategories" [style.background]="category.heroPicture ? 'url('+category.heroPicture+')' : 'url(\'../../../assets/icon/icon_food_marketplace_dark.svg\')'"
+        *ngFor="let category of metacategories"
+        [style.background]="category.heroPicture ? 'url('+category.heroPicture+')' : 'url(\'../../../assets/icon/icon_food_marketplace_dark.svg\')'"
         (click)="selectMetacategory(category)">
         <div class="wrap_category_title">
           <p>{{category.name}}</p>
@@ -59,20 +61,21 @@
       <ion-row class="ion-align-items-center">
         <ion-col>
           <!-- Title -->
-          <p class="section_title">Producatori</p>
+          <p class="section_title">{{'pages.home.labelVendors' | translate}}</p>
         </ion-col>
         <ion-col size="auto">
           <!-- Toggle view mode -->
           <ion-button color="primary" fill="clear" shape="round" size="small" (click)="toggleViewMode('vendorsList')">
-            {{showAllVendors ? 'Mai putin' : 'Mai mult'}}
+            {{(showAllVendors ? 'pages.home.buttons.buttonLess' : 'pages.home.buttons.buttonMore') | translate}}
           </ion-button>
         </ion-col>
         <ion-col size="12">
           <!-- View Active filter | metacategory (button remove filter) -->
-          <ion-card id="btn_active_category_reset" button *ngIf="showAllVendors && activeCategory" (click)="activeCategory = null">
+          <ion-card id="btn_active_category_reset" button *ngIf="showAllVendors && activeCategory"
+            (click)="activeCategory = null">
             <ion-row class="ion-align-items-center">
               <ion-col size="auto">
-                <p id="label_filter">Filtru activ:</p>
+                <p id="label_filter">{{'pages.home.labelActiveFilter' | translate}}</p>
               </ion-col>
               <ion-col id="col_active_category">
                 <div>
@@ -92,7 +95,8 @@
       <ion-card button class="cardview_vendor"
         *ngFor="let vendor of showAllVendors ? (vendorsList | filterByMetacategory : activeCategory) : vendorsList.slice(0, 5)"
         (click)="selectVendor(vendor)">
-        <div class="header_cardview_vendor" [style.background]="vendor.heroPicture ? 'url('+vendor.heroPicture+')' : 'url(\'../../../assets/icon/icon_food_marketplace_dark.svg\')'">
+        <div class="header_cardview_vendor"
+          [style.background]="vendor.heroPicture ? 'url('+vendor.heroPicture+')' : 'url(\'../../../assets/icon/icon_food_marketplace_dark.svg\')'">
           <ion-row class="row_vendor_name">
             <ion-col size="auto">
               <div class="wrap_vendor_logo">
@@ -108,12 +112,14 @@
         </div>
         <div class="container_cardview_vendor">
           <p class="label_vendor_main_category">{{vendor.title}}</p>
-          <p class="label_available_products">{{vendor.productsInStock}} produse</p>
+          <p class="label_available_products">{{vendor.productsInStock}} {{'pages.home.labelProducts' | translate}}</p>
           <ion-row>
             <ion-col size="6">
               <p class="lable_minimum_order">
-                <span>{{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span>
-                cos minim</p>
+                <span>{{vendor.minimumOrderValue |
+                  currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span>
+                {{'pages.home.labelMinimumOrderValue' | translate}}
+              </p>
             </ion-col>
             <ion-col size="6">
               <p class="label_cashback_value"><span>{{vendor.cashback}}</span> cashback</p>
@@ -130,21 +136,22 @@
     <ion-item-divider sticky class="section_header">
       <ion-row class="ion-align-items-center">
         <ion-col>
-          <p class="section_title">Promotii</p>
+          <p class="section_title">{{'pages.home.labelPromotions' | translate}}</p>
         </ion-col>
         <ion-col size="auto">
           <ion-button color="primary" fill="clear" shape="round" size="small"
             (click)="toggleViewMode('vendorsPromoList')">
-            {{showAllVendorsPromo ? 'Vezi mai putin' : 'Vezi toate'}}
+            {{(showAllVendorsPromo ? 'pages.home.buttons.buttonViewLess' : 'pages.home.buttons.buttonViewAll') | translate}}
           </ion-button>
         </ion-col>
       </ion-row>
     </ion-item-divider>
     <!-- List of Vendors with active Promotions -->
     <div [class]="showAllVendorsPromo ? 'wrap_vertical_list' : 'wrap_horizontal_list'" [@listAnimation]="6">
-      <ion-card button class="cardview_vendor"
-        *ngFor="let vendor of vendorsWithActivePromotions" (click)="selectVendor(vendor)">
-        <div class="header_cardview_vendor" [style.background]="vendor.heroPicture ? 'url('+vendor.heroPicture+')' : 'url(\'../../../assets/icon/icon_food_marketplace_dark.svg\')'">
+      <ion-card button class="cardview_vendor" *ngFor="let vendor of vendorsWithActivePromotions"
+        (click)="selectVendor(vendor)">
+        <div class="header_cardview_vendor"
+          [style.background]="vendor.heroPicture ? 'url('+vendor.heroPicture+')' : 'url(\'../../../assets/icon/icon_food_marketplace_dark.svg\')'">
           <ion-row class="row_vendor_name">
             <ion-col size="auto">
               <div class="wrap_vendor_logo">
@@ -160,12 +167,14 @@
         </div>
         <div class="container_cardview_vendor">
           <p class="label_vendor_main_category">{{vendor.title}}</p>
-          <p class="label_available_products">{{vendor.productsInStock}} produse</p>
+          <p class="label_available_products">{{vendor.productsInStock}} {{'pages.home.labelProducts' | translate}}</p>
           <ion-row>
             <ion-col size="6">
               <p class="lable_minimum_order">
-                <span>{{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span>
-                cos minim</p>
+                <span>{{vendor.minimumOrderValue |
+                  currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span>
+                {{'pages.home.labelMinimumOrderValue' | translate}}
+              </p>
             </ion-col>
             <ion-col size="6">
               <p class="label_cashback_value"><span>{{vendor.cashback}}</span> cashback</p>
@@ -180,34 +189,38 @@
   <div *ngIf="searchedVendorsList">
     <ion-row class="ion-align-items-center section_header">
       <ion-col>
-        <p class="section_title">Produse</p>
+        <p class="section_title">{{'pages.home.labelProducts' | translate | titlecase}}</p>
       </ion-col>
       <ion-col size="auto">
         <ion-button color="primary" fill="clear" shape="round" size="small" (click)="cancelSearch()">
-          Inapoi
+          {{'buttons.buttonBack' | translate}}
         </ion-button>
       </ion-col>
     </ion-row>
-    <app-vendors-list [vendorsList]="searchedVendorsList" (eventSelectVendor)="receiveEventSelectVendor($event)"></app-vendors-list>
+    <app-vendors-list [vendorsList]="searchedVendorsList" (eventSelectVendor)="receiveEventSelectVendor($event)">
+    </app-vendors-list>
   </div>
 
   <!-- Section Follow us -->
   <ion-row id="row_comunity" class="ion-align-items-center" *ngIf="vendorsList">
     <ion-col size="auto">
-      <p>Follow us</p>
+      <p>{{'pages.home.labelFollowUs' | translate}}</p>
     </ion-col>
     <ion-col size="auto">
-      <ion-button fill="clear" shape="round" color="tertiary" (click)="openLinkInBrowser('https://www.facebook.com/beezfoodmarketplace')">
+      <ion-button fill="clear" shape="round" color="tertiary"
+        (click)="openLinkInBrowser('https://www.facebook.com/beezfoodmarketplace')">
         <ion-icon slot="icon-only" name="logo-facebook"></ion-icon>
       </ion-button>
     </ion-col>
     <ion-col size="auto">
-      <ion-button fill="clear" shape="round" color="tertiary" (click)="openLinkInBrowser('https://www.instagram.com/beezfoodmarketplace/?hl=ro')">
+      <ion-button fill="clear" shape="round" color="tertiary"
+        (click)="openLinkInBrowser('https://www.instagram.com/beezfoodmarketplace/?hl=ro')">
         <ion-icon slot="icon-only" name="logo-instagram"></ion-icon>
       </ion-button>
     </ion-col>
     <ion-col size="auto">
-      <ion-button fill="clear" shape="round" color="tertiary" (click)="openLinkInBrowser('https://www.youtube.com/channel/UC3DZhMDRjXRAzpDHIGCUwVA')">
+      <ion-button fill="clear" shape="round" color="tertiary"
+        (click)="openLinkInBrowser('https://www.youtube.com/channel/UC3DZhMDRjXRAzpDHIGCUwVA')">
         <ion-icon slot="icon-only" name="logo-youtube"></ion-icon>
       </ion-button>
     </ion-col>

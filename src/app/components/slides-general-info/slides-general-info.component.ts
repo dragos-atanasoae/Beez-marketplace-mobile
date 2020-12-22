@@ -12,6 +12,8 @@ export class SlidesGeneralInfoComponent implements OnInit {
 
   generalInfoSlides = null;
   eventContext = 'Slides General Info';
+  // Get slides info only for food marketplace
+  filter = '(target eq \'FM\')';
 
   constructor(
     private analyticsService: AnalyticsService,
@@ -28,7 +30,7 @@ export class SlidesGeneralInfoComponent implements OnInit {
    * @description Get information about the carousel slides on the shops page
    */
   getInfoSlides() {
-    this.generalInfoService.getSlidesInfo()
+    this.generalInfoService.getSlidesInfo(this.filter)
       .subscribe((response: any) => {
         if (response.status === 'success') {
           console.log('INFO SLIDES:', response.displayCards);

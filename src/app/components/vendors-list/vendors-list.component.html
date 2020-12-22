@@ -12,7 +12,9 @@
       </ion-col>
       <ion-col size="auto">
         <!-- Vendor minimum order -->
-        <p class="label_minimum_order"><span>{{vendor.minimumOrderValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span> cos minim</p>
+        <p class="label_minimum_order"><span>{{vendor.minimumOrderValue |
+            currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</span>
+          {{'components.vendorsList.labelMinimumOrderValue' | translate}}</p>
       </ion-col>
       <ion-col size="auto">
         <!-- Vendor cashback -->
@@ -21,12 +23,15 @@
     </ion-row>
     <!-- Products list -->
     <div class="container_products_preview">
-      <ion-item button lines="none" *ngFor="let product of vendor.products.slice(0,3)" (click)="selectVendor(vendor, product)">
+      <ion-item button lines="none" *ngFor="let product of vendor.products.slice(0,3)"
+        (click)="selectVendor(vendor, product)">
         <ion-row class="ion-align-items-center">
           <ion-col size="auto">
             <!-- Product image -->
             <div class="wrap_product_image">
-              <img [src]="product.imgUrl != null ? ('https://static.use-beez.com' + product.imgUrl | convertPathOfShopImage :'~/') : './assets/icon/icon_placeholder_marketplace.svg'" alt="">
+              <img
+                [src]="product.imgUrl != null ? ('https://static.use-beez.com' + product.imgUrl | convertPathOfShopImage :'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+                alt="">
             </div>
           </ion-col>
           <ion-col>
@@ -34,15 +39,21 @@
             <div>
               <p class="label_product_name">{{product.name}}</p>
               <p class="label_product_weight">{{product.weightInKG}}</p>
-              <p class="lable_product_price">Platesti <span>{{product.unitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}/{{product.unitType}}</span></p>
-              <p class="label_cashback">Primesti inapoi {{vendor.cashback}}</p>
+              <p class="lable_product_price">{{'components.vendorsList.labelPay' | translate}}
+                <span>{{product.unitValue |
+                  currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}/{{product.unitType}}</span>
+              </p>
+              <p class="label_cashback">{{'components.vendorsList.labelGetBack' | translate}} {{vendor.cashback}}</p>
             </div>
           </ion-col>
         </ion-row>
       </ion-item>
+      <p class="label_more_products" *ngIf="vendor?.products?.length - 3 > 0">
+        + {{vendor?.products?.length - 3}} {{'components.vendorsList.labelProducts' | translate}}
+      </p>
     </div>
     <ion-button (click)="selectVendor(vendor, null)" fill="solid" shape="round" color="primary" size="small">
-      Cumpara de la {{vendor.name}}
+      {{'components.vendorsList.buttons.buttonBuyFrom' | translate}} {{vendor.name}}
     </ion-button>
   </div>
 </div>

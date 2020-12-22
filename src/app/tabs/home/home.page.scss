@@ -358,10 +358,17 @@ ion-content {
                 }
             }
 
+            .lable_minimum_order {
+                text-align: left;
+            }
+
+            .label_cashback_value {
+                text-align: right;
+            }
+
             .lable_minimum_order,
             .label_cashback_value {
                 margin: 0;
-                // text-align: center;
                 font-size: 0.6rem;
                 color: var(--ion-color-tertiary);
 
@@ -497,7 +504,6 @@ ion-content {
 
                 .lable_minimum_order,
                 .label_cashback_value {
-                    text-align: left;
                     font-size: 0.7rem;
 
                     span {

@@ -70,8 +70,13 @@
                     transform: translate(-50%, -50%);
                 }
             }
+
+            .label_more_products {
+                text-align: center;
+            }
     
-            .label_product_name {
+            .label_product_name,
+            .label_more_products {
                 margin-top: 0.1rem;
                 margin-bottom: 0.1rem;
                 font-size: 0.8rem;
