@@ -45,9 +45,9 @@ export class GeneralInfoService {
    * @name getSlidesInfo
    * @description Get slides data to show on the home tab
    */
-  getSlidesInfo() {
+  getSlidesInfo(filter: string) {
     this.prepareHeaderForRequest();
-    const url = this.prefixUrlByCountry + this.apiURL + 'api/user/DisplayCards?tag=' + this.username;
+    const url = this.prefixUrlByCountry + this.apiURL + 'api/user/DisplayCards?tag=' + this.username + '&filter=' + filter;
     return this.httpClient.get(url, { headers: this.header });
   }
 
