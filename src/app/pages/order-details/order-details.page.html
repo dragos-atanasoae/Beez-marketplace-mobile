@@ -243,34 +243,11 @@
     <!-- Section order products list -->
     <p class="label_section_title">{{'pages.marketplace.orderDetails.labelOrderDetails' | translate}}</p>
     <div class="horizontal_line"></div>
-    <ion-row *ngFor="let product of orderDetails?.orderInfo.products" class="row_products_list">
-      <ion-col size="3" class="centered_content">
-        <!-- Product image -->
-        <ion-row class="row_product_image">
-          <ion-col size="12" class="centered_content"
-            (click)="openImageViewer('https://static.use-beez.com' + product.imgUrl, product.name)">
-            <img class="product_image"
-              [src]="product.imgUrl != null ? ('https://static.use-beez.com' + product.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
-              onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" alt="">
-          </ion-col>
-        </ion-row>
-      </ion-col>
-      <!-- Product details -->
-      <ion-col size="5">
-        <p class="label_product_name">{{product.name}}</p>
-        <p class="label_product_details" [innerHTML]="product.weightInKG"></p>
-        <p class="label_product_price">
-          {{product?.unitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
-          <span>x {{product?.quantity}}</span>
-        </p>
-      </ion-col>
-      <ion-col size="4" class="centered_content">
-        <p class="label_total">
-          {{product?.totalValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
-        </p>
-      </ion-col>
-    </ion-row>
-
+    <ng-container *ngTemplateOutlet="productsList; context: {list: undeliveredProducts, context: 'undelivered'}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="productsList; context: {list: orderDetails?.orderInfo.products, context: 'delivered'}">
+    </ng-container>
+    
     <section>
       <!-- Section order status -->
       <p class="label_section_title">
@@ -326,6 +303,41 @@
     </section>
   </div>
 </ion-content>
+
+<!-- Displays undelivered and delivered products -->
+<ng-template #productsList let-list="list" let-context="context">
+  <ion-row *ngFor="let product of list" class="row_products_list">
+    <ion-col size="3" class="centered_content">
+      <!-- Product image -->
+      <ion-row class="row_product_image">
+        <ion-col size="12" class="centered_content"
+          (click)="openImageViewer('https://static.use-beez.com' + product.imgUrl, product.name)">
+          <ion-icon *ngIf="context == 'undelivered'" name="close" class="icon_close"></ion-icon>
+          <img class="product_image" [ngClass]="{undelivered_products: context == 'undelivered'}"
+            [src]="product.imgUrl != null ? ('https://static.use-beez.com' + product.imgUrl | convertPathOfShopImage:'~/') : './assets/icon/icon_placeholder_marketplace.svg'"
+            onerror="this.onerror==null;this.src='./assets/icon/icon_placeholder_marketplace.svg'" alt="">
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <!-- Product details -->
+    <ion-col size="5" [ngClass]="{undelivered_products: context == 'undelivered'}">
+      <p class="label_product_name">{{product.name}}</p>
+      <p class="label_product_details" [innerHTML]="product.weightInKG"></p>
+      <p class="label_product_price">
+        {{product?.unitValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+        <span *ngIf="context == 'delivered'">x {{(product.quantityRefund ? product.quantity - product.quantityRefund :
+          product.quantity)}}</span>
+        <span *ngIf="context == 'undelivered'">x {{product.quantityRefund}}</span>
+      </p>
+    </ion-col>
+    <ion-col size="4" class="centered_content" [ngClass]="{undelivered_products: context == 'undelivered'}">
+      <p class="label_total">
+        {{product?.totalValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+      </p>
+    </ion-col>
+  </ion-row>
+</ng-template>
+
 <!-- OVERLAY PAYMENT SUCCESS -->
 <app-overlay-payment-success *ngIf="showOverlayPaymentSuccess"
   (hideOverlayComponent)="receiveCloseOverlayEvent($event)"></app-overlay-payment-success>

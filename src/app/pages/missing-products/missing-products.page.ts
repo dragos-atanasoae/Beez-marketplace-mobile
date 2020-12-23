@@ -67,8 +67,9 @@ export class MissingProductsPage implements OnInit {
    * @param product
    */
   selectMissingProduct(product) {
+    const quantity = product.quantityRefund ? product.quantity - product.quantityRefund : product.quantity;
     // Toggle selection of the products where quantity === 1
-    if (product.quantity === 1) {
+    if (quantity === 1) {
       if (product.missingQuantity === 0) {
         this.productsList.map((item) => {
           if (item.name === product.name) {
@@ -83,7 +84,7 @@ export class MissingProductsPage implements OnInit {
         });
       }
       this.updateMissingProductsList();
-    } else {
+    } else if (quantity !== 0) {
       // Show overlay select quantity for missing product
       this.selectedProduct = product;
       this.showOverlaySelectQuantity = true;
