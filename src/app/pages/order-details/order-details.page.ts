@@ -59,6 +59,7 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
   paymentProcessor = null;
   private unsubscribe$: Subject<boolean> = new Subject();
   eventContext = 'Order Details';
+  undeliveredProducts: any = [];
 
   constructor(
     private alertCtrl: AlertController,
@@ -125,6 +126,8 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
         this.loadingService.dismissLoading();
         if (response.status === 'success') {
           this.orderDetails = response.item;
+          // extract undelivered products
+          this.undeliveredProducts = this.orderDetails.orderInfo.products.filter((el => (el.quantityRefund != null && el.quantityRefund != 0)));
           this.checkOrderStatus(this.orderDetails.status.status);
         }
         console.log(response.item);

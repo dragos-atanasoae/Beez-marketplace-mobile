@@ -31,7 +31,14 @@
       <ion-col class="col_product_description">
         <div>
           <p class="label_product_name">{{product.name}}</p>
-          <p class="label_price">{{product.unitValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}} <span>x {{product.quantity - product.missingQuantity}}</span></p>
+          <p class="label_price">{{product.unitValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+            <span *ngIf="!product.missingQuantity">x {{(product.quantityRefund ? product.quantity -
+              product.quantityRefund : product.quantity)}}</span>
+            <span class="label_missing_quantity" *ngIf="product.missingQuantity">{{ product.missingQuantity }}/
+              {{(product.quantityRefund ? product.quantity - product.quantityRefund :
+              product.quantity)}}
+            </span>
+          </p>
         </div>
       </ion-col>
       <ion-col size="auto" class="ion-align-self-end">
@@ -81,7 +88,9 @@
             </ion-button>
           </ion-col>
           <ion-col size="auto">
-            <p id="label_selected_quantity">{{selectedProduct?.missingQuantity}}</p>
+            <p id="label_selected_quantity">
+              {{selectedProduct?.missingQuantity}}
+            </p>
           </ion-col>
           <ion-col>
             <ion-button id="btn_increase_quantity" [disabled]="selectedProduct.quantity <= selectedProduct.missingQuantity" (click)="changeMissingQuantity('add')">
