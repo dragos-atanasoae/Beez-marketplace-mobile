@@ -47,21 +47,14 @@
           <ion-icon [src]="iconOrderStatus"></ion-icon>
           <span>{{labelOrderStatus}}</span>
         </ion-badge>
-        <p id="label_order_code" *ngIf="orderDetails?.orderInfo?.orderedFrom == 'Elit'">
+        <p id="label_order_code">
           <span>
-            {{'pages.marketplace.orderDetails.labelOrderCode' | translate}}: {{orderDetails?.orderInfo.orderCode}}
+            {{'pages.marketplace.orderDetails.labelOrderCode' | translate}}:
+            {{ orderDetails?.orderInfo?.orderedFrom == 'Elit' ? orderDetails?.orderInfo.orderCode : orderDetails?.id}}
           </span>
-          <ion-button fill="clear" shape="round" size="small" color="tertiary" (click)="showAlertOrderCodeInfo()">
+          <ion-button *ngIf="orderDetails?.orderInfo?.orderedFrom == 'Elit'" fill="clear" shape="round" size="small"
+            color="tertiary" (click)="showAlertOrderCodeInfo()">
             <ion-icon slot="icon-only" name="information-circle"></ion-icon>
-          </ion-button>
-        </p>
-        <p id="label_order_code" *ngIf="orderDetails?.orderInfo?.orderedFrom !== 'Elit'">
-          <span>
-            {{'pages.marketplace.orderDetails.labelOrderId' | translate}}: {{orderDetails?.id}}
-          </span>
-          <ion-button fill="clear" shape="round" size="small" color="primary"
-            (click)="copyOrderIdToClipboard(orderDetails?.id)">
-            <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
           </ion-button>
         </p>
         <p id="label_order_total_value" *ngIf="orderDetails?.status.status === 'PendingToOrder'">
