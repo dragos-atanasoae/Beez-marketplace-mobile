@@ -47,12 +47,21 @@
           <ion-icon [src]="iconOrderStatus"></ion-icon>
           <span>{{labelOrderStatus}}</span>
         </ion-badge>
-        <p id="label_order_code">
+        <p id="label_order_code" *ngIf="orderDetails?.orderInfo?.orderedFrom == 'Elit'">
           <span>
             {{'pages.marketplace.orderDetails.labelOrderCode' | translate}}: {{orderDetails?.orderInfo.orderCode}}
           </span>
           <ion-button fill="clear" shape="round" size="small" color="tertiary" (click)="showAlertOrderCodeInfo()">
             <ion-icon slot="icon-only" name="information-circle"></ion-icon>
+          </ion-button>
+        </p>
+        <p id="label_order_code" *ngIf="orderDetails?.orderInfo?.orderedFrom !== 'Elit'">
+          <span>
+            {{'pages.marketplace.orderDetails.labelOrderId' | translate}}: {{orderDetails?.id}}
+          </span>
+          <ion-button fill="clear" shape="round" size="small" color="primary"
+            (click)="copyOrderIdToClipboard(orderDetails?.id)">
+            <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
           </ion-button>
         </p>
         <p id="label_order_total_value" *ngIf="orderDetails?.status.status === 'PendingToOrder'">
@@ -102,7 +111,8 @@
                 && (!orderDetails?.feedbackReceived && orderDetails?.paymentInfo.refundInfo == null)"> -->
                 <p class="label_section_title">{{'pages.marketplace.orderDetails.labelHowWasYourOrder' | translate}}</p>
                 <p class="label_review_order">
-                  {{'pages.marketplace.orderDetails.labelInfoReviewOrderPart1' | translate}}<br>{{'pages.marketplace.orderDetails.labelInfoReviewOrderPart2' | translate}}
+                  {{'pages.marketplace.orderDetails.labelInfoReviewOrderPart1' |
+                  translate}}<br>{{'pages.marketplace.orderDetails.labelInfoReviewOrderPart2' | translate}}
                 </p>
               </div>
               <!-- Cancel/Delete order -->
@@ -185,31 +195,36 @@
         <ion-col size="12">
           <p class="label_total_refund">{{'pages.marketplace.orderDetails.labelTotalRefund' | translate}}:
             <span class="label_amount_paid color_primary">
-              {{orderDetails?.refundInfo?.totalRequestedAmount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
+              {{orderDetails?.refundInfo?.totalRequestedAmount |
+              currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
             </span>
           </p>
           <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByUser != null">
             {{'pages.marketplace.orderDetails.labelRefundRequestByUser' | translate}}
             <span class="label_amount_paid color_primary">
-              {{orderDetails?.refundInfo?.requestedByUser.amount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
+              {{orderDetails?.refundInfo?.requestedByUser.amount |
+              currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
             </span>
           </p>
           <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByUser != null">
             Status:
             <span class="color_primary">
-              {{('pages.marketplace.orderDetails.statusListRefund.status' + orderDetails?.refundInfo?.requestedByUser?.status) | translate}}
+              {{('pages.marketplace.orderDetails.statusListRefund.status' +
+              orderDetails?.refundInfo?.requestedByUser?.status) | translate}}
             </span>
           </p>
           <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByVendor != null">
             {{'pages.marketplace.orderDetails.labelRefundRequestByVendor' | translate}}
             <span class="label_amount_paid color_primary">
-              {{orderDetails?.refundInfo?.requestedByVendor.amount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
+              {{orderDetails?.refundInfo?.requestedByVendor.amount |
+              currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
             </span>
           </p>
           <p class="label_refund_details" *ngIf="orderDetails.refundInfo.requestedByVendor != null">
             Status:
             <span class="color_primary">
-              {{('pages.marketplace.orderDetails.statusListRefund.status' + orderDetails?.refundInfo?.requestedByVendor?.status) | translate}}
+              {{('pages.marketplace.orderDetails.statusListRefund.status' +
+              orderDetails?.refundInfo?.requestedByVendor?.status) | translate}}
             </span>
           </p>
         </ion-col>
@@ -227,7 +242,8 @@
           <p>
             {{'pages.marketplace.orderDetails.labelPaidValue' | translate}}
             <span class="label_amount_paid color_primary">
-              {{orderDetails?.paymentInfo.payments[0].amount | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
+              {{orderDetails?.paymentInfo.payments[0].amount |
+              currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
             </span>
           </p>
           <p>
@@ -245,9 +261,10 @@
     <div class="horizontal_line"></div>
     <ng-container *ngTemplateOutlet="productsList; context: {list: undeliveredProducts, context: 'undelivered'}">
     </ng-container>
-    <ng-container *ngTemplateOutlet="productsList; context: {list: orderDetails?.orderInfo.products, context: 'delivered'}">
+    <ng-container
+      *ngTemplateOutlet="productsList; context: {list: orderDetails?.orderInfo.products, context: 'delivered'}">
     </ng-container>
-    
+
     <section>
       <!-- Section order status -->
       <p class="label_section_title">
@@ -359,7 +376,8 @@
         <p id="label_thank_you_message" *ngIf="reviewSubmited">
           {{'pages.marketplace.orderDetails.reviewOrder.labelInfoAppReview' | translate}}
           <span>Google Play</span> {{'pages.marketplace.orderDetails.reviewOrder.labelOr' | translate}} <span>App
-            Store</span></p>
+            Store</span>
+        </p>
         <ion-textarea [formControl]="messageReviewOrder" [ngClass]="{'textarea_active': messageReviewOrder.dirty }"
           autofocus="true" inputmode="text"
           placeholder="{{'pages.marketplace.orderDetails.reviewOrder.placeholderFeedback' | translate}}"
