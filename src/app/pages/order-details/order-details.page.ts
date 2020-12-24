@@ -24,7 +24,7 @@ import { EventsService } from 'src/app/services/events.service';
 import { CustomAlertComponent } from 'src/app/components/custom-alert/custom-alert.component';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
-const { Browser } = Plugins;
+const { Browser, Clipboard } = Plugins;
 
 @Component({
   selector: 'app-order-details',
@@ -228,6 +228,16 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
     });
     this.analyticsService.logEvent('show_order_code_info', { context: this.eventContext });
     modal.present();
+  }
+
+  /**
+   * @name copyOrderIdToClipboard
+   * @description Copy order id to Clipboard
+   */
+  async copyOrderIdToClipboard(orderId: string) {
+    console.log(orderId);
+    const message = this.translate.instant('pages.marketplace.orderDetails.toastMessages.copyToClipboard');
+    Clipboard.write({ string: orderId }).then(() => this.presentToast(message));
   }
 
   /**
