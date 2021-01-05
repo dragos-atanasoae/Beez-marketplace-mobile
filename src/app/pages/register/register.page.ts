@@ -76,7 +76,7 @@ export class RegisterPage implements OnInit {
     private authenticationService: AuthenticationService,
     private manageAccountService: ManageAccountService,
     private facebook: Facebook
-    ) {
+  ) {
     this.language = localStorage.getItem('language');
     this.translate.setDefaultLang(this.language);
     this.translate.use(this.language);
@@ -95,13 +95,22 @@ export class RegisterPage implements OnInit {
       accept_term_of_use: new FormControl(false, Validators.requiredTrue),
       confirm_age_over_18: new FormControl(false, Validators.requiredTrue),
       promo_code: new FormControl()
-    });
+    }, this.passwordsMatchValidator);
   }
 
   ngOnInit() {
     this.selectedCountry = 'ro';
     this.initializeValidationMessages();
     this.registerForm.controls.email.setValue(this.email);
+  }
+
+  private passwordsMatchValidator(form: FormGroup) {
+    if (form.get('passwd') && form.get('confirm_passwd')) {
+      if (form.get('confirm_passwd').value.length >= 6) {
+        return form.get('passwd').value === form.get('confirm_passwd').value ? null : { mismatch: true };
+      }
+    }
+    return null;
   }
 
   getDeviceLocaleData() {
@@ -203,7 +212,7 @@ export class RegisterPage implements OnInit {
     }
     localStorage.setItem('userName', this.userEmail);
     this.analyticsService.segmentIdentify();
-    this.analyticsService.logEvent('register', {email: this.userEmail, promo_code: this.registerData.promoCode});
+    this.analyticsService.logEvent('register', { email: this.userEmail, promo_code: this.registerData.promoCode });
     this.login(country);
     const toastMessage = this.translate.instant('pages.register.toastMessages.registerSuccessfully');
     this.presentToast(toastMessage);
@@ -215,9 +224,9 @@ export class RegisterPage implements OnInit {
   showError(errorResponse) {
     let message: string;
     if (errorResponse.error[''][1]) {
-       message =  errorResponse.error[''][1];
+      message = errorResponse.error[''][1];
     } else if (errorResponse.error[''][0]) {
-      message =  errorResponse.error[''][0];
+      message = errorResponse.error[''][0];
     } else {
       message = 'Something went wrong';
     }
