@@ -569,8 +569,8 @@ export class LoginPage implements OnInit {
     console.log('show toast with action');
     const toast = await this.toastCtrl.create({
       message: msg,
-      position: 'bottom',
-      duration: 10000,
+      position: 'top',
+      duration: 6000,
       buttons: [{
         text: 'OK',
         role: 'cancel',

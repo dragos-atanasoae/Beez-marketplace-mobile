@@ -17,6 +17,8 @@
       <h6 class="label_email">{{email}}</h6>
       <p *ngIf="email != undefined" class="page_subtitle" [innerHTML]="('pages.register.labelNoAccount' | translate) | safeHTML">
       </p>
+
+      <!-- EMAIL -->
       <ion-item class="login_form_item" [hidden]="email != undefined">
         <ion-icon name="person" class="icon_login" item-right></ion-icon>
         <ion-input type="email" formControlName="email" autocomplete="on" placeholder="Email"></ion-input>
@@ -29,8 +31,10 @@
           </div>
         </ng-container>
       </div>
+      
+      <!-- PASSWORD -->
       <ion-item class="login_form_item">
-        <ion-icon icon-small name="key" class="icon_login" item-right></ion-icon>
+        <ion-icon icon-small name="key" class="icon_login" [color]="registerForm.errors?.mismatch ? 'danger' : 'medium'" item-right></ion-icon>
         <ion-input [type]="passwordType" clearOnEdit="false" formControlName="passwd" autocomplete="on"
           placeholder="{{'pages.register.formPasswordLabel' | translate}}"></ion-input>
         <ion-button fill="clear" size="small" class="passwordIcon" (click)='hideShowPassword()'>
@@ -45,8 +49,10 @@
           </div>
         </ng-container>
       </div>
+
+      <!-- CONFIRM PASSWORD -->
       <ion-item class="login_form_item">
-        <ion-icon icon-small name="key" class="icon_login" item-right></ion-icon>
+        <ion-icon icon-small name="key" class="icon_login" [color]="registerForm.errors?.mismatch ? 'danger' : 'medium'" item-right></ion-icon>
         <ion-input [type]="passwordType" clearOnEdit="false" formControlName="confirm_passwd"
           placeholder=" {{'pages.register.formConfirmPasswordLabel' | translate}}"></ion-input>
         <ion-button fill="clear" size="small" class="passwordIcon" (click)='hideShowPassword()'>
@@ -60,7 +66,14 @@
             {{ validation.message }}
           </div>
         </ng-container>
+        <ng-container *ngIf="registerForm.errors?.mismatch">
+          <div class="error-message">
+            {{'pages.register.toastMessages.wrongConfirmPassword' | translate}}
+          </div>
+        </ng-container>
       </div>
+
+      <!-- PROMO CODE -->
       <ion-item class="login_form_item" style="display: none;">
         <ion-label position="floating">
           <ion-icon name="gift" class="register_form_icon"></ion-icon>
@@ -86,11 +99,12 @@
       <div class="validation-errors-checkboxes">
         <ng-container *ngFor="let validation of validationMessages.accept_term_of_use">
           <div class="error-message"
-            *ngIf="registerForm.get('accept_term_of_use').hasError(validation.type) && (registerForm.get('accept_term_of_use').dirty || registerForm.get('accept_term_of_use').touched)">
-            <ion-icon name="alert-circle"></ion-icon> {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
+          *ngIf="registerForm.get('accept_term_of_use').hasError(validation.type) && (registerForm.get('accept_term_of_use').dirty || registerForm.get('accept_term_of_use').touched)">
+          <ion-icon name="alert-circle"></ion-icon> {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    <!-- ACCEPT TERMS OF USE -->
       <ion-row class="row_checkbox ion-align-items-center">
         <ion-col size="auto">
           <ion-checkbox mode="ios" class="checkbox_terms_of_use" formControlName="accept_term_of_use"></ion-checkbox>
@@ -113,6 +127,8 @@
           </div>
         </ng-container>
       </div>
+
+      <!-- CONFIRM AGE OVER 18 -->
       <ion-row class="row_checkbox ion-align-items-center">
         <ion-col size="auto">
           <ion-checkbox mode="ios" class="checkbox_confirm_age" formControlName="confirm_age_over_18"></ion-checkbox>
