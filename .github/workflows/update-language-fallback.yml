@@ -1,0 +1,25 @@
+name: Update language fallback
+on:
+  push:
+    branches: [ master ]
+env: 
+  HEADLESS_CMS_URL: https://func-test-headless-cms.azurewebsites.net
+  LANGUAGE_FILES_PATH: src/assets/i18n
+jobs:
+  update-language-fallback:
+    if: github.event_name == 'push'    
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+    - name: Checkout current repository
+      uses: actions/checkout@v2    
+    - name: Update language fallback
+      run: |
+        rm -f ${{env.LANGUAGE_FILES_PATH}}/en.json ${{env.LANGUAGE_FILES_PATH}}/ro.json
+        curl --location --request GET '${{env.HEADLESS_CMS_URL}}/api/DataGetter/en/fmmobile' | jq . >> ${{env.LANGUAGE_FILES_PATH}}/en.json
+        curl --location --request GET '${{env.HEADLESS_CMS_URL}}/api/DataGetter/ro/fmmobile' | jq . >> ${{env.LANGUAGE_FILES_PATH}}/ro.json
+    - name: Git Commit/Push Changes
+      uses: actions-x/commit@v2
+      with:       
+        message: update_language_fallback        
+        branch: master
