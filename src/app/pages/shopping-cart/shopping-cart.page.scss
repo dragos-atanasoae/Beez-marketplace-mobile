@@ -72,6 +72,24 @@ ion-slides {
     }
 }
 
+// CARD APPLY BEEZ VOUCHER
+#card_apply_beez_voucher {
+    color: var(--ion-color-secondary-tint);
+
+    .icon_wallet {
+        font-size: 1.3rem;
+        color: var(--ion-color-primary);
+    }
+
+    ion-button {
+        float: right;
+    }
+
+    p {
+        text-align: left;
+    }
+}
+
 // PRODUCTS LIST
 #wrap_products_list {
     width: 100%;
@@ -142,7 +160,6 @@ ion-slides {
 
                 .wrap_quantity,
                 .wrap_price {
-
                     .label_price,
                     .label_quantity {
                         font-size: 0.6em;

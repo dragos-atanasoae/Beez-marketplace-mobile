@@ -1,3 +1,4 @@
+import { ApplyBeezVoucherPage } from './../apply-beez-voucher/apply-beez-voucher.page';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { ModalController, IonSlides, AlertController } from '@ionic/angular';
@@ -7,7 +8,7 @@ import { InternationalizationService } from 'src/app/services/internationalizati
 import { Observable, Subject } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
 import { PaymentPage } from '../payment/payment.page';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AnalyticsService } from 'src/app/services/analytics.service';
 import { ImageViewerOptionsModel } from 'src/app/models/imageViewerOptions.model';
 
@@ -31,6 +32,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
   private unsubscribe$: Subject<boolean> = new Subject();
 
   localeData: LocaleDataModel;
+  shoppingCart: any;
   shoppingCartList: any = [];
   totalCart: Observable<any>;
   cartValue = 0;
@@ -52,8 +54,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     private translate: TranslateService,
     private marketplaceService: MarketplaceService,
     private stripePaymentService: StripePaymentService,
-    private internationalizationService: InternationalizationService
-  ) { }
+    private internationalizationService: InternationalizationService) {}
 
   ngOnInit() {
     // Initialize locale context
@@ -120,6 +121,12 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     this.marketplaceService.getShoppingCart(this.vendor.id, this.city.Id);
     this.marketplaceService.shoppingCartId.subscribe(res => this.shoppingCartId = res);
     this.marketplaceService.shoppingCartList$.pipe(takeUntil(this.unsubscribe$)).subscribe(res => this.shoppingCartList = res);
+
+    const shoppingCart: Observable<any> = this.marketplaceService.shoppingCart;
+    shoppingCart.subscribe(res => {
+      this.shoppingCart = res;
+    });
+
     this.totalCart = this.marketplaceService.totalCart;
     this.totalCart.subscribe(res => {
       this.cartValue = res;
@@ -283,6 +290,27 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
 
   closeModal() {
     this.modalCtrl.dismiss();
+  }
+
+  /**
+   * @name openApplyBeezVoucher
+   * @description Open apply, remove and display Beez Vouchers Page
+   */
+  async openApplyBeezVoucher() {
+    const modal = await this.modalCtrl.create({
+      component: ApplyBeezVoucherPage,
+      componentProps: {
+        city: this.city,
+        vendor: this.vendor,
+        shoppingCart: this.shoppingCart
+      },
+    });
+    modal.present();
+    modal.onDidDismiss().then((data: any) => {
+      if (data.data === 'successfullyAddedToCart') {
+        console.log('successfullyAddedToCart');
+      }
+    });
   }
 
 }

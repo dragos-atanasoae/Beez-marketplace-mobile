@@ -27,9 +27,12 @@ export class MarketplaceService {
   shoppingCartId$ = new Subject<number>();
   shoppingCartId = this.shoppingCartId$.asObservable();
 
+  shoppingCart$ = new Subject<any>();
+  shoppingCart = this.shoppingCart$.asObservable();
+
   constructor(private httpClient: HttpClient,
-              private loadingService: LoadingService,
-              private modalController: ModalController) { }
+    private loadingService: LoadingService,
+    private modalController: ModalController) { }
 
   prepareHeaderForRequest() {
     this.prefixUrlByCountry = 'https://' + localStorage.getItem('country');
@@ -88,6 +91,7 @@ export class MarketplaceService {
       .subscribe((res: any) => {
         console.log(res);
         if (res.requestStatus === 'Success') {
+          this.shoppingCart$.next(res.requestData);
           this.shoppingCartId$.next(res.requestData.shoppingCartId);
           this.shoppingCartList$.next(res.requestData.products);
           this.totalCart$.next(res.requestData.totalValue);
@@ -159,6 +163,7 @@ export class MarketplaceService {
       .subscribe((res: any) => {
         console.log(res);
         if (res.requestStatus === 'Success') {
+          this.shoppingCart$.next(res.requestData);
           this.shoppingCartList$.next(res.requestData.products);
           this.totalCart$.next(res.requestData.totalValue);
           this.modalController.dismiss('successfullyAddedToCart');
@@ -190,6 +195,7 @@ export class MarketplaceService {
       .subscribe((res: any) => {
         console.log(res);
         if (res.requestStatus === 'Success') {
+          this.shoppingCart$.next(res.requestData);
           this.shoppingCartList$.next(res.requestData.products);
           this.totalCart$.next(res.requestData.totalValue);
           if (!isRemove) {
@@ -331,7 +337,7 @@ export class MarketplaceService {
   foodMarketplaceSearch(cityId: number, keyword: string) {
     this.prepareHeaderForRequest();
     const url = this.prefixUrlByCountry + this.apiURL + 'api/FoodMarketplaceSearch?cityId=' + cityId + '&keyword=' + keyword;
-    return this.httpClient.get(url, {headers: this.token ? this.headers : this.guestHeader});
+    return this.httpClient.get(url, { headers: this.token ? this.headers : this.guestHeader });
   }
 
   /**
@@ -360,5 +366,28 @@ export class MarketplaceService {
         this.promotionsList$.next(promotionsList);
       }
     });
+  }
+
+  /**
+   * @name validateVoucherCode
+   * @description Check if a beez voucher can be used for FM shopping cart
+   */
+  validateVoucherCode(body: any) {
+    this.prepareHeaderForRequest();
+
+    const url = this.prefixUrlByCountry + this.apiURL + 'api/beez-vouchers/application/foodmarketplace';
+    return this.httpClient.post(url, body, { headers: this.headers });
+  }
+
+  removeVoucher(body: any) {
+    this.prepareHeaderForRequest();
+
+    const options = {
+      headers: this.headers,
+      body: body
+    };
+
+    const url = this.prefixUrlByCountry + this.apiURL + 'api/beez-vouchers/application/foodmarketplace';
+    return this.httpClient.delete(url, options);
   }
 }

@@ -1,6 +1,7 @@
+import { ApplyBeezVoucherPageModule } from './../apply-beez-voucher/apply-beez-voucher.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -18,8 +19,10 @@ import { SelectDeliveryAddressComponentModule } from 'src/app/components/select-
     IonicModule,
     PipesModule,
     TranslateModule,
+    ReactiveFormsModule,
     SelectDeliveryAddressComponentModule,
-    ShoppingCartPageRoutingModule
+    ShoppingCartPageRoutingModule,
+    ApplyBeezVoucherPageModule
   ],
   declarations: [ShoppingCartPage]
 })

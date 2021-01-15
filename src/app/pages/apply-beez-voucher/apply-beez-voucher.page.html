@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" shape="round" color="primary" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{'pages.applyBeezVoucher.header' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Add Beez Voucher -->
+  <div *ngIf="shoppingCart?.vouchers.length == 0" id="wrap_add_beez_voucher">
+    <h3 class="title">{{'pages.applyBeezVoucher.title' | translate}}</h3>
+    <p class="subtitle">{{'pages.applyBeezVoucher.subtitle' | translate}}</p>
+
+    <div class="content">
+      <ion-item class="item_voucher_code" lines="none">
+        <ion-icon icon-small name="pricetag-outline" item-right></ion-icon>
+        <ion-input [formControl]="voucherCode" color="secondary" type="text"
+          [placeholder]="'pages.applyBeezVoucher.placehoderEnterCode' | translate"></ion-input>
+      </ion-item>
+
+      <ion-button [disabled]="voucherCode.invalid" class="btn_apply_voucher" mode="ios" expand="full" shape="round"
+        color="primary" (click)="validateVoucherCode()">
+        {{'pages.applyBeezVoucher.buttonApply' | translate}}
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Display added vouchers -->
+  <div *ngIf="shoppingCart?.vouchers.length > 0" id="wrap_beez_vouchers">
+    <ion-card mode="ios" button id="card_voucher" *ngFor="let voucher of shoppingCart?.vouchers">
+      <ion-row class="ion-align-items-center">
+        <ion-col size="2">
+          <div class="wrap_icon_pricetag">
+            <ion-icon icon-small name="pricetag-outline" item-right></ion-icon>
+          </div>
+        </ion-col>
+        <ion-col size="8" class="wrap_voucher_code">
+          <p class="label_voucher_code">{{voucher.code}}</p>
+          <p class="label_voucher_discount">{{voucher.discountValue |
+            currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</p>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button class="btn_remove_voucher" color="secondary" size="small" shape="round" fill="clear"
+            (click)="removeVoucher(voucher.id)">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+
+    <!-- Add new Beez Voucher -->
+    <ion-item class="item_voucher_code" lines="none">
+      <ion-icon icon-small name="pricetag-outline" item-right></ion-icon>
+      <ion-input [formControl]="voucherCode" color="secondary" type="text"
+        [placeholder]="'pages.applyBeezVoucher.placehoderEnterCode' | translate"></ion-input>
+      <ion-button color=" primary" fill="clear" size="small" shape="round" class="btn_apply_voucher"
+        (click)="validateVoucherCode()">
+        {{'pages.applyBeezVoucher.buttonApply' | translate}}
+      </ion-button>
+    </ion-item>
+
+  </div>
+</ion-content>
