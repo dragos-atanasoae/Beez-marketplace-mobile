@@ -62,6 +62,13 @@
         {{'pages.applyBeezVoucher.buttonApply' | translate}}
       </ion-button>
     </ion-item>
-
   </div>
 </ion-content>
+
+<ion-footer *ngIf="shoppingCart?.vouchers.length > 0">
+  <ion-toolbar>
+    <ion-button mode="ios" expand="block" fill="solid" shape="round" (click)="closeModal()">
+      {{'buttons.buttonContinueShopping' | translate}}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

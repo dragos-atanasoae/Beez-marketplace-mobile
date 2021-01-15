@@ -21,7 +21,7 @@
         flex-direction: column;
     }
 
-    .item_voucher_code { 
+    .item_voucher_code {
         width: 100%;
     }
 
@@ -105,5 +105,13 @@
 
     .btn_remove_voucher {
         float: right;
+    }
+}
+
+ion-footer ion-toolbar {
+    padding: 1em;
+    ion-button {
+        margin: auto;
+        max-width: 30em;
     }
 }
