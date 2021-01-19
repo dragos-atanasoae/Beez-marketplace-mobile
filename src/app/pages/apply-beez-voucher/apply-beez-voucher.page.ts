@@ -54,12 +54,12 @@ export class ApplyBeezVoucherPage implements OnInit {
 
     if (this.voucherCode.valid) {
       this.loadingService.presentLoading();
-      this.voucherCode.reset();
       this.marketplaceService.validateVoucherCode(body)
         .subscribe((response: any) => {
           console.log(response);
           this.loadingService.dismissLoading();
           if (response.canBeUsed) {
+            this.voucherCode.reset();
             // Update order values after voucher code is applied
             this.updateOrderValues(response.cartOrOrder);
             this.presentToast(this.translate.instant('pages.applyBeezVoucher.toastMessages.success') + this.currencyPipe.transform(
