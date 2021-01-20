@@ -21,6 +21,14 @@
   <ion-slides mode="ios" (ionSlideDidChange)="getActiveSlideIndex()" #slidesCheckout>
     <!-- Step 1: View shopping cart content -->
     <ion-slide id="slide_shopping_cart">
+      <div id="wrap_vendor_logo">
+        <div>
+          <img [src]="vendor.imageUrl" alt="{{vendor.name}}"
+            onerror="this.onerror==null;this.src='./assets/imgs/bee-characters/icon_pending_bee.svg'"
+            *ngIf="shoppingCart">
+          <ion-spinner name="bubbles" color="medium" *ngIf="shoppingCart == null"></ion-spinner>
+        </div>
+      </div>
       <!-- Button add more products -->
       <ion-card button id="btn_add_more_products" (click)="closeModal()">
         <ion-row class="ion-align-items-center">
@@ -32,13 +40,11 @@
           </ion-col>
         </ion-row>
       </ion-card>
+
       <!-- List of the products added to the shopping cart -->
       <div id="wrap_products_list">
         <!-- Products list -->
         <ion-card class="cardview_product" *ngFor="let product of shoppingCartList">
-          <!-- <ion-button fill="clear" color="medium" class="btn_remove_product" (click)="alertRemoveProduct(product)">
-            <ion-icon slot="icon-only" name="trash"></ion-icon>
-          </ion-button> -->
           <ion-row class="row_products_list ion-align-items-center">
             <!-- Product image -->
             <ion-col size="3" class="centered_content">
@@ -55,47 +61,119 @@
               <ion-row class="row_product_details ion-align-items-center">
                 <ion-col size="4">
                   <div class="wrap_price">
-                    <!-- <p class="label_price">{{'pages.marketplace.shoppingCart.labelPrice' | translate}}</p> -->
                     <p class="label_product_price">
                       {{product.unitValue | number : '.0-2'}}
-                      <span
-                        class="label_currency">{{(0 | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID).substr(1)}}</span>
+                      <span class="label_currency">{{(0 |
+                        currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID).substr(1)}}</span>
                     </p>
                   </div>
                 </ion-col>
                 <ion-col size="2">
                   <div class="wrap_quantity">
-                    <!-- <p class="label_quantity">{{'pages.marketplace.shoppingCart.labelQuantity' | translate}}</p> -->
                     <p class="label_quantity_value">x {{product.quantity}}</p>
                   </div>
                 </ion-col>
-                <!-- <ion-col size="2" class="ion-align-self-end" (click)="openMarketplaceProductsDetails(product)">
-                  <ion-button class="btn_edit_quantity" expand="block" fill="clear" shape="round" size="small">
-                    Edit
-                  </ion-button>
-                </ion-col> -->
                 <ion-col size="6" class="col_item_value">
                   <p class="label_product_value">
                     {{product.totalValue | number : '.0-2'}}
-                    <span
-                      class="label_currency">{{(0 | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID).substr(1)}}</span>
+                    <span class="label_currency">{{(0 |
+                      currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID).substr(1)}}</span>
                   </p>
                 </ion-col>
               </ion-row>
             </ion-col>
             <!-- Product options -->
             <ion-col size="1" class="col_product_options ion-align-self-start">
-              <!-- Edit quantity -->
-              <!-- <ion-button class="btn_edit_quantity" color="primary" fill="clear" shape="round" size="small" (click)="openMarketplaceProductsDetails(product)">
-                <ion-icon slot="icon-only" name="ellipsis-vertical-circle-outline"></ion-icon>
-              </ion-button> -->
               <!-- Remove product -->
-              <ion-button class="btn_remove_product" color="medium" fill="clear" shape="round" size="small" (click)="alertRemoveProduct(product)">
+              <ion-button class="btn_remove_product" color="medium" fill="clear" shape="round" size="small"
+                (click)="alertRemoveProduct(product)">
                 <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
               </ion-button>
             </ion-col>
           </ion-row>
         </ion-card>
+      </div>
+      <!-- ADD BEEZ VOUCHER -->
+      <ion-row id="row_add_beez_voucher">
+        <ion-col size="auto" class="align_items_center">
+          <ion-icon class="icon_voucher" src="./assets/icon/icon_voucher.svg"></ion-icon>
+        </ion-col>
+        <ion-col size="10">
+          <p class="label_add_voucher">{{'pages.marketplace.shoppingCart.labelAddBeezVoucher' | translate}}</p>
+        </ion-col>
+        <!-- Add new Beez Voucher -->
+        <ion-item class="item_voucher_code" lines="none">
+          <ion-input [formControl]="beezVoucherCode" color="secondary" type="text"
+            [placeholder]="'pages.marketplace.shoppingCart.placehoderEnterCode' | translate"></ion-input>
+          <ion-button color=" primary" fill="clear" size="small" shape="round" class="btn_apply_voucher"
+            (click)="validateVoucherCode()">
+            {{'buttons.buttonApply' | translate}}
+          </ion-button>
+        </ion-item>
+      </ion-row>
+
+      <!-- ORDER SUMMARY -->
+      <div id="order_summary">
+        <ion-row class="row_order_summary">
+          <!-- Order subtotal -->
+          <ng-container *ngTemplateOutlet="templateOrderSubtotal;"></ng-container>
+          <!-- Shipping cost -->
+          <ng-container *ngTemplateOutlet="templateShippingCost;"></ng-container>
+          <ion-col size="12" class="disclaimer"
+            *ngIf="(shoppingCart?.undiscountedValue < vendor.minimumOrderValue) || (shoppingCart?.undiscountedValue < vendor.deliveryFeeThreshold && vendor.deliveryFeeThreshold != null)">
+            <!-- Disclaimer for minimum value to shop -->
+            <p class="label_disclaimer" *ngIf="shoppingCart?.undiscountedValue < vendor.minimumOrderValue">
+              {{'pages.marketplace.shoppingCart.labelDisclaimerMinOrderPart1' | translate}}
+              <span id="label_minimum_value">
+                {{'pages.marketplace.shoppingCart.labelDisclaimerMinimumValue' | translate}}
+                <strong>
+                  {{vendor.minimumOrderValue |
+                  currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}.
+                </strong>
+              </span>
+              {{'pages.marketplace.shoppingCart.labelDisclaimerMinOrderPart2' | translate}}
+              <span id="label_required_value">
+                {{ vendor.minimumOrderValue - shoppingCart?.undiscountedValue |
+                currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}.
+              </span>
+            </p>
+            <!-- Disclaimer for shipping fee -->
+            <!-- If value of the cart is less than the DeliveryFeeThreshold, then the ShippingFee is mandatory. -->
+            <p class="label_disclaimer"
+              *ngIf="shoppingCart?.undiscountedValue < vendor.deliveryFeeThreshold && vendor.deliveryFeeThreshold != null && shoppingCart?.undiscountedValue > vendor.minimumOrderValue">
+              {{'pages.marketplace.shoppingCart.labelDisclaimerShippingFeePart1' | translate}}
+              <span id="label_free_shipping">
+                {{'pages.marketplace.shoppingCart.labelFreeShipping' | translate}}
+              </span>
+              {{'pages.marketplace.shoppingCart.labelDisclaimerShippingFeePart2' | translate}}
+              <strong>{{vendor.deliveryFeeThreshold - shoppingCart?.undiscountedValue |
+                currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</strong>
+            </p>
+          </ion-col>
+          <!-- DISPLAY APPLIED BEEZ VOUCHERS LIST -->
+          <ion-row id="row_vouchers_list" *ngFor="let voucher of shoppingCart?.vouchers">
+            <ion-col size="8">
+              <p class="label_voucher">{{'pages.marketplace.shoppingCart.labelBeezVoucher' | translate}}</p>
+              <p class="label_voucher_code">{{voucher.code}}</p>
+            </ion-col>
+            <ion-col size="4">
+              <ion-button class="btn_remove_voucher" fill="clear" shape="round" color="danger"
+                (click)="removeVoucher(voucher.id)">
+                -{{voucher.discountValue |
+                currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+                <ion-icon slot="end" color="medium" name="close"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <!-- Total order value -->
+          <ng-container *ngTemplateOutlet="templateOrderTotal;"></ng-container>
+          <ion-col class="col_buttons">
+            <ion-button expand="block" fill="solid" shape="round" *ngIf="currentIndex === 0" color="primary"
+              [disabled]="shoppingCart?.undiscountedValue < vendor.minimumOrderValue" (click)="nextSlide()">
+              <span>{{'pages.marketplace.shoppingCart.buttonContinue' | translate}}</span>
+            </ion-button>
+          </ion-col>
+        </ion-row>
       </div>
     </ion-slide>
     <!-- Step 2: Select delivery address -->
@@ -104,96 +182,102 @@
         (selectAddress)="receiveSelectedAddress($event)" *ngIf="currentIndex === 1"></app-select-delivery-address>
     </ion-slide>
   </ion-slides>
-
-  <!-- Button Checkout -->
-  <div id="footer">
-    <ion-row class="row_footer">
-      <!-- Order subtotal -->
-      <ion-col size="6">
-        <p class="label_subtotal">
-          Subtotal
-        </p>
-      </ion-col>
-      <ion-col size="6">
-        <p class="label_subtotal_value">
-          {{cartValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
-        </p>
-      </ion-col>
-      <!-- Shipping cost -->
-      <ion-col size="6">
-        <p class="label_shipping_cost">
-          {{'pages.marketplace.shoppingCart.labelShippingCost' | translate}}
-        </p>
-      </ion-col>
-      <ion-col size="6">
-        <!-- If the DeliveryFeeThreshold is exceeded, then the ShippingFee is waived. -->
-        <p class="label_no_shipping_cost_value"
-          *ngIf="cartValue > vendor.deliveryFeeThreshold && vendor.deliveryFeeThreshold != null">
-          {{ 0 | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID  }}
-        </p>
-        <p class="label_shipping_cost_value" [ngClass]="{label_no_shipping_cost_value: vendor.shippingFee === 0}"
-          *ngIf="cartValue < vendor.deliveryFeeThreshold || vendor.deliveryFeeThreshold == null">
-          {{vendor.shippingFee | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
-        </p>
-      </ion-col>
-
-      <ion-col size="12" class="disclaimer"
-        *ngIf="(cartValue < vendor.minimumOrderValue) || (cartValue < vendor.deliveryFeeThreshold && vendor.deliveryFeeThreshold != null)">
-        <!-- Disclaimer for minimum value to shop -->
-        <p class="label_disclaimer" *ngIf="cartValue < vendor.minimumOrderValue">
-          {{'pages.marketplace.shoppingCart.labelDisclaimerMinOrderPart1' | translate}}
-          <span id="label_minimum_value">
-            {{'pages.marketplace.shoppingCart.labelDisclaimerMinimumValue' | translate}}
-            <strong>
-              {{vendor.minimumOrderValue | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}.
-            </strong>
-          </span>
-          {{'pages.marketplace.shoppingCart.labelDisclaimerMinOrderPart2' | translate}}
-          <span id="label_required_value">
-            {{ vendor.minimumOrderValue - cartValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID  }}.
-          </span>
-        </p>
-
-        <!-- Disclaimer for shipping fee -->
-        <!-- If value of the cart is less than the DeliveryFeeThreshold, then the ShippingFee is mandatory. -->
-        <p class="label_disclaimer"
-          *ngIf="cartValue < vendor.deliveryFeeThreshold && vendor.deliveryFeeThreshold != null && cartValue > vendor.minimumOrderValue">
-          {{'pages.marketplace.shoppingCart.labelDisclaimerShippingFeePart1' | translate}}
-          <span id="label_free_shipping">
-            {{'pages.marketplace.shoppingCart.labelFreeShipping' | translate}}
-          </span>
-          {{'pages.marketplace.shoppingCart.labelDisclaimerShippingFeePart2' | translate}}
-          <strong>{{vendor.deliveryFeeThreshold - cartValue | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}</strong>
-        </p>
-      </ion-col>
-
-      <!-- Total order value -->
-      <ion-col size="6">
-        <p class="label_total">
-          Total
-        </p>
-      </ion-col>
-      <ion-col size="6">
-        <p class="label_total_amount">
-          {{ cartValue + (cartValue < vendor.deliveryFeeThreshold || vendor.deliveryFeeThreshold == null ? vendor.shippingFee : 0 ) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
-        </p>
-      </ion-col>
-
-      <ion-col *ngIf="currentIndex === 1" class="col_buttons">
-        <ion-button expand="block" color="medium" fill="outline" shape="round" class="btn_back" (click)="previousSlide()">
-          {{'pages.marketplace.shoppingCart.buttonBack' | translate}}
-        </ion-button>
-      </ion-col>
-      <ion-col class="col_buttons">
-        <ion-button expand="block" fill="solid" shape="round" *ngIf="currentIndex === 0" color="primary"
-          [disabled]="cartValue < vendor.minimumOrderValue" (click)="nextSlide()">
-          <span>{{'pages.marketplace.shoppingCart.buttonContinue' | translate}}</span>
-        </ion-button>
-        <ion-button expand="block" fill="solid" shape="round" [disabled]="selectedAddress === null || disableButton"
-          *ngIf="currentIndex === 1" (click)="checkoutShoppingCart()">
-          {{'pages.marketplace.shoppingCart.buttonCheckout' | translate}}
-        </ion-button>
-      </ion-col>
-    </ion-row>
-  </div>
 </ion-content>
+
+<ion-footer *ngIf="currentIndex > 0">
+  <ion-toolbar>
+    <div id="order_summary">
+      <div id="label_section_title" (click)="expandOrderSummary = !expandOrderSummary">
+        <p>
+          {{(expandOrderSummary ? 'pages.marketplace.shoppingCart.labelOrderSummary' :
+          'pages.marketplace.shoppingCart.labelViewOrderSummary') | translate}}
+          <ion-icon [name]="!expandOrderSummary ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+        </p>
+        <p *ngIf="!expandOrderSummary" class="label_total_amount">
+          {{ cartValue + (cartValue < vendor.deliveryFeeThreshold || vendor.deliveryFeeThreshold==null ?
+            vendor.shippingFee : 0 ) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}} </p>
+      </div>
+      <ion-row class="row_order_summary" *ngIf="expandOrderSummary">
+        <!-- Order subtotal -->
+        <ng-container *ngTemplateOutlet="templateOrderSubtotal;"></ng-container>
+        <!-- Shipping cost -->
+        <ng-container *ngTemplateOutlet="templateShippingCost;"></ng-container>
+        <!-- Discount value  -->
+        <ion-col size="6" *ngIf="shoppingCart?.vouchersTotalValue">
+          <p class="label_text">
+            {{'pages.marketplace.shoppingCart.labelDiscount' | translate}}
+          </p>
+        </ion-col>
+        <ion-col size="6" *ngIf="shoppingCart?.vouchersTotalValue">
+          <p class="label_discount_value">
+            - {{ shoppingCart?.vouchersTotalValue |
+            currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}} </p>
+        </ion-col>
+        <!-- Total order value -->
+        <ng-container *ngTemplateOutlet="templateOrderTotal;"></ng-container>
+      </ion-row>
+      <ion-row class="row_order_summary">
+        <ion-col *ngIf="currentIndex === 1" class="col_buttons">
+          <ion-button expand="block" color="medium" fill="outline" shape="round" class="btn_back"
+            (click)="previousSlide()">
+            {{'pages.marketplace.shoppingCart.buttonBack' | translate}}
+          </ion-button>
+        </ion-col>
+        <ion-col class="col_buttons">
+          <ion-button expand="block" fill="solid" shape="round" [disabled]="selectedAddress === null || disableButton"
+            *ngIf="currentIndex === 1" (click)="checkoutShoppingCart()">
+            {{'pages.marketplace.shoppingCart.buttonCheckout' | translate}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-toolbar>
+</ion-footer>
+
+<!-- ORDER SUBTOTAL -->
+<ng-template #templateOrderSubtotal>
+  <ion-col size="6">
+    <p class="label_text">
+      Subtotal
+    </p>
+  </ion-col>
+  <ion-col size="6">
+    <p class="label_value">
+      {{shoppingCart?.undiscountedValue |
+      currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
+    </p>
+  </ion-col>
+</ng-template>
+<!-- SHIPPING COST -->
+<ng-template #templateShippingCost>
+  <ion-col size="6">
+    <p class="label_text">
+      {{'pages.marketplace.shoppingCart.labelShippingCost' | translate}}
+    </p>
+  </ion-col>
+  <ion-col size="6">
+    <!-- If the DeliveryFeeThreshold is exceeded, then the ShippingFee is waived. -->
+    <p class="label_value"
+      *ngIf="shoppingCart?.undiscountedValue > vendor.deliveryFeeThreshold && vendor.deliveryFeeThreshold != null">
+      {{ 0 | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID }}
+    </p>
+    <p class="label_value"
+      *ngIf="shoppingCart?.undiscountedValue < vendor.deliveryFeeThreshold || vendor.deliveryFeeThreshold == null">
+      {{vendor.shippingFee | currency:localeData?.currency:'symbol-narrow':'.0-2':localeData?.localeID}}
+    </p>
+  </ion-col>
+</ng-template>
+<!-- TOTAL ORDER -->
+<ng-template #templateOrderTotal>
+  <hr class="divider">
+  <ion-col size="6">
+    <p class="label_total">
+      Total
+    </p>
+  </ion-col>
+  <ion-col size="6">
+    <p class="label_total_amount">
+      {{ cartValue + (cartValue < vendor.deliveryFeeThreshold || vendor.deliveryFeeThreshold==null ? vendor.shippingFee
+        : 0 ) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}} </p>
+  </ion-col>
+</ng-template>
