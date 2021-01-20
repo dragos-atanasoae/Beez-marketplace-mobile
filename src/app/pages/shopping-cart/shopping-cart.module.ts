@@ -1,4 +1,3 @@
-import { ApplyBeezVoucherPageModule } from './../apply-beez-voucher/apply-beez-voucher.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,7 +21,6 @@ import { SelectDeliveryAddressComponentModule } from 'src/app/components/select-
     ReactiveFormsModule,
     SelectDeliveryAddressComponentModule,
     ShoppingCartPageRoutingModule,
-    ApplyBeezVoucherPageModule
   ],
   declarations: [ShoppingCartPage]
 })
