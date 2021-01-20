@@ -325,7 +325,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
             this.beezVoucherCode.reset();
             // Update order values after voucher code is applied
             this.updateOrderValues(response.cartOrOrder);
-            this.presentToastWithAction(this.translate.instant('pages.applyBeezVoucher.toastMessages.success') + this.currencyPipe.transform(
+            this.presentToastWithAction(this.translate.instant('pages.marketplace.shoppingCart.toastMessages.voucherBeezAppliedSuccessfully') + this.currencyPipe.transform(
               response.cartOrOrder.vouchersTotalValue, this.localeData.currency, 'symbol-narrow', '.0-2', this.localeData.localeID
             ));
           } else {
