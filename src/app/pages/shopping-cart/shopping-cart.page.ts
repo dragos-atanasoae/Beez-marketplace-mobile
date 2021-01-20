@@ -1,7 +1,6 @@
-import { ApplyBeezVoucherPage } from './../apply-beez-voucher/apply-beez-voucher.page';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
-import { ModalController, IonSlides, AlertController } from '@ionic/angular';
+import { ModalController, IonSlides, AlertController, ToastController } from '@ionic/angular';
 import { LocaleDataModel } from 'src/app/models/localeData.model';
 import { MarketplaceService } from 'src/app/services/marketplace.service';
 import { InternationalizationService } from 'src/app/services/internationalization.service';
@@ -17,6 +16,8 @@ import { ImageViewerPage } from '../image-viewer/image-viewer.page';
 import { takeUntil } from 'rxjs/operators';
 import { StripePaymentService } from 'src/app/services/stripe-payment.service';
 import { CustomAlertComponent } from 'src/app/components/custom-alert/custom-alert.component';
+import { FormControl, Validators } from '@angular/forms';
+import { CurrencyPipe } from '@angular/common';
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.page.html',
@@ -44,17 +45,23 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
   eventContext = 'Shopping cart page';
   paymentProcessor = null;
   disableButton = false;
+  beezVoucherCode: FormControl;
+  expandOrderSummary = false;
 
   constructor(
     private router: Router,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
+    private toastCtrl: ToastController,
     private loadingService: LoadingService,
     private analyticsService: AnalyticsService,
+    private currencyPipe: CurrencyPipe,
     private translate: TranslateService,
     private marketplaceService: MarketplaceService,
     private stripePaymentService: StripePaymentService,
-    private internationalizationService: InternationalizationService) {}
+    private internationalizationService: InternationalizationService) { 
+      this.beezVoucherCode = new FormControl('', [Validators.required]);
+    }
 
   ngOnInit() {
     // Initialize locale context
@@ -65,6 +72,9 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     this.getActiveSlideIndex();
     this.getPaymentProcessor();
     this.slidesCheckout.lockSwipes(true);
+
+    console.log(this.vendor);
+    
   }
 
   ngOnDestroy() {
@@ -293,24 +303,93 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
   }
 
   /**
-   * @name openApplyBeezVoucher
-   * @description Open apply, remove and display Beez Vouchers Page
-   */
-  async openApplyBeezVoucher() {
-    const modal = await this.modalCtrl.create({
-      component: ApplyBeezVoucherPage,
-      componentProps: {
-        city: this.city,
-        vendor: this.vendor,
-        shoppingCart: this.shoppingCart
-      },
-    });
-    modal.present();
-    modal.onDidDismiss().then((data: any) => {
-      if (data.data === 'successfullyAddedToCart') {
-        console.log('successfullyAddedToCart');
-      }
-    });
+* @name validateVoucherCode
+* @description Check if a beez voucher can be used for FM cart
+*/
+  validateVoucherCode() {
+    const body = {
+      vendorId: this.vendor.id,
+      preselectedCityId: this.city.Id,
+      voucherCode: this.beezVoucherCode.value
+    }
+
+    console.log('Validate VOUCHER CODE body: ', body);
+
+    if (this.beezVoucherCode.valid) {
+      this.loadingService.presentLoading();
+      this.marketplaceService.validateVoucherCode(body)
+        .subscribe((response: any) => {
+          console.log(response);
+          this.loadingService.dismissLoading();
+          if (response.canBeUsed) {
+            this.beezVoucherCode.reset();
+            // Update order values after voucher code is applied
+            this.updateOrderValues(response.cartOrOrder);
+            this.presentToastWithAction(this.translate.instant('pages.applyBeezVoucher.toastMessages.success') + this.currencyPipe.transform(
+              response.cartOrOrder.vouchersTotalValue, this.localeData.currency, 'symbol-narrow', '.0-2', this.localeData.localeID
+            ));
+          } else {
+            this.presentToastWithAction(this.translate.instant(response.cmsKeyErrorMessage));
+          }
+        }, () => this.loadingService.dismissLoading())
+    }
   }
 
+  removeVoucher(voucherId: string) {
+    this.loadingService.presentLoading();
+    const body = {
+      vendorId: this.vendor.id,
+      preselectedCityId: this.city.Id,
+      voucherId: voucherId
+    }
+
+    console.log('Remove VOUCHER body: ', body);
+    this.marketplaceService.removeVoucher(body)
+      .subscribe((response: any) => {
+        this.loadingService.dismissLoading();
+        console.log(response);
+        // Update order values after voucher code is removed
+        this.updateOrderValues(response);
+      }, () => this.loadingService.dismissLoading())
+  }
+
+  /**
+   * @name updateOrderValues
+   * @description Update order values after voucher code is applied or removed
+   */
+  updateOrderValues(response: any) {
+    // update discount value
+    this.shoppingCart.vouchersTotalValue = response.vouchersTotalValue;
+
+    // update vouchers list
+    this.shoppingCart.vouchers = response.vouchers;
+
+    // update entire shopping cart
+    this.marketplaceService.shoppingCart$.next(this.shoppingCart);
+
+    // update cart value
+    this.marketplaceService.totalCart$.next(response.totalValue);
+
+    console.log('this.marketplaceService.shoppingCart ', this.marketplaceService.shoppingCart);
+  }
+
+    /**
+   * @name presentToastWithAction
+   * @description Show a toast message without duration, this toast message can be closed from close button
+   * @param message
+   */
+  async presentToastWithAction(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => this.toastCtrl.dismiss()
+      }],
+      duration: 5000,
+      position: 'top',
+      cssClass: 'custom_toast'
+    });
+    toast.present();
+  }
 }

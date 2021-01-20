@@ -47,6 +47,33 @@ ion-slides {
     }
 }
 
+// WRAP VENDOR LOGO
+#wrap_vendor_logo {
+    height: 8.2rem;
+    padding-top: 1.5em;
+    border-bottom: 2.5rem solid #fff;
+    background: var(--beez-background-color);
+
+    div {
+        width: 6rem;
+        height: 6rem;
+        margin: 0 auto;
+        display: block;
+        position: relative;
+        background: #fff;
+        border-radius: var(--beez-border-radius);
+        box-shadow: var(--beez-box-shadow);
+
+        img,
+        ion-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+
 // BUTTON ADD MORE PRODUCTS
 #btn_add_more_products {
     width: 100%;
@@ -72,30 +99,11 @@ ion-slides {
     }
 }
 
-// CARD APPLY BEEZ VOUCHER
-#card_apply_beez_voucher {
-    color: var(--ion-color-secondary-tint);
-
-    .icon_wallet {
-        font-size: 1.3rem;
-        color: var(--ion-color-primary);
-    }
-
-    ion-button {
-        float: right;
-    }
-
-    p {
-        text-align: left;
-    }
-}
-
 // PRODUCTS LIST
 #wrap_products_list {
     width: 100%;
     max-width: 576px;
     margin: 0.5em auto;
-    padding-bottom: 12em;
 
     .cardview_product {
         width: 100%;
@@ -227,16 +235,96 @@ ion-slides {
     }
 }
 
-#footer {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    padding: 0.5em;
-    background: #fff;
-    box-shadow: 0px 4px 14px -6px rgba(0, 0, 0, 0.75);
-    z-index: 999;
+#row_add_beez_voucher {
+    max-width: 576px;
+    margin: auto;
+    padding: 0em 1em;
 
-    .row_footer {
+    .align_items_center {
+        display: flex;
+        align-items: center;
+    }
+
+    .icon_voucher {
+        font-size: 1.3em;
+    }
+
+    .label_add_voucher {
+        text-align: left;
+        font-weight: 500;
+        font-size: 1em;
+        color: var(--ion-color-secondary);
+    }
+
+    .item_voucher_code {
+        width: 100%;
+        --min-height: 2em;
+        margin-bottom: 0.5em;
+        --highlight-color-valid: #ddd;
+        --background: #f3f3f3;
+        --border-radius: 0.5em;
+    }
+}
+
+#row_vouchers_list {
+    width: 100%;
+
+    .label_voucher {
+        color: var(--ion-color-secondary-tint);
+    }
+
+    .label_voucher_code {
+        padding-left: 0.4em;
+        font-size: 0.6em;
+        color: var(--ion-color-medium);
+    }
+
+    .btn_remove_voucher {
+        float: right;
+        display: initial;
+        margin: 0;
+        --padding-end: 0.5em;
+        font-weight: 500;
+    }
+}
+
+ion-footer {
+    height: fit-content;
+    #footer_shopping_cart {
+        bottom: 0;
+    }
+}
+
+#order_summary {
+    width: 100%;
+    padding: 0.5em;
+    text-align: left;
+
+    #label_section_title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 576px;
+        margin: auto;
+        margin-bottom: 0.5em;
+        border-bottom: 1px solid #ededed;
+
+        p {
+            vertical-align: middle;
+            font-weight: 500;
+            color: var(--ion-color-secondary);
+
+            ion-icon {
+                vertical-align: middle;
+            }
+        }
+
+        .label_total_amount {
+            color: var(--ion-color-primary);
+        }
+    }
+
+    .row_order_summary {
         max-width: 576px;
         margin: auto;
 
@@ -245,24 +333,34 @@ ion-slides {
             color: var(--ion-color-tertiary-shade);
         }
 
-        .label_subtotal_value,
-        .label_shipping_cost_value,
-        .label_no_shipping_cost_value,
-        .label_total_amount {
+        .label_text {
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        .label_value {
+            font-size: 0.9em;
             font-weight: 600;
             text-align: right;
         }
 
-        .label_no_shipping_cost_value {
-            color: var(--ion-color-success) !important;
+        .label_total {
+            font-weight: 600;
+            text-align: left;
         }
 
         .label_total_amount {
+            font-size: 1em;
+            font-weight: 600;
+            text-align: right;
             color: var(--ion-color-primary);
         }
 
-        .label_total {
+        .label_discount_value {
+            font-size: 0.9em;
             font-weight: 600;
+            text-align: right;
+            color: var(--ion-color-danger);
         }
 
         .disclaimer {
@@ -303,6 +401,11 @@ ion-slides {
 
         .col_buttons.ios {
             padding-bottom: 0.5em;
+        }
+
+        .divider {
+            width: 100%;
+            background-color: #ededed;
         }
     }
 }

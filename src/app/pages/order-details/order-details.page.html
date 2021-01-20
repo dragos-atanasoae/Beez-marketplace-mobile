@@ -249,8 +249,39 @@
       </ion-row>
     </section>
 
-    <!-- Section order products list -->
+    <!-- Section order products list + general details -->
     <p class="label_section_title">{{'pages.marketplace.orderDetails.labelOrderDetails' | translate}}</p>
+    <div class="horizontal_line"></div>
+    <ion-row class="row_section_details">
+      <ion-col size="12">
+        <!-- Subtotal order value -->
+        <p>
+          Subtotal:
+          <span class="color_primary">{{((orderDetails?.value + orderDetails?.discountedAmount ) -
+            orderDetails?.shippingCost
+            )|
+            currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+        </p>
+        <!-- Shipping cost value -->
+        <p>
+          {{'pages.marketplace.orderDetails.labelShippingCost' | translate}}:
+          <span class="color_primary">{{orderDetails?.shippingCost |
+            currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+        </p>
+        <!-- Discount value -->
+        <p>
+          {{'pages.marketplace.orderDetails.labelDiscount' | translate}}:
+          <span class="color_primary">-{{orderDetails?.discountedAmount |
+            currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+        </p>
+        <!-- Total order value -->
+        <p>
+          Total:
+          <span class="color_primary">{{orderDetails?.value |
+            currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}</span>
+        </p>
+      </ion-col>
+    </ion-row>
     <div class="horizontal_line"></div>
     <ng-container *ngTemplateOutlet="productsList; context: {list: undeliveredProducts, context: 'undelivered'}">
     </ng-container>
@@ -300,14 +331,6 @@
               color="primary">
             </ion-icon>
           </ion-button>
-          <!-- <ion-button fill="clear" shape="round" size="small"
-            [color]="orderDetails?.documentInfo.invoicePath == null ? 'secondary' : 'primary'"
-            [disabled]="orderDetails?.documentInfo.invoicePath == null"
-            (click)="openDocumentInAppBrowser(orderDetails?.documentInfo.invoicePath)">
-            {{'pages.marketplace.orderDetails.labelDownload' | translate}}<ion-icon slot="end" name="cloud-download"
-              color="primary">
-            </ion-icon>
-          </ion-button> -->
         </ion-col>
       </ion-row>
     </section>
