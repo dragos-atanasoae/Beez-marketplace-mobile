@@ -159,7 +159,7 @@
             <ion-col size="4">
               <ion-button class="btn_remove_voucher" fill="clear" shape="round" color="danger"
                 (click)="removeVoucher(voucher.id)">
-                -{{voucher.discountValue |
+                -{{voucher.absouluteAppliedDiscount |
                 currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}}
                 <ion-icon slot="end" color="medium" name="close"></ion-icon>
               </ion-button>
