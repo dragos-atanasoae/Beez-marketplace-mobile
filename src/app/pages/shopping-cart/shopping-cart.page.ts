@@ -59,9 +59,9 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     private translate: TranslateService,
     private marketplaceService: MarketplaceService,
     private stripePaymentService: StripePaymentService,
-    private internationalizationService: InternationalizationService) { 
-      this.beezVoucherCode = new FormControl('', [Validators.required]);
-    }
+    private internationalizationService: InternationalizationService) {
+    this.beezVoucherCode = new FormControl('', [Validators.required]);
+  }
 
   ngOnInit() {
     // Initialize locale context
@@ -74,7 +74,7 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     this.slidesCheckout.lockSwipes(true);
 
     console.log(this.vendor);
-    
+
   }
 
   ngOnDestroy() {
@@ -237,9 +237,17 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     this.analyticsService.logEvent('checkout_shopping_cart', { context: this.eventContext });
     this.marketplaceService.checkoutShoppingCart(this.shoppingCartId, this.vendor.id, this.city.Id, this.selectedAddress.Id).subscribe((res: any) => {
       if (res.status === 'success') {
-        this.modalCtrl.dismiss();
-        this.openPaymentPage(res.orderId);
         this.loadingService.dismissLoading();
+        if (this.cartValue > 0) {
+          this.modalCtrl.dismiss();
+          this.openPaymentPage(res.orderId);
+        } else {
+          this.modalCtrl.dismiss().then(() => {
+            this.modalCtrl.dismiss();
+            this.router.navigate(['/tabs/orders']);
+            localStorage.setItem('selectedOrder', res.orderId)
+          });
+        }
       } else { this.loadingService.dismissLoading(); }
     }, () => this.loadingService.dismissLoading());
   }
@@ -373,11 +381,11 @@ export class ShoppingCartPage implements OnInit, OnDestroy {
     console.log('this.marketplaceService.shoppingCart ', this.marketplaceService.shoppingCart);
   }
 
-    /**
-   * @name presentToastWithAction
-   * @description Show a toast message without duration, this toast message can be closed from close button
-   * @param message
-   */
+  /**
+ * @name presentToastWithAction
+ * @description Show a toast message without duration, this toast message can be closed from close button
+ * @param message
+ */
   async presentToastWithAction(message: string) {
     const toast = await this.toastCtrl.create({
       message,

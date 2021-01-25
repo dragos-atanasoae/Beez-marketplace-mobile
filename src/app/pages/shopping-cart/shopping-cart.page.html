@@ -115,6 +115,13 @@
       <!-- ORDER SUMMARY -->
       <div id="order_summary">
         <ion-row class="row_order_summary">
+          <ion-col size="12" id="label_section_title">
+            <p>
+              {{'pages.marketplace.shoppingCart.labelOrderSummary' | translate}}
+            </p>
+          </ion-col>
+          <ion-col size="12">
+          </ion-col>
           <!-- Order subtotal -->
           <ng-container *ngTemplateOutlet="templateOrderSubtotal;"></ng-container>
           <!-- Shipping cost -->
@@ -185,9 +192,9 @@
 </ion-content>
 
 <ion-footer *ngIf="currentIndex > 0">
-  <ion-toolbar>
-    <div id="order_summary">
-      <div id="label_section_title" (click)="expandOrderSummary = !expandOrderSummary">
+  <ion-toolbar id="order_summary">
+    <ion-row>
+      <ion-col size="12" id="label_section_title" (click)="expandOrderSummary = !expandOrderSummary">
         <p>
           {{(expandOrderSummary ? 'pages.marketplace.shoppingCart.labelOrderSummary' :
           'pages.marketplace.shoppingCart.labelViewOrderSummary') | translate}}
@@ -196,41 +203,41 @@
         <p *ngIf="!expandOrderSummary" class="label_total_amount">
           {{ cartValue + (cartValue < vendor.deliveryFeeThreshold || vendor.deliveryFeeThreshold==null ?
             vendor.shippingFee : 0 ) | currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}} </p>
-      </div>
-      <ion-row class="row_order_summary" *ngIf="expandOrderSummary">
-        <!-- Order subtotal -->
-        <ng-container *ngTemplateOutlet="templateOrderSubtotal;"></ng-container>
-        <!-- Shipping cost -->
-        <ng-container *ngTemplateOutlet="templateShippingCost;"></ng-container>
-        <!-- Discount value  -->
-        <ion-col size="6" *ngIf="shoppingCart?.vouchersTotalValue">
-          <p class="label_text">
-            {{'pages.marketplace.shoppingCart.labelDiscount' | translate}}
-          </p>
-        </ion-col>
-        <ion-col size="6" *ngIf="shoppingCart?.vouchersTotalValue">
-          <p class="label_discount_value">
-            - {{ shoppingCart?.vouchersTotalValue |
-            currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}} </p>
-        </ion-col>
-        <!-- Total order value -->
-        <ng-container *ngTemplateOutlet="templateOrderTotal;"></ng-container>
-      </ion-row>
-      <ion-row class="row_order_summary">
-        <ion-col *ngIf="currentIndex === 1" class="col_buttons">
-          <ion-button expand="block" color="medium" fill="outline" shape="round" class="btn_back"
-            (click)="previousSlide()">
-            {{'pages.marketplace.shoppingCart.buttonBack' | translate}}
-          </ion-button>
-        </ion-col>
-        <ion-col class="col_buttons">
-          <ion-button expand="block" fill="solid" shape="round" [disabled]="selectedAddress === null || disableButton"
-            *ngIf="currentIndex === 1" (click)="checkoutShoppingCart()">
-            {{'pages.marketplace.shoppingCart.buttonCheckout' | translate}}
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row_order_summary" *ngIf="expandOrderSummary">
+      <!-- Order subtotal -->
+      <ng-container *ngTemplateOutlet="templateOrderSubtotal;"></ng-container>
+      <!-- Shipping cost -->
+      <ng-container *ngTemplateOutlet="templateShippingCost;"></ng-container>
+      <!-- Discount value  -->
+      <ion-col size="6" *ngIf="shoppingCart?.vouchersTotalValue">
+        <p class="label_text">
+          {{'pages.marketplace.shoppingCart.labelDiscount' | translate}}
+        </p>
+      </ion-col>
+      <ion-col size="6" *ngIf="shoppingCart?.vouchersTotalValue">
+        <p class="label_discount_value">
+          - {{ shoppingCart?.vouchersTotalValue |
+          currency:localeData.currency:'symbol-narrow':'.0-2':localeData.localeID}} </p>
+      </ion-col>
+      <!-- Total order value -->
+      <ng-container *ngTemplateOutlet="templateOrderTotal;"></ng-container>
+    </ion-row>
+    <ion-row class="row_order_summary">
+      <ion-col *ngIf="currentIndex === 1" class="col_buttons">
+        <ion-button expand="block" color="medium" fill="outline" shape="round" class="btn_back"
+          (click)="previousSlide()">
+          {{'pages.marketplace.shoppingCart.buttonBack' | translate}}
+        </ion-button>
+      </ion-col>
+      <ion-col class="col_buttons">
+        <ion-button expand="block" fill="solid" shape="round" [disabled]="selectedAddress === null || disableButton"
+          *ngIf="currentIndex === 1" (click)="checkoutShoppingCart()">
+          {{'pages.marketplace.shoppingCart.buttonCheckout' | translate}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-footer>
 
