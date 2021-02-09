@@ -491,7 +491,7 @@
   "pages.marketplace.shoppingCart.labelshoppingCart": "Coș de cumpărături",
   "pages.marketplace.shoppingCart.labelViewOrderSummary": "Vezi sumar comandă",
   "pages.marketplace.shoppingCart.placehoderEnterCode": "Cod voucher",
-  "pages.marketplace.shoppingCart.toastMessages.voucherBeezAppliedSuccessfully": "Felicitări! Ați acumulat o reducere de ",
+  "pages.marketplace.shoppingCart.toastMessages.voucherBeezAppliedSuccessfully": "Felicitări! Ai primit o reducere de ",
   "pages.marketplace.statusOfOrder.cancelled": "Comandă anulată",
   "pages.marketplace.statusOfOrder.deletedByUser": "Comandă anulată",
   "pages.marketplace.statusOfOrder.delivered": "Comandă livrată",
