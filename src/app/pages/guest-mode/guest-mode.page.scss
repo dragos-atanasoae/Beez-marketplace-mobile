@@ -21,6 +21,26 @@
         -webkit-align-items: unset !important;
     }
 
+    .row_empty_vendors_list {
+        align-items: center;
+        padding: 1.5em;
+        font-size: 0.9em;
+        color: var(--ion-color-secondary-tint);
+        background: #f2f2f2;
+
+        img {
+            display: block;
+            max-height: 10em;
+            margin: auto;
+        }
+
+        ion-button {
+            height: 3em;
+            max-width: 25em;
+            --box-shadow: none
+        }
+    }
+
     #slide_vendors {
         ion-item-divider {
             width: 100%;
@@ -668,6 +688,16 @@
                 display: block;
                 opacity: 0.2;
             }
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .row_empty_vendors_list {
+        text-align: center;
+
+        ion-button {
+            margin: 1em auto;
         }
     }
 }

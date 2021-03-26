@@ -110,6 +110,7 @@ export class HomePage implements OnInit {
     console.log(this.county, this.city);
     this.marketplaceService.getVendorsList(this.city.Id).subscribe((res: any) => {
       console.log(res);
+      this.loadingService.dismissLoading();
       if (res.status === 'success') {
         this.metacategories = res.activeMetaCategories;
         this.vendorsList = res.vendors;
@@ -131,11 +132,10 @@ export class HomePage implements OnInit {
           this.onSearchChange(this.searchedKeyword);
         }
       }
-    });
+    }, () => this.loadingService.dismissLoading());
   }
 
   getVendorsWithPromotions(vendors: any) {
-    this.loadingService.dismissLoading();
     this.vendorsWithActivePromotions = vendors.filter((item: any) => {
       if (item.vendorMetaCategories.find((el: any) => el.name === 'Promotii')) {
         return item;
@@ -213,8 +213,9 @@ export class HomePage implements OnInit {
    * @description Enable/Disable notifications for new vendor on selected location/city
    */
   async toggleNewVendorNotifications() {
+    this.newVendorNotificationsStatus = !this.newVendorNotificationsStatus;
     this.analyticsService.logEvent(this.newVendorNotificationsStatus ? 'turn_on_new_vendor_notifications' : 'turn_off_new_vendor_notifications', { context: this.eventContext, city: this.city, status: this.newVendorNotificationsStatus });
-    this.marketplaceService.postNewVendorNotificationsStatus(this.city.id, this.newVendorNotificationsStatus).subscribe(res => console.log(res));
+    this.marketplaceService.postNewVendorNotificationsStatus(this.city.Id, this.newVendorNotificationsStatus).subscribe(res => console.log(res));
   }
 
   searchInProperty(value: any, keyword: any) {
