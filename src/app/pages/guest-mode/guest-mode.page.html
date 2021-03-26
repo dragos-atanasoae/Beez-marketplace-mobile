@@ -70,7 +70,8 @@
         <div class="container">
           <p class="label_searched_keyword" *ngIf="searchedKeyword"><span>{{this.vendorsList?.length}}</span>
             {{'pages.guestMode.vendorsList.labelVendor' | translate}}
-            <span>"{{searchedKeyword}}"</span></p>
+            <span>"{{searchedKeyword}}"</span>
+          </p>
           <div id="wrap_categories_list" *ngIf="categoriesDropdownIsActive">
             <ion-list [@listAnimation]="metacategories.length">
               <ion-item button detail="false" lines="none" *ngFor="let category of metacategories"
@@ -100,6 +101,23 @@
               </ion-item>
             </ion-list>
           </div>
+
+          <ion-row *ngIf="vendorsList?.length == 0" class="row_empty_vendors_list">
+            <ion-col sizeXs="12" sizeMd="4">
+              <img src="./assets/icon/icon_empty_vendors_list.svg" alt="">
+            </ion-col>
+            <ion-col sizeXs="12" sizeMd="8">
+              <h5 class="title">
+                {{'pages.home.emptyVendorsList.title' | translate}}
+              </h5>
+              <p class="content" [innerHTML]="'pages.home.emptyVendorsList.content' | translate | safeHTML">
+              </p>
+              <ion-button expand="block" fill="solid" color="primary" shape="round" [routerLink]="'/login'">
+                {{ 'buttons.buttonTurnOn' | translate}}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
           <ion-grid fixed id="grid_shops_list" *ngIf="!categoriesDropdownIsActive">
             <!-- Loading Shops - View Skeleton -->
             <ion-row justify-content-center id="loading_shops_list" *ngIf='vendorsList == null'>
@@ -121,7 +139,7 @@
                 </ion-card>
               </ion-col>
             </ion-row>
-            
+
             <!-- View Vendors List -->
             <ion-row justify-content-center *ngIf="vendorsList as vendors">
               <!-- Vendor Cardview -->
@@ -189,8 +207,7 @@
             </ion-col>
             <!-- Searchbar -->
             <ion-col size="12" id="wrap_searchbar">
-              <ion-searchbar
-                placeholder="{{'pages.guestMode.productsList.labelSearchProduct' | translate}}"
+              <ion-searchbar placeholder="{{'pages.guestMode.productsList.labelSearchProduct' | translate}}"
                 inputmode="text" type="text" (ionChange)="searchProduct($event.target.value)"
                 (ionClear)="cancelSearch()" [debounce]="1000" mode="ios" showCancelButton="never"></ion-searchbar>
             </ion-col>

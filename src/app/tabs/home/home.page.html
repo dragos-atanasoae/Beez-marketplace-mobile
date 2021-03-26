@@ -24,7 +24,7 @@
   <app-slides-general-info></app-slides-general-info>
 
   <!-- Section MetaCategories List -->
-  <div id="metacategories_list" *ngIf="metacategories && !searchResult">
+  <div id="metacategories_list" *ngIf="metacategories && !searchResult && metacategories.length != 0">
     <!-- List Header: title & toggle view -->
     <ion-item-divider sticky class="section_header">
       <ion-row class="ion-align-items-center">
@@ -34,7 +34,8 @@
         <ion-col size="auto">
           <ion-button color="primary" fill="clear" shape="round" size="small"
             (click)="toggleViewMode('metacategoriesList')">
-            {{(showAllMetacategories ? 'pages.home.buttons.buttonViewLess' : 'pages.home.buttons.buttonViewAll') | translate}}
+            {{(showAllMetacategories ? 'pages.home.buttons.buttonViewLess' : 'pages.home.buttons.buttonViewAll') |
+            translate}}
           </ion-button>
         </ion-col>
       </ion-row>
@@ -54,8 +55,25 @@
     </div>
   </div>
 
+  <ion-row *ngIf="vendorsList?.length == 0 && vendorsWithActivePromotions.length == 0" class="row_empty_vendors_list">
+    <ion-col sizeXs="12" sizeMd="4">
+      <img src="./assets/icon/icon_empty_vendors_list.svg" alt="">
+    </ion-col>
+    <ion-col sizeXs="12" sizeMd="8">
+      <h5 class="title">
+        {{'pages.home.emptyVendorsList.title' | translate}}
+      </h5>
+      <p class="content" [innerHTML]="'pages.home.emptyVendorsList.content' | translate | safeHTML">
+      </p>
+      <ion-button expand="block" fill="solid" [color]="newVendorNotificationsStatus ? 'medium':'primary'" shape="round"
+        (click)="toggleNewVendorNotifications()">
+        {{ (newVendorNotificationsStatus ? 'buttons.buttonTurnOff' : 'buttons.buttonTurnOn') | translate}}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
   <!-- Section Vendors List -->
-  <div id="vendors_list" *ngIf="vendorsList && !searchResult">
+  <div id="vendors_list" *ngIf="vendorsList && !searchResult && vendorsList?.length !== 0">
     <!-- List Header: title & toggle view & active filter(selected metacategory) -->
     <ion-item-divider sticky class="section_header">
       <ion-row class="ion-align-items-center">
@@ -90,8 +108,8 @@
     </ion-item-divider>
 
     <!-- Vendors List - horizontal | vertical mode -->
-    <div [class]="showAllVendors ? 'wrap_vertical_list' : 'wrap_horizontal_list'" *ngIf="vendorsList"
-      [@listAnimation]="vendorsList.slice(0, 5).length">
+    <div [class]="showAllVendors ? 'wrap_vertical_list' : 'wrap_horizontal_list'"
+      *ngIf="vendorsList && vendorsList?.length !== 0" [@listAnimation]="vendorsList.slice(0, 5).length">
       <ion-card button class="cardview_vendor"
         *ngFor="let vendor of showAllVendors ? (vendorsList | filterByMetacategory : activeCategory) : vendorsList.slice(0, 5)"
         (click)="selectVendor(vendor)">
@@ -131,7 +149,8 @@
   </div>
 
   <!-- Section Promotions -->
-  <div id="vendors_promo_list" *ngIf="vendorsWithActivePromotions && !searchResult">
+  <div id="vendors_promo_list"
+    *ngIf="vendorsWithActivePromotions && !searchResult && vendorsWithActivePromotions.length !== 0">
     <!-- List Header: title & toggle view -->
     <ion-item-divider sticky class="section_header">
       <ion-row class="ion-align-items-center">
@@ -141,7 +160,8 @@
         <ion-col size="auto">
           <ion-button color="primary" fill="clear" shape="round" size="small"
             (click)="toggleViewMode('vendorsPromoList')">
-            {{(showAllVendorsPromo ? 'pages.home.buttons.buttonViewLess' : 'pages.home.buttons.buttonViewAll') | translate}}
+            {{(showAllVendorsPromo ? 'pages.home.buttons.buttonViewLess' : 'pages.home.buttons.buttonViewAll') |
+            translate}}
           </ion-button>
         </ion-col>
       </ion-row>
@@ -207,14 +227,12 @@
       <p>{{'pages.home.labelFollowUs' | translate}}</p>
     </ion-col>
     <ion-col size="auto">
-      <ion-button fill="clear" shape="round" color="tertiary"
-        (click)="openLinkInBrowser('https://bit.ly/3h2uCOB')">
+      <ion-button fill="clear" shape="round" color="tertiary" (click)="openLinkInBrowser('https://bit.ly/3h2uCOB')">
         <ion-icon slot="icon-only" name="logo-facebook"></ion-icon>
       </ion-button>
     </ion-col>
     <ion-col size="auto">
-      <ion-button fill="clear" shape="round" color="tertiary"
-        (click)="openLinkInBrowser('https://bit.ly/3nEX7UQ')">
+      <ion-button fill="clear" shape="round" color="tertiary" (click)="openLinkInBrowser('https://bit.ly/3nEX7UQ')">
         <ion-icon slot="icon-only" name="logo-instagram"></ion-icon>
       </ion-button>
     </ion-col>

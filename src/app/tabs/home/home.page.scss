@@ -3,6 +3,8 @@ ion-toolbar {
         width: 80%;
         max-width: 520px;
         margin: 0 auto;
+        font-weight: 500;
+        color: var(--ion-color-secondary);
 
         ion-col {
             padding: 0;
@@ -42,6 +44,26 @@ ion-toolbar {
 
 ion-content {
     --background: var(--beez-background-color);
+
+    .row_empty_vendors_list {
+        align-items: center;
+        padding: 1.5em;
+        font-size: 0.9em;
+        color: var(--ion-color-secondary-tint);
+        background: #f2f2f2;
+
+        img {
+            display: block;
+            max-height: 10em;
+            margin: auto;
+        }
+
+        ion-button {
+            height: 3em;
+            max-width: 25em;
+            --box-shadow: none
+        }
+    }
 
     .active_selection {
         box-shadow: 1px 1px 8px 2px rgba(34, 34, 34, 0.4) !important;
@@ -521,6 +543,16 @@ ion-content {
     .wrap_vertical_list {
         .cardview_vendor {
             width: 12rem;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .row_empty_vendors_list {
+        text-align: center;
+
+        ion-button {
+            margin: 1em auto;
         }
     }
 }
