@@ -331,11 +331,12 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
   }
 
   contactSupport() {
-    if (this.orderDetails.customerSupport.HasWhatsApp) {
-      this.openWhatsapp();
-    } else {
-      this.callBeez();
-    }
+    // if (this.orderDetails.customerSupport.HasWhatsApp) {
+    //   this.openWhatsapp();
+    // } else {
+    //   this.callBeez();
+    // }
+    this.openWhatsapp();
   }
 
   /**
@@ -345,12 +346,13 @@ export class OrderDetailsPage implements OnInit, OnDestroy {
   openWhatsapp() {
     this.analyticsService.logEvent('contact_via_whatsapp', { context: this.eventContext });
     const userEmail = localStorage.getItem('userName');
+    const phoneNumber = this.translate.instant('contactSupportWhatsapp.phoneNumber');
     const messagePart1 = this.translate.instant('contactSupportWhatsapp.messagePart1');
     const messagePart2 = this.translate.instant('contactSupportWhatsapp.messagePart2');
     const messagePart3 = this.translate.instant('contactSupportWhatsapp.messagePart3.foodMarketplaceOrder');
     const contactMessage = messagePart1 + ' ' + userEmail + ', ' + messagePart2 + ' ' + messagePart3 + ' ' + this.orderDetails.id;
     // Browser.open({ url: 'https://api.whatsapp.com/send?phone=' + this.orderDetails.customerSupport.WhatsAppPhoneNumber + '&text=' + contactMessage,  windowName: '_system' });
-    this.inAppBrowser.create('https://api.whatsapp.com/send?phone=' + this.orderDetails.customerSupport.WhatsAppPhoneNumber + '&text=' + contactMessage, '_system');
+    this.inAppBrowser.create('https://api.whatsapp.com/send?phone=' + phoneNumber + '&text=' + contactMessage, '_system');
   }
 
   /**
